@@ -200,7 +200,16 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Site: https://carry-site-beta.vercel.app (Vercel project imported from the repo, root `site/`; `/privacy`, `/terms` OK).
   Pushes to `main` redeploy it.
 
+### Cross-platform (2026-11-06)
+- `system.js`: open URL (`open` / `rundll32 url.dll,FileProtocolHandler` / `xdg-open`), reveal file (`open -R` / `explorer /select,` /
+  `xdg-open <dir>`), clipboard (`pbcopy` / `clip` / `wl-copy`→`xclip`→`xsel`), Drive for desktop folder (macOS CloudStorage,
+  Windows `<letter>:\My Drive`, Linux none → web mode). Falls back to printing the link/prompt if a command fails.
+- Already portable: session paths via `os.homedir()`, Node zstd, txcript has Windows/Linux builds.
+- Tested on macOS only. Windows/Linux: command choice unit-tested in test.js; not run on a real machine
+  (Docker here has no daemon running and no image).
+
 ## Next steps (in order)
+0. [ ] Run carry on a real Windows and Linux machine (or Docker `node:24` image) once
 1. [ ] Umami website id → uncomment script in `site/index.html`; Google Branding page: add homepage + privacy URL
        (carry-site-beta.vercel.app, /privacy); optional nicer Vercel domain
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
