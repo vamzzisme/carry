@@ -5,7 +5,8 @@
   "main": "carry.js",
   "bin": { "carry": "carry.js" },
   "scripts": {
-    "test": "node test.js"
+    "test": "node test.js",
+    "postinstall": "node install-txcript.js"
   },
   "license": "Apache-2.0",
   "type": "commonjs",

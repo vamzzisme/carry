@@ -9,6 +9,9 @@ const { openTarget, reveal, copyText, driveFolder } = require('./system');
 const HOME = os.homedir();
 const CONF = path.join(HOME, '.carry', 'config.json');
 const HEAD_BYTES = 256 * 1024; // enough of a session to find its first prompt
+// txcript: $TXCRIPT, else the copy `npm install` put in ./bin, else whatever is on PATH.
+const BUNDLED = path.join(__dirname, 'bin', process.platform === 'win32' ? 'txcript.exe' : 'txcript');
+const TXCRIPT = process.env.TXCRIPT || (fs.existsSync(BUNDLED) ? BUNDLED : 'txcript');
 
 // ---------- config ----------
 function load() {
@@ -295,9 +298,9 @@ const cmds = {
     const tmp = path.join(os.tmpdir(), `carry-${doc.id}.json`);
     fs.writeFileSync(tmp, JSON.stringify(doc));
     const extra = args.includes('--no-resume') ? ['--no-resume'] : [];
-    const r = spawnSync(process.env.TXCRIPT || 'txcript', ['continue', tmp, '--with', to, ...extra], { stdio: 'inherit' });
+    const r = spawnSync(TXCRIPT, ['continue', tmp, '--with', to, ...extra], { stdio: 'inherit' });
     fs.rmSync(tmp, { force: true });
-    if (r.error) die('txcript not found. Install: https://github.com/skillsynchq/txcript/releases');
+    if (r.error) die(`txcript not found. Fetch it with: node "${path.join(__dirname, 'install-txcript.js')}"`);
     process.exitCode = r.status;
   },
 };
@@ -315,7 +318,7 @@ carry share <chat> [--handoff f] [--with emails] [--link]
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat]`;
 
-module.exports = { redact, slug, cleanPrompt, readPack };
+module.exports = { redact, slug, cleanPrompt, readPack, TXCRIPT };
 if (require.main === module) {
   const [cmd, ...args] = process.argv.slice(2);
   Promise.resolve((cmds[cmd] || (() => console.log(USAGE)))(args)).catch(e => die(e.message));

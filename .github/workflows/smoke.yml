@@ -13,20 +13,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24
-      - run: npm ci
+      - run: npm ci   # postinstall fetches txcript for this OS into ./bin, same as for users
       - run: npm test
-      - name: Get txcript
-        shell: bash
-        run: |
-          case "$RUNNER_OS" in
-            Linux)   a=txcript-x86_64-unknown-linux-gnu.tar.gz ;;
-            macOS)   a=txcript-aarch64-apple-darwin.tar.gz ;;
-            Windows) a=txcript-x86_64-pc-windows-msvc.zip ;;
-          esac
-          curl -fsSL -o "$a" "https://github.com/skillsynchq/txcript/releases/download/v0.14.4/$a"
-          mkdir tx
-          if [ "$RUNNER_OS" = Windows ]; then 7z x -otx "$a" >/dev/null; else tar -xzf "$a" -C tx; fi
-          f=$(find "$PWD/tx" -type f \( -name txcript -o -name txcript.exe \) | head -1)
-          [ "$RUNNER_OS" = Windows ] && f=$(cygpath -w "$f")
-          echo "TXCRIPT=$f" >> "$GITHUB_ENV"
       - run: node smoke.js

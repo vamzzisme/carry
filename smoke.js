@@ -1,5 +1,5 @@
 // node smoke.js — end-to-end run of carry in a throwaway home folder with two fake chats (Claude Code + Codex).
-// Runs on macOS, Linux and Windows. Set TXCRIPT=<path to txcript binary> to also test `open --to <tool>`.
+// Runs on macOS, Linux and Windows. Uses the txcript that `npm install` fetched (or $TXCRIPT) to test `open --to <tool>`.
 const assert = require('assert');
 const fs = require('fs'), path = require('path'), os = require('os'), zlib = require('zlib');
 const { spawnSync } = require('child_process');
@@ -51,11 +51,14 @@ assert.match(packs, /add-dark-mode-to-settings\s+by ci/);
 assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'chat'), /handoff\.md/);
 assert(fs.existsSync(path.join(home, '.carry', 'opened', 'add-dark-mode-to-settings', 'handoff.md')));
 
-assert(process.env.TXCRIPT || !process.env.CI, 'CI must set TXCRIPT so the open steps really run');
-if (process.env.TXCRIPT) {
+// TXCRIPT comes from `npm install` (./bin) or $TXCRIPT. On CI it must exist, so the open steps can't be skipped.
+const { TXCRIPT } = require('./carry');
+const haveTx = fs.existsSync(TXCRIPT);
+assert(haveTx || !process.env.CI, `CI: txcript missing at ${TXCRIPT} (npm install should have fetched it)`);
+if (haveTx) {
   assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'claude_code', '--no-resume'), /resume with: claude --resume/);
   assert.match(carry('open', path.join(share, 'fix-the-login-bug-please.carry'), '--to', 'codex', '--no-resume'), /resume with: codex resume/);
-} else console.log('(TXCRIPT not set: skipped open --to claude_code/codex)');
+} else console.log('(txcript not installed: skipped open --to claude_code/codex)');
 
 fs.rmSync(home, { recursive: true, force: true });
 console.log(`smoke ok on ${process.platform}`);
