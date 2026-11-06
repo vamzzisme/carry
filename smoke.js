@@ -51,6 +51,7 @@ assert.match(packs, /add-dark-mode-to-settings\s+by ci/);
 assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'chat'), /handoff\.md/);
 assert(fs.existsSync(path.join(home, '.carry', 'opened', 'add-dark-mode-to-settings', 'handoff.md')));
 
+assert(process.env.TXCRIPT || !process.env.CI, 'CI must set TXCRIPT so the open steps really run');
 if (process.env.TXCRIPT) {
   assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'claude_code', '--no-resume'), /resume with: claude --resume/);
   assert.match(carry('open', path.join(share, 'fix-the-login-bug-please.carry'), '--to', 'codex', '--no-resume'), /resume with: codex resume/);
