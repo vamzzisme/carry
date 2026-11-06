@@ -27,6 +27,7 @@ assert(!text.includes('MIIEow'), 'private key leaked');
 assert(text.includes('Bearer [REDACTED]'));
 assert.strictEqual(out.messages[3].content, doc.messages[3].content, 'false positive');
 assert.strictEqual(count, 10);
+assert.strictEqual(redact('OPENAI_API_KEY=sk-abcdefghijklmnopqrstuvwxyz').count, 1, 'KEY=sk-... counted once');
 
 assert.strictEqual(slug('Fix the Auth bug in login.ts please now'), 'fix-the-auth-bug-in');
 assert.strictEqual(slug('!!!'), 'chat');

@@ -110,7 +110,7 @@ const SECRET_PATTERNS = [
   /\bxox[abprs]-[A-Za-z0-9-]{10,}/g,                  // Slack
   /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g, // JWT
   /(Bearer\s+)[A-Za-z0-9._~+/-]{20,}/g,
-  /((?:[A-Z0-9_]*(?:KEY|TOKEN|SECRET|PASSWORD|PASSWD)[A-Z0-9_]*)\s*[=:]\s*)[^\s"'\\,]{8,}/g, // FOO_API_KEY=value
+  /((?:[A-Z0-9_]*(?:KEY|TOKEN|SECRET|PASSWORD|PASSWD)[A-Z0-9_]*)\s*[=:]\s*)(?!\[REDACTED\])[^\s"'\\,]{8,}/g, // FOO_API_KEY=value, unless already redacted above
 ];
 function redact(s) {
   let count = 0;
