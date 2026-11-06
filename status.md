@@ -210,6 +210,9 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
   setup, list, share (redaction), packs, open --to chat, open --to claude_code / codex (--no-resume). Run 42252021983: all 3 green,
   and CI fails if txcript is missing so the open steps can't be skipped.
   (No Docker engine on this Mac: `docker` CLI only, no Desktop/Colima.)
+- Install is now commands only: `npm install` runs `install-txcript.js` (postinstall) → checksum-verified txcript for the OS in
+  `./bin` (gitignored); carry uses `$TXCRIPT`, else `./bin`, else PATH. `carry install-skill` copies `skills/carry` into
+  `~/.claude/skills`, `~/.codex/skills`, `~/.agents/skills` (whichever exist). CI run 42254571617 (no manual txcript step): 3/3 green.
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
