@@ -23,6 +23,20 @@ Then pick a mode:
      → Google sign-in opens in your browser. Shares are uploaded to a `carry` folder in your Drive and Google emails your friends a link.
    - **Synced folder:** `carry setup` (finds Google Drive for desktop on macOS and Windows) or `carry setup ~/Dropbox/carry`. Share the folder with friends in Drive/Dropbox.
 
+## No terminal: MCP connector
+carry runs as an MCP server, so you can just ask your AI app ("share this chat with riya@gmail.com", "open the carry link Riya sent me").
+Needs Node; nothing else to install.
+
+| App | Where | Add |
+|---|---|---|
+| Claude Desktop | Settings, Developer, Edit Config | `"mcpServers": { "carry": { "command": "npx", "args": ["-y", "github:vamzzisme/carry", "mcp"] } }` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.carry]` `command = "npx"` `args = ["-y", "github:vamzzisme/carry", "mcp"]` |
+| Cursor | `~/.cursor/mcp.json` | same JSON as Claude Desktop |
+
+On Windows use `"command": "cmd", "args": ["/c", "npx", "-y", "github:vamzzisme/carry", "mcp"]`.
+Tools: `carry_status`, `carry_connect_google_drive`, `carry_list_chats`, `carry_share_chat`, `carry_share_summary` (for chat apps,
+whose history carry can't read), `carry_list_shared`, `carry_open` (returns the handoff and history, or loads it into a coding tool).
+
 ## Use
 | Command | What it does |
 |---|---|

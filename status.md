@@ -213,6 +213,13 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Install is now commands only: `npm install` runs `install-txcript.js` (postinstall) → checksum-verified txcript for the OS in
   `./bin` (gitignored); carry uses `$TXCRIPT`, else `./bin`, else PATH. `carry install-skill` copies `skills/carry` into
   `~/.claude/skills`, `~/.codex/skills`, `~/.agents/skills` (whichever exist). CI run 42254571617 (no manual txcript step): 3/3 green.
+- MCP (2026-11-06): `mcp.js` stdio JSON-RPC server (`carry mcp`), no new deps, 7 tools; each runs the CLI as a child process.
+  New CLI bits for it: `carry note "<name>" --handoff f` (summary-only pack, `pack: null`), `open --to here` (prints handoff +
+  transcript). Tested: smoke.js MCP session (initialize, tools/list, list, share_summary, open, status); real client
+  `claude -p --mcp-config` called carry_status + carry_list_chats; `npx -y github:vamzzisme/carry mcp` from GitHub works.
+  Not tested: inside Claude Desktop / Codex / Cursor apps themselves; long carry_connect_google_drive may hit client tool timeouts.
+- Site: OS tabs (auto-detect, remembered, synced across sections) for install; new 05 "No terminal" section with app tabs
+  (Claude Desktop / Codex / Cursor) × OS (Windows uses `cmd /c npx`).
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
