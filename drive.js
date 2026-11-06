@@ -1,7 +1,7 @@
 // Google Drive over the web API: browser sign-in (loopback + PKCE), upload, share, public download.
 // Scope is drive.file: carry only ever sees files it created itself.
 const http = require('http'), crypto = require('crypto'), fs = require('fs'), path = require('path'), os = require('os');
-const { spawnSync } = require('child_process');
+const { openTarget } = require('./system');
 
 const TOKEN_FILE = path.join(os.homedir(), '.carry', 'google.json');
 const SCOPE = 'https://www.googleapis.com/auth/drive.file';
@@ -46,7 +46,7 @@ async function signIn() {
         code_challenge: challenge, code_challenge_method: 'S256', access_type: 'offline', prompt: 'consent', state })
         .forEach(([k, v]) => auth.searchParams.set(k, v));
       console.log(`Opening Google sign-in in your browser. If it doesn't open, visit:\n${auth}`);
-      spawnSync('open', [auth.toString()]);
+      openTarget(auth.toString());
     });
     setTimeout(() => { srv.close(); reject(new Error('Timed out waiting for Google sign-in (5 min).')); }, 5 * 60e3).unref();
   });

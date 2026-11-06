@@ -8,13 +8,15 @@ Site: https://carry-site-beta.vercel.app · v0.2.0 · built by [@heyvxmz](https:
 Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Codex `.zst` support, Drive sharing, secret redaction and a handoff summary.
 
 ## Install (once per laptop)
-1. Node 22.15+ and the txcript CLI: download from https://github.com/skillsynchq/txcript/releases into `~/.local/bin/`.
+Works on macOS, Windows and Linux (Windows and Linux: per-OS commands unit-tested, not yet run on a real machine).
+
+1. Node 22.15+ and the txcript CLI: download the build for your OS from https://github.com/skillsynchq/txcript/releases and put it on your PATH.
 2. `npm install && npm link` in this folder → `carry` command.
 3. Copy `skills/carry/` into your AI tool's skills folder (`~/.agents/skills/` or `~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex) → `/carry` in chat.
 4. Pick a mode:
    - **Web Drive (default, nothing to install):** `carry setup --web --as <name> --with friend1@gmail.com,friend2@gmail.com`
      → Google sign-in opens in your browser. Shares are uploaded to a `carry` folder in your Drive and Google emails your friends a link.
-   - **Synced folder:** `carry setup` (finds Google Drive for desktop) or `carry setup ~/Dropbox/carry`. Share the folder with friends in Drive/Dropbox.
+   - **Synced folder:** `carry setup` (finds Google Drive for desktop on macOS and Windows) or `carry setup ~/Dropbox/carry`. Share the folder with friends in Drive/Dropbox.
 
 ## Use
 | Command | What it does |

@@ -32,7 +32,8 @@ Shared chats can be refreshed later with `carry sync`.
 
 ## Open a shared chat: `/carry open [name or link]`
 1. What to open: a Drive link the user got by email, a `.carry` file, or a name from `carry packs` (synced-folder mode).
-   For a private Drive link, carry opens it in the browser; tell the user to click Download — carry picks it up from ~/Downloads.
+   For a private Drive link, carry opens it in the browser; tell the user to click Download. carry picks it up from their Downloads folder.
+   If the download landed elsewhere, run `carry open <path to the .carry file>`.
 2. Ask where to continue if unclear:
    - Here / a coding tool → `carry open <name> --to <claude_code|codex|opencode|cursor|pi>` (tell the user it launches that tool with the chat loaded on this laptop's account).
    - In a chat app (Claude app, ChatGPT, Antigravity app) → `carry open <name> --to chat`: copies a prompt and reveals handoff.md to attach.

@@ -37,4 +37,11 @@ assert.strictEqual(fileIdFrom(`https://drive.google.com/file/d/${fid}/view?usp=d
 assert.strictEqual(fileIdFrom(`https://drive.google.com/open?id=${fid}`), fid);
 assert.strictEqual(fileIdFrom('auth-bug'), null);
 assert.strictEqual(fileIdFrom('/Users/me/Downloads/auth-bug.carry'), null);
+const { openCmd, revealCmd, copyCmds } = require('./system');
+const url = 'https://accounts.google.com/o/oauth2/v2/auth?a=1&b=2';
+assert.deepStrictEqual(openCmd(url, 'darwin'), ['open', [url]]);
+assert.deepStrictEqual(openCmd(url, 'win32'), ['rundll32', ['url.dll,FileProtocolHandler', url]]); // no cmd.exe, so '&' survives
+assert.deepStrictEqual(openCmd(url, 'linux'), ['xdg-open', [url]]);
+assert.deepStrictEqual(revealCmd('C:\\u\\handoff.md', 'win32'), ['explorer', ['/select,C:\\u\\handoff.md']]);
+assert.strictEqual(copyCmds('linux').length, 3);
 console.log('ok');

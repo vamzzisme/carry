@@ -4,6 +4,7 @@ const fs = require('fs'), path = require('path'), os = require('os'), zlib = req
 const { spawnSync } = require('child_process');
 const tx = require('txcript');
 const drive = require('./drive');
+const { openTarget, reveal, copyText, driveFolder } = require('./system');
 
 const HOME = os.homedir();
 const CONF = path.join(HOME, '.carry', 'config.json');
@@ -192,14 +193,14 @@ async function readPack(c, ref) {
 async function viaBrowser(link) {
   const dl = path.join(HOME, 'Downloads'), ls = () => fs.readdirSync(dl).filter(n => n.endsWith('.carry'));
   const before = new Set(ls());
-  console.log('Opening the link in your browser. Click Download; carry picks the file up from ~/Downloads.');
-  spawnSync('open', [link]);
+  console.log(`Opening the link in your browser. Click Download; carry picks the file up from ${dl}.`);
+  if (!openTarget(link)) console.log(`Couldn't open a browser. Open this link yourself:\n${link}`);
   for (let i = 0; i < 180; i++) {
     await new Promise(r => setTimeout(r, 1000));
     const f = ls().find(n => !before.has(n));
     if (f) return fs.readFileSync(path.join(dl, f), 'utf8');
   }
-  die('No .carry file showed up in ~/Downloads within 3 minutes.');
+  die(`No .carry file showed up in ${dl} within 3 minutes. If it went elsewhere, run: carry open <path to the .carry file>`);
 }
 
 // ---------- commands ----------
@@ -219,12 +220,11 @@ const cmds = {
     }
     let folder = args.find(a => !a.startsWith('--') && a !== flag(args, '--as') && a !== friends);
     if (!folder) {
-      const cs = path.join(HOME, 'Library', 'CloudStorage');
-      const gd = (fs.existsSync(cs) ? fs.readdirSync(cs) : []).find(d => d.startsWith('GoogleDrive-'));
+      const gd = driveFolder();
       if (!gd) die('Google Drive for desktop not found. Use web Drive instead: carry setup --web\nOr pass any synced folder: carry setup ~/Dropbox/carry');
-      folder = path.join(cs, gd, 'My Drive', 'carry');
+      folder = path.join(gd, 'carry');
     }
-    c.folder = path.resolve(folder.replace(/^~(?=$|\/)/, HOME));
+    c.folder = path.resolve(folder.replace(/^~(?=$|[\\/])/, HOME));
     delete c.web;
     fs.mkdirSync(c.folder, { recursive: true });
     save(c);
@@ -282,9 +282,11 @@ const cmds = {
       fs.writeFileSync(path.join(dir, 'handoff.md'), p.handoff);
       fs.writeFileSync(path.join(dir, 'transcript.md'), p.transcript);
       const prompt = `I'm continuing work started in another AI chat. Read the attached handoff.md first (and transcript.md if you need detail), then tell me where we left off and continue.`;
-      spawnSync('pbcopy', { input: prompt });
-      spawnSync('open', ['-R', path.join(dir, 'handoff.md')]);
-      return console.log(`Prompt copied. Attach ${path.join(dir, 'handoff.md')} (and transcript.md) to your chat and paste.`);
+      const copied = copyText(prompt);
+      reveal(path.join(dir, 'handoff.md'));
+      return console.log(copied
+        ? `Prompt copied. Attach ${path.join(dir, 'handoff.md')} (and transcript.md) to your chat and paste.`
+        : `Attach ${path.join(dir, 'handoff.md')} (and transcript.md) to your chat with this prompt:\n\n${prompt}`);
     }
     // Continue here: new id so it never clashes with the original, cwd = where you are now (paths differ per laptop).
     const doc = p.pack;
