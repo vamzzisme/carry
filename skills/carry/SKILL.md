@@ -30,6 +30,16 @@ Alternative, if they already use Google Drive for desktop, Dropbox or iCloud and
    Report where it went (Drive link or folder) and how many secrets were redacted. In web mode Google emails the friends a link.
 Shared chats can be refreshed later with `carry sync`.
 
+## Share the whole project: `/carry share project`
+Use when someone will keep working on this repo, not just this one chat.
+1. Write a project handoff to a temp file: what the project is, how it's structured, key decisions and why, what's done,
+   what's in progress, gotchas, next steps. Concrete file paths; no secrets.
+2. `carry share --project <repo folder> --handoff <file>` (add `--chats N` for more than the 5 newest chats, `--with`/`--link` as above).
+   It bundles those chats, Claude Code's memory notes for the repo, and CLAUDE.md / AGENTS.md. The code itself goes via git:
+   remind the user to push.
+To open one: `carry open <name or link> --to claude_code|codex --dir <their clone of the repo>`. Claude Code gets the memory notes
+and a handoff note in its memory; Codex gets `.carry/` plus a pointer in AGENTS.md. Existing files are never overwritten.
+
 ## Open a shared chat: `/carry open [name or link]`
 1. What to open: a Drive link the user got by email, a `.carry` file, or a name from `carry packs` (synced-folder mode).
    For a private Drive link, carry opens it in the browser; tell the user to click Download. carry picks it up from their Downloads folder.

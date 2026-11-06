@@ -46,6 +46,18 @@ const TOOLS = [
       return a.handoff ? withTempFile(a.handoff, f => carry(['share', a.chat, '--handoff', f, ...rest], 3 * 60e3))
         : carry(['share', a.chat, ...rest], 3 * 60e3);
     } },
+  { name: 'carry_share_project', description: 'Share a whole project: its recent Claude Code/Codex chats, Claude Code memory notes, CLAUDE.md/AGENTS.md and a handoff. Write a project-level handoff (goal, architecture, decisions, status, next steps) and pass it. The code itself travels via git.',
+    inputSchema: { type: 'object', properties: {
+      dir: { type: 'string', description: 'Project folder (absolute path)' },
+      handoff: { type: 'string' },
+      chats: { type: 'number', description: 'How many recent chats to include (default 5)' },
+      emails: { type: 'array', items: { type: 'string' } },
+      link: { type: 'boolean' } }, required: ['dir'] },
+    run: a => {
+      const rest = ['--chats', String(a.chats || 5), ...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
+      return a.handoff ? withTempFile(a.handoff, f => carry(['share', '--project', a.dir, '--handoff', f, ...rest], 5 * 60e3))
+        : carry(['share', '--project', a.dir, ...rest], 5 * 60e3);
+    } },
   { name: 'carry_share_summary', description: 'Share THIS conversation from a chat app (Claude app, ChatGPT), whose history carry cannot read. Write a thorough handoff of the conversation so far and pass it as summary.',
     inputSchema: { type: 'object', properties: {
       name: { type: 'string', description: 'Short name, e.g. "auth bug in login"' },
@@ -59,9 +71,10 @@ const TOOLS = [
   { name: 'carry_open', description: 'Open a shared chat (name, .carry file path, or Drive link). By default returns its handoff and history so you can continue it right here. Set continue_in to load it as a real session in a coding tool instead.',
     inputSchema: { type: 'object', properties: {
       ref: { type: 'string', description: 'Pack name, path to a .carry file, or Google Drive link' },
-      continue_in: { type: 'string', enum: ['claude_code', 'codex', 'opencode', 'cursor', 'pi'] } }, required: ['ref'] },
+      continue_in: { type: 'string', enum: ['claude_code', 'codex', 'opencode', 'cursor', 'pi'] },
+      dir: { type: 'string', description: 'For project packs with continue_in: the local project folder (absolute path)' } }, required: ['ref'] },
     run: a => {
-      if (a.continue_in) return carry(['open', a.ref, '--to', a.continue_in, '--no-resume'], 5 * 60e3);
+      if (a.continue_in) return carry(['open', a.ref, '--to', a.continue_in, '--no-resume', ...(a.dir ? ['--dir', a.dir] : [])], 5 * 60e3);
       const r = carry(['open', a.ref, '--to', 'here'], 5 * 60e3);
       return r.text.length > MAX_TEXT ? { ...r, text: `${r.text.slice(0, MAX_TEXT)}\n\n[history truncated; the handoff above has the essentials]` } : r;
     } },

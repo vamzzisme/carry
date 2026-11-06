@@ -74,11 +74,29 @@ const res = Object.fromEntries(mcpRun.stdout.trim().split('\n').map(l => JSON.pa
 const txt = id => res[id].result.content[0].text;
 console.log(`$ carry mcp (6 requests)\n  tools: ${res[2].result.tools.map(t => t.name).join(', ')}`);
 assert.strictEqual(res[1].result.serverInfo.name, 'carry');
-assert.strictEqual(res[2].result.tools.length, 7);
+assert.strictEqual(res[2].result.tools.length, 8);
 assert.match(txt(3), /fix-the-login-bug-please/);
 assert.match(txt(4), /Shared summary "mcp-note"/);
 assert.match(txt(5), /Continue the onboarding flow/);
 assert.match(txt(6), /synced folder/);
+
+// Project share: chats from one repo folder + Claude Code memory notes + CLAUDE.md, opened into another folder.
+const proj = path.join(home, 'billing-app');
+fs.mkdirSync(proj);
+fs.writeFileSync(path.join(proj, 'CLAUDE.md'), '# Billing app\nUse pnpm. Never touch prod.');
+const ccProj = path.join(home, '.claude', 'projects', fs.realpathSync(proj).replace(/[^A-Za-z0-9]/g, '-'));
+fs.mkdirSync(path.join(ccProj, 'memory'), { recursive: true });
+const projChat = { meta: { id: '22222222-3333-4444-5555-666666666666', timestamp: ts, cwd: fs.realpathSync(proj) }, messages: [
+  { role: 'user', timestamp: ts, content: [{ type: 'text', text: 'Refactor the billing module' }] },
+  { role: 'assistant', timestamp: ts, content: [{ type: 'text', text: 'Split invoices.js into three files.' }] }] };
+fs.writeFileSync(path.join(ccProj, '22222222-3333-4444-5555-666666666666.jsonl'), tx.fromCommon(JSON.stringify(projChat), 'claude_code'));
+fs.writeFileSync(path.join(ccProj, 'memory', 'MEMORY.md'), '- [Stripe decision](stripe.md) — we use Stripe Checkout, not Elements\n');
+fs.writeFileSync(path.join(ccProj, 'memory', 'stripe.md'), '---\nname: stripe\n---\nWe chose Stripe Checkout because it handles tax.');
+assert.match(carry('share', '--project', proj), /Shared project "billing-app" \(1 chats, 2 memory notes, 1 instruction files\)/);
+const here = carry('open', 'billing-app', '--to', 'here');
+assert.match(here, /Stripe Checkout because it handles tax/);
+assert.match(here, /Never touch prod/);
+assert.match(here, /refactor-the-billing-module/);
 
 // TXCRIPT comes from `npm install` (./bin) or $TXCRIPT. On CI it must exist, so the open steps can't be skipped.
 const { TXCRIPT } = require('./carry');
@@ -87,6 +105,23 @@ assert(haveTx || !process.env.CI, `CI: txcript missing at ${TXCRIPT} (npm instal
 if (haveTx) {
   assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'claude_code', '--no-resume'), /resume with: claude --resume/);
   assert.match(carry('open', path.join(share, 'fix-the-login-bug-please.carry'), '--to', 'codex', '--no-resume'), /resume with: codex resume/);
+
+  // Project into Claude Code on "Riya's laptop" (another folder): memory where Claude loads it, CLAUDE.md, chat resumable.
+  const riya = path.join(home, 'riya-billing'); fs.mkdirSync(riya);
+  assert.match(carry('open', 'billing-app', '--to', 'claude_code', '--dir', riya), /resume with: claude --resume/);
+  const riyaMem = path.join(home, '.claude', 'projects', fs.realpathSync(riya).replace(/[^A-Za-z0-9]/g, '-'), 'memory');
+  assert.match(fs.readFileSync(path.join(riyaMem, 'MEMORY.md'), 'utf8'), /Stripe decision[\s\S]*Handoff from ci/);
+  assert(fs.existsSync(path.join(riyaMem, 'stripe.md')) && fs.existsSync(path.join(riyaMem, 'carry-handoff-billing-app.md')));
+  assert.match(fs.readFileSync(path.join(riya, 'CLAUDE.md'), 'utf8'), /Never touch prod/);
+  // Opening again must not duplicate index lines or overwrite files.
+  assert.match(carry('open', 'billing-app', '--to', 'claude_code', '--dir', riya), /kept your existing/);
+  assert.strictEqual(fs.readFileSync(path.join(riyaMem, 'MEMORY.md'), 'utf8').match(/Handoff from ci/g).length, 1);
+
+  // Project into Codex: .carry/ + AGENTS.md pointer.
+  const sam = path.join(home, 'sam-billing'); fs.mkdirSync(sam);
+  assert.match(carry('open', 'billing-app', '--to', 'codex', '--dir', sam), /resume with: codex resume/);
+  assert.match(fs.readFileSync(path.join(sam, 'AGENTS.md'), 'utf8'), /read \.carry\/HANDOFF\.md/);
+  assert(fs.existsSync(path.join(sam, '.carry', 'memory', 'stripe.md')));
 } else console.log('(txcript not installed: skipped open --to claude_code/codex)');
 
 fs.rmSync(home, { recursive: true, force: true });
