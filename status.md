@@ -225,6 +225,17 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
   `../VXMZ_STUDIO_STANDARD.md` section 1b. Hero terminals animate (type → swap → type → loop); CSS/JS links carry `?v=3`, bump on changes.
 - Name check (2026-11-06): renaming touches 316 mentions in 18 files + repo name + Vercel project + Google OAuth app name.
   npm name doesn't matter (we install from GitHub). Free everywhere checked: `batonai`. Short words (baton, relay, ferry, handoff…) taken on npm.
+- Positioning (2026-11-06): for coding agents. Copy-paste summaries are fine for chat apps; carry wins on long Claude Code /
+  Codex sessions (full history incl. errors and dead ends, resumed as the agent's own session) and on whole projects.
+  Web remote MCP connector: decided NOT to build (would only move summaries).
+- Projects (2026-11-06): `carry share --project [dir] [--chats 5]` → kind:"project" pack: newest chats whose cwd is inside the
+  repo (git toplevel), Claude memory from `~/.claude/projects/<cwd with non-alnum→->/memory/*.md`, CLAUDE.md, AGENTS.md,
+  .claude/CLAUDE.md, handoff (redacted). `open --to claude_code --dir X`: memory + `carry-handoff-<name>.md` note into X's
+  Claude memory dir, MEMORY.md merged line-wise, instruction files only if absent, chats converted (newest last).
+  `--to codex|…`: `.carry/HANDOFF.md`, `.carry/memory/`, AGENTS.md pointer line. `--to here|chat`: brief + latest chat.
+  MCP `carry_share_project`, `carry_open` takes `dir`. Verified for real: a fresh Claude Code session in the opened folder
+  answered a payment-provider decision from carried memory and "pnpm" from carried CLAUDE.md.
+  Not done: `sync` doesn't refresh project packs.
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 

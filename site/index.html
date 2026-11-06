@@ -3,17 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>carry · take your AI chat with you</title>
-  <meta name="description" content="Share a Claude Code or Codex chat through your own Google Drive and continue it on another laptop, account or AI tool. A VXMZ product.">
-  <meta property="og:title" content="carry · take your AI chat with you">
-  <meta property="og:description" content="Out of tokens? On a friend's laptop? Pack the chat into your Drive and keep going anywhere.">
+  <title>carry · keep coding on any account</title>
+  <meta name="description" content="Hit your Claude Code limit? Move the session, with its full history, to Codex, another account or a friend's laptop. Or hand over the whole project. A VXMZ product.">
+  <meta property="og:title" content="carry · keep coding on any account">
+  <meta property="og:description" content="Move a coding session with its full history, or a whole project with its memory, to any account, tool or laptop.">
   <link rel="icon" href="/favicon.svg?v=4" type="image/svg+xml">
   <link rel="preconnect" href="https://api.fontshare.com">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=4">
+  <link rel="stylesheet" href="/style.css?v=5">
   <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
   <!-- Umami: fill in the website id from cloud.umami.is, then uncomment -->
   <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
@@ -47,8 +47,8 @@
     <div class="wrap hero">
       <div class="hero-grid">
         <div>
-          <h1>Take your AI chat <em>with you.</em></h1>
-          <p class="lede">Out of tokens on one account? Borrowing a friend's laptop? carry packs a chat into your own Google Drive so anyone in your group can pick it up in their AI tool and keep going.</p>
+          <h1>Out of tokens? <em>Keep coding.</em></h1>
+          <p class="lede">carry moves a Claude Code or Codex session, with its full history, to another account, another tool or a friend's laptop. Or hand over the whole project, memory and all, so the next agent knows what was tried and why.</p>
           <div class="cta">
             <a class="btn btn-primary" href="#install">Install carry</a>
             <a class="btn btn-secondary" href="#how">See how it works</a>
@@ -96,20 +96,25 @@ stacked-reveal-effect    codex         3d ago
         <div class="sec-head">
           <div class="sec-num"><b>02</b>Tools</div>
           <div>
-            <h2>From one AI tool <em>to another.</em></h2>
-            <p class="sub">Start in Claude Code, finish in Codex. Or hand the summary to ChatGPT. Use the tokens you have left, wherever they are.</p>
+            <h2>Not a summary. <em>The whole session.</em></h2>
+            <p class="sub">A pasted summary keeps what the AI chose to remember. carry keeps every message, command, error and dead end, so the next agent doesn't retry the fix that already failed.</p>
           </div>
         </div>
         <div class="tools">
           <div class="card">
-            <h3>Full chat, resumed</h3>
+            <h3>Full session, resumed</h3>
             <div class="chips"><span class="chip on">Claude Code</span><span class="chip">Codex</span><span class="chip">OpenCode</span><span class="chip">Cursor</span><span class="chip">pi</span></div>
-            <p>The whole conversation arrives as a real session in the tool you choose. Claude Code is tested end to end; the others go through txcript's converter.</p>
+            <p>Hit your limit in Claude Code? Continue the same session in Codex or on another account. It arrives as a real session, history and all. Claude Code is tested end to end; the others go through txcript's converter.</p>
           </div>
           <div class="card">
-            <h3>Summary, attached</h3>
+            <h3>Whole project, handed over</h3>
+            <div class="chips"><span class="chip on">Recent chats</span><span class="chip on">Claude memory</span><span class="chip">CLAUDE.md</span><span class="chip">AGENTS.md</span></div>
+            <p><code>carry share --project</code> bundles the repo's recent chats, Claude's memory notes and its instruction files. A fresh Claude Code session on your friend's laptop answers from your decisions. The code goes through git.</p>
+          </div>
+          <div class="card">
+            <h3>Chat apps, summarized</h3>
             <div class="chips"><span class="chip">Claude app</span><span class="chip">ChatGPT</span><span class="chip">Antigravity</span><span class="chip">Gemini</span></div>
-            <p>Chat apps get a short handoff (goal, decisions, next steps) plus the readable history. carry copies the prompt; you attach the file.</p>
+            <p>The Claude app and ChatGPT keep chats on their servers, so here carry hands over a written summary. Same as pasting, just organized.</p>
           </div>
         </div>
       </div>
@@ -244,6 +249,8 @@ args = ["/c", "npx", "-y", "github:vamzzisme/carry", "mcp"]</div></div>
           <div><h2>Questions, <em>answered.</em></h2></div>
         </div>
         <div class="faq">
+          <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
+          <details><summary>Can I share a whole project?</summary><p>Yes. Run <code>carry share --project</code> in the repo. It bundles the newest chats, Claude Code's memory notes and CLAUDE.md / AGENTS.md with a handoff. Your friend clones the code, runs <code>carry open &lt;link&gt; --dir &lt;their clone&gt;</code>, and Claude or Codex picks up with your context. Nothing of theirs gets overwritten.</p></details>
           <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
           <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
           <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;link&gt; --to codex</code> converts the full conversation into a Codex session. For chat apps like ChatGPT, carry gives you a short handoff file to attach instead.</p></details>
@@ -287,6 +294,6 @@ args = ["/c", "npx", "-y", "github:vamzzisme/carry", "mcp"]</div></div>
       <div class="product">A <strong>VXMZ</strong> Product</div>
     </div>
   </footer>
-  <script src="/main.js?v=4"></script>
+  <script src="/main.js?v=5"></script>
 </body>
 </html>

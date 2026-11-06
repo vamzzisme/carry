@@ -1,7 +1,12 @@
 # carry
 
-Share an AI chat by name, and continue it on another laptop, another account, or another AI tool.
-Chats go into **your** Google Drive (or Dropbox/iCloud). Nothing is hosted by us.
+Out of tokens? Keep coding. carry moves a Claude Code or Codex session, with its full history, to another account,
+another tool or a friend's laptop. Or hand over the whole project (recent chats, Claude's memory notes, CLAUDE.md /
+AGENTS.md and a handoff) so the next agent knows what was tried and why. Packs go into **your** Google Drive
+(or Dropbox/iCloud). Nothing is hosted by us.
+
+Why not paste a summary? A summary keeps what the AI chose to remember. carry keeps every message, command, error and
+dead end, and the next agent resumes it as its own session.
 
 Site: https://carry-site-beta.vercel.app · v0.2.0 · built by [@heyvxmz](https://x.com/heyvxmz)
 
@@ -43,6 +48,8 @@ whose history carry can't read), `carry_list_shared`, `carry_open` (returns the 
 | `carry list` | This laptop's chats (Claude Code, Codex) by name |
 | `carry name <chat> <new name>` | Rename a chat |
 | `carry share <chat> [--handoff f.md] [--with emails] [--link]` | Share it (secrets redacted). `--link` = anyone with the link |
+| `carry share --project [dir] [--chats 5]` | Share the whole repo: recent chats + Claude memory + CLAUDE.md/AGENTS.md + handoff |
+| `carry open <project> --to claude_code\|codex --dir <your clone>` | Memory lands where Claude loads it (Codex: `.carry/` + AGENTS.md pointer); chats resumable; nothing overwritten |
 | `carry sync` | Re-upload shared chats that changed |
 | `carry packs` | Synced mode: everyone's packs. Web mode: your shares and their links |
 | `carry open <name \| file.carry \| Drive link> --to claude_code\|codex\|opencode\|cursor\|pi` | Continue it here, on this laptop's account |
