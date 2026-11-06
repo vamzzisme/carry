@@ -221,7 +221,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Site: OS tabs (auto-detect, remembered, synced across sections) for install; new 05 "No terminal" section with app tabs
   (Claude Desktop / Codex / Cursor) × OS (Windows uses `cmd /c npx`).
 - Product styling (2026-11-06): no hero eyebrow, no "by vxmz" in navbar (VXMZ only in curtain + footer); carry accent
-  Harbor Teal `#3fd9c1` (band `#0c2421`, light-mode text `#0b7a6a`); rule + per-product colour table added to
+  Marigold `#e9a23b` (band `#241c13`, light-mode text `#9a5b12`; was Harbor Teal briefly), macOS window dots on terminals; rule + per-product colour table added to
   `../VXMZ_STUDIO_STANDARD.md` section 1b. Hero terminals animate (type → swap → type → loop); CSS/JS links carry `?v=3`, bump on changes.
 - Name check (2026-11-06): renaming touches 316 mentions in 18 files + repo name + Vercel project + Google OAuth app name.
   npm name doesn't matter (we install from GitHub). Free everywhere checked: `batonai`. Short words (baton, relay, ferry, handoff…) taken on npm.
