@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>carry · take your AI chat with you</title>
+  <meta name="description" content="Share a Claude Code or Codex chat through your own Google Drive and continue it on another laptop, account or AI tool. A VXMZ product.">
+  <meta property="og:title" content="carry · take your AI chat with you">
+  <meta property="og:description" content="Out of tokens? On a friend's laptop? Pack the chat into your Drive and keep going anywhere.">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
+  <!-- Umami: fill in the website id from cloud.umami.is, then uncomment -->
+  <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
+</head>
+<body>
+  <div class="curtain" id="curtain" role="status" aria-label="A VXMZ product">
+    <p>A <strong>VXMZ</strong> Product</p>
+    <h2>carry<span>.</span></h2>
+    <div class="bar"><i></i></div>
+    <small>Tap to skip</small>
+  </div>
+
+  <header class="nav" id="nav">
+    <a class="brand" href="/" aria-label="carry home">
+      <img src="/favicon.svg" width="28" height="28" alt="">
+      <span><b>carry</b><br><small>by vxmz</small></span>
+    </a>
+    <nav class="nav-links" aria-label="Main">
+      <a href="#how"><span>01</span>How it works</a>
+      <a href="#tools"><span>02</span>Tools</a>
+      <a href="#private"><span>03</span>Privacy</a>
+      <a href="#faq"><span>04</span>FAQ</a>
+    </nav>
+    <a class="btn btn-primary btn-sm" href="#install">Install</a>
+    <button class="menu-btn" id="menu" aria-label="Open menu" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">A <strong>VXMZ</strong> Product · v0.2.0 · Free</p>
+          <h1>Take your AI chat <em>with you.</em></h1>
+          <p class="lede">Out of tokens on one account? Borrowing a friend's laptop? carry packs a chat into your own Google Drive so anyone in your group can pick it up in their AI tool and keep going.</p>
+          <div class="cta">
+            <a class="btn btn-primary" href="#install">Install carry</a>
+            <a class="btn btn-secondary" href="#how">See how it works</a>
+          </div>
+        </div>
+        <div aria-label="Example: sharing a chat on one laptop and opening it on another">
+          <div class="term">
+            <div class="term-head"><i></i><i></i><i></i><span>your laptop</span></div>
+<pre><span class="p">$</span> carry list
+auth-bug-in-login        claude_code   2h ago
+stacked-reveal-effect    codex         3d ago
+<span class="p">$</span> carry share auth-bug-in-login --with riya@gmail.com
+<span class="ok">Shared "auth-bug-in-login"</span> → drive.google.com/file/d/1ke3…
+<span class="c">  2 secrets redacted · Google emailed Riya the link</span></pre>
+          </div>
+          <div class="term b">
+            <div class="term-head"><i></i><i></i><i></i><span>riya's laptop</span></div>
+<pre><span class="p">$</span> carry open drive.google.com/file/d/1ke3… --to codex
+<span class="c">  continuing on Riya's Codex account…</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="how">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>01</b>How it works</div>
+          <div>
+            <h2>Three commands. <em>No copy paste.</em></h2>
+            <p class="sub">Type <code>/carry</code> inside Claude Code or Codex and it runs these for you.</p>
+          </div>
+        </div>
+        <div class="steps">
+          <div class="card"><span class="n">1</span><h3>Pick a chat</h3><p><code>carry list</code> shows your chats by name, not by long IDs. Rename any of them. Nothing is shared until you pick it.</p></div>
+          <div class="card"><span class="n">2</span><h3>Share it</h3><p><code>carry share</code> strips API keys and tokens, uploads one small file to your Drive and Google emails the link to your friends.</p></div>
+          <div class="card"><span class="n">3</span><h3>Keep going anywhere</h3><p><code>carry open &lt;link&gt;</code> on any laptop loads the full chat into Claude Code or Codex, on whichever account is signed in there.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>02</b>Tools</div>
+          <div>
+            <h2>From one AI tool <em>to another.</em></h2>
+            <p class="sub">Start in Claude Code, finish in Codex. Or hand the summary to ChatGPT. Use the tokens you have left, wherever they are.</p>
+          </div>
+        </div>
+        <div class="tools">
+          <div class="card">
+            <h3>Full chat, resumed</h3>
+            <div class="chips"><span class="chip on">Claude Code</span><span class="chip">Codex</span><span class="chip">OpenCode</span><span class="chip">Cursor</span><span class="chip">pi</span></div>
+            <p>The whole conversation arrives as a real session in the tool you choose. Claude Code is tested end to end; the others go through txcript's converter.</p>
+          </div>
+          <div class="card">
+            <h3>Summary, attached</h3>
+            <div class="chips"><span class="chip">Claude app</span><span class="chip">ChatGPT</span><span class="chip">Antigravity</span><span class="chip">Gemini</span></div>
+            <p>Chat apps get a short handoff (goal, decisions, next steps) plus the readable history. carry copies the prompt; you attach the file.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="private" class="band">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>03</b>Privacy</div>
+          <div>
+            <h2>Your Drive. <em>Not our servers.</em></h2>
+            <p class="sub">carry runs on your laptop. There is no carry server and no account with us. Chats go from your computer to your Google Drive and nowhere else.</p>
+          </div>
+        </div>
+        <div class="points">
+          <div class="card"><h3>Only its own files</h3><p>carry asks Google for the narrowest Drive permission: it can see and edit only the files it created. The rest of your Drive stays off limits.</p></div>
+          <div class="card"><h3>Secrets stripped first</h3><p>API keys, tokens, private keys and <code style="background:rgba(255,255,255,.08);color:inherit">KEY=value</code> lines are replaced with [REDACTED] before anything leaves your laptop.</p></div>
+          <div class="card"><h3>You choose who sees it</h3><p>Share with named friends by email, or make a link. Nothing is shared by default, and you can delete the file from Drive at any time.</p></div>
+          <div class="card"><h3>Open source</h3><p>Built on txcript, the open chat converter by SkillSync. Read the code, run it yourself, change it.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>04</b>Install</div>
+          <div>
+            <h2>Two minutes, <em>once per laptop.</em></h2>
+            <p class="sub">Needs macOS, Node 22.15 or newer, and the free txcript CLI.</p>
+          </div>
+        </div>
+        <div class="install">
+          <div>
+            <button class="copy" data-copy="git clone https://github.com/vamzzisme/carry &amp;&amp; cd carry&#10;npm install &amp;&amp; npm link&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="c"># get carry</span>
+<span class="p">$ </span>git clone https://github.com/vamzzisme/carry &amp;&amp; cd carry
+<span class="p">$ </span>npm install &amp;&amp; npm link
+<span class="c"># sign in to Google Drive in your browser</span>
+<span class="p">$ </span>carry setup --web --as yourname</div>
+            <p class="note">Get txcript for your Mac from <a href="https://github.com/skillsynchq/txcript/releases">its releases page</a> and put it in <code>~/.local/bin</code>.</p>
+          </div>
+          <div>
+            <button class="copy" data-copy="cp -r skills/carry ~/.claude/skills/">Copy</button><div class="code"><span class="c"># add /carry to Claude Code (or ~/.codex/skills for Codex)</span>
+<span class="p">$ </span>cp -r skills/carry ~/.claude/skills/</div>
+            <p class="note">Already use Google Drive for desktop, Dropbox or iCloud? Run <code>carry setup</code> instead and share one synced folder with your group.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>05</b>FAQ</div>
+          <div><h2>Questions, <em>answered.</em></h2></div>
+        </div>
+        <div class="faq">
+          <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
+          <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
+          <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;link&gt; --to codex</code> converts the full conversation into a Codex session. For chat apps like ChatGPT, carry gives you a short handoff file to attach instead.</p></details>
+          <details><summary>What gets redacted?</summary><p>Common secret shapes: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and lines like <code>API_KEY=value</code>. It is pattern based, so do not share chats full of secrets you care about.</p></details>
+          <details><summary>Why does Google say the app isn't verified?</summary><p>carry is new and still in Google's testing stage. Click Advanced, then continue. It only asks for access to files carry itself creates.</p></details>
+          <details><summary>Do I need the Google Drive app?</summary><p>No. Web mode signs in through your browser. If you already use Drive for desktop, Dropbox or iCloud, you can point carry at a synced folder instead.</p></details>
+          <details><summary>Can carry read my claude.ai or ChatGPT web chats?</summary><p>Not yet. Those live on their servers. Inside those apps, ask the AI to write a handoff and attach it on the other side. A browser extension is on the roadmap.</p></details>
+          <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source. If it saves you a few hours, a coffee keeps the studio going.</p></details>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback">
+      <div class="wrap">
+        <div class="sec-head">
+          <div class="sec-num"><b>06</b>Feedback</div>
+          <div><h2>Found a bug? <em>Got an idea?</em></h2><p class="sub">This opens your mail app with the note filled in.</p></div>
+        </div>
+        <form id="fb">
+          <div class="row">
+            <div><label for="fb-type">Type</label>
+              <select id="fb-type"><option>Bug</option><option>Feature idea</option><option>Design note</option></select></div>
+            <div><label for="fb-name">Your name (optional)</label><input id="fb-name" autocomplete="name"></div>
+          </div>
+          <div><label for="fb-msg">Message</label><textarea id="fb-msg" required></textarea></div>
+          <div><button class="btn btn-primary" type="submit">Send feedback</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <div class="bmc"><a class="btn btn-secondary btn-sm" href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a></div>
+      <div class="foot-links">
+        <a href="#faq">FAQ</a><a href="#feedback">Feedback</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a>
+        <a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a>
+      </div>
+      <div class="sig"><a href="https://x.com/heyvxmz">Built by <strong>@heyvxmz</strong></a><span>·</span><span>carry v0.2.0</span><span>·</span><span>© 2026</span></div>
+      <div class="product">A <strong>VXMZ</strong> Product</div>
+    </div>
+  </footer>
+  <script src="/main.js"></script>
+</body>
+</html>

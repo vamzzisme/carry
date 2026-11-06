@@ -1,0 +1,16 @@
+{
+  "name": "carry",
+  "version": "0.2.0",
+  "description": "Share AI chats by name through a folder you own, and continue them on another laptop, account or AI tool.",
+  "main": "carry.js",
+  "bin": { "carry": "carry.js" },
+  "scripts": {
+    "test": "node test.js"
+  },
+  "license": "Apache-2.0",
+  "type": "commonjs",
+  "engines": { "node": ">=22.15" },
+  "dependencies": {
+    "txcript": "^0.14.4"
+  }
+}
