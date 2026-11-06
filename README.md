@@ -8,7 +8,7 @@ Site: https://carry-site-beta.vercel.app · v0.2.0 · built by [@heyvxmz](https:
 Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Codex `.zst` support, Drive sharing, secret redaction and a handoff summary.
 
 ## Install (once per laptop)
-Works on macOS, Windows and Linux (Windows and Linux: per-OS commands unit-tested, not yet run on a real machine).
+Works on macOS, Windows and Linux: every push runs an end-to-end smoke test on all three (`.github/workflows/smoke.yml`).
 
 1. Node 22.15+ and the txcript CLI: download the build for your OS from https://github.com/skillsynchq/txcript/releases and put it on your PATH.
 2. `npm install && npm link` in this folder → `carry` command.

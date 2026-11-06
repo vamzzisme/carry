@@ -205,11 +205,15 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
   `xdg-open <dir>`), clipboard (`pbcopy` / `clip` / `wl-copy`→`xclip`→`xsel`), Drive for desktop folder (macOS CloudStorage,
   Windows `<letter>:\My Drive`, Linux none → web mode). Falls back to printing the link/prompt if a command fails.
 - Already portable: session paths via `os.homedir()`, Node zstd, txcript has Windows/Linux builds.
-- Tested on macOS only. Windows/Linux: command choice unit-tested in test.js; not run on a real machine
-  (Docker here has no daemon running and no image).
+- ✅ Tested on real Linux, Windows and macOS: `.github/workflows/smoke.yml` (GitHub Actions, Node 24, txcript v0.14.4 per OS)
+  runs `npm test` + `smoke.js` on every push. smoke.js makes fake Claude Code + Codex(.zst) chats in a temp home and runs
+  setup, list, share (redaction), packs, open --to chat, open --to claude_code / codex (--no-resume). Run 42252021983: all 3 green,
+  and CI fails if txcript is missing so the open steps can't be skipped.
+  (No Docker engine on this Mac: `docker` CLI only, no Desktop/Colima.)
+- Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
+- Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
 ## Next steps (in order)
-0. [ ] Run carry on a real Windows and Linux machine (or Docker `node:24` image) once
 1. [ ] Umami website id → uncomment script in `site/index.html`; Google Branding page: add homepage + privacy URL
        (carry-site-beta.vercel.app, /privacy); optional nicer Vercel domain
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
