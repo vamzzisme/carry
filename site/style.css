@@ -210,10 +210,10 @@ footer { border-top: 1px solid var(--line); padding: 64px 0 48px; text-align: ce
 .foot-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin-bottom: 36px; }
 .foot-links a { color: var(--muted); text-decoration: none; font-size: 14px; font-weight: 500; }
 .foot-links a:hover { color: var(--fg); }
-.sig { font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 14px; }
+.sig { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 14px; }
 .sig a { color: inherit; text-decoration: none; }
 .sig strong { color: var(--fg); font-weight: 900; }
-.product { font-size: 13px; letter-spacing: .26em; text-transform: uppercase; color: var(--muted); }
+.product { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
 .product strong { color: var(--fg); font-weight: 900; }
 .bmc { margin-bottom: 36px; }
 
