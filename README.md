@@ -3,6 +3,8 @@
 Share an AI chat by name, and continue it on another laptop, another account, or another AI tool.
 Chats go into **your** Google Drive (or Dropbox/iCloud). Nothing is hosted by us.
 
+Site: https://carry-site-beta.vercel.app · v0.2.0 · built by [@heyvxmz](https://x.com/heyvxmz)
+
 Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Codex `.zst` support, Drive sharing, secret redaction and a handoff summary.
 
 ## Install (once per laptop)
