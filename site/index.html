@@ -139,21 +139,23 @@ stacked-reveal-effect    codex         3d ago
           <div class="sec-num"><b>04</b>Install</div>
           <div>
             <h2>Two minutes, <em>once per laptop.</em></h2>
-            <p class="sub">Works on macOS, Windows and Linux. Needs Node 22.15 or newer and the free txcript CLI.</p>
+            <p class="sub">Works on macOS, Windows and Linux. All you need first is Node 22.15 or newer.</p>
           </div>
         </div>
         <div class="install">
           <div>
-            <button class="copy" data-copy="git clone https://github.com/vamzzisme/carry &amp;&amp; cd carry&#10;npm install &amp;&amp; npm link&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="c"># get carry</span>
-<span class="p">$ </span>git clone https://github.com/vamzzisme/carry &amp;&amp; cd carry
-<span class="p">$ </span>npm install &amp;&amp; npm link
-<span class="c"># sign in to Google Drive in your browser</span>
-<span class="p">$ </span>carry setup --web --as yourname</div>
-            <p class="note">Get txcript for your system (Mac, Windows or Linux) from <a href="https://github.com/skillsynchq/txcript/releases">its releases page</a> and put it somewhere on your PATH, like <code>~/.local/bin</code>.</p>
+            <button class="copy" data-copy="git clone https://github.com/vamzzisme/carry&#10;cd carry&#10;npm install&#10;npm link">Copy</button><div class="code"><span class="c"># get carry (txcript comes with it)</span>
+<span class="p">$ </span>git clone https://github.com/vamzzisme/carry
+<span class="p">$ </span>cd carry
+<span class="p">$ </span>npm install
+<span class="p">$ </span>npm link</div>
+            <p class="note"><code>npm install</code> also downloads txcript for your system (Mac, Windows or Linux) and checks it. Same commands in Terminal, PowerShell or any Linux shell.</p>
           </div>
           <div>
-            <button class="copy" data-copy="cp -r skills/carry ~/.claude/skills/">Copy</button><div class="code"><span class="c"># add /carry to Claude Code (or ~/.codex/skills for Codex)</span>
-<span class="p">$ </span>cp -r skills/carry ~/.claude/skills/</div>
+            <button class="copy" data-copy="carry install-skill&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="c"># add /carry to Claude Code and Codex</span>
+<span class="p">$ </span>carry install-skill
+<span class="c"># sign in to Google Drive in your browser</span>
+<span class="p">$ </span>carry setup --web --as yourname</div>
             <p class="note">Already use Google Drive for desktop, Dropbox or iCloud? Run <code>carry setup</code> instead and share one synced folder with your group.</p>
           </div>
         </div>

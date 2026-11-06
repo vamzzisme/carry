@@ -233,6 +233,20 @@ const cmds = {
     save(c);
     console.log(`Share folder: ${c.folder}\nYou appear as: ${c.user}`);
   },
+  // Copies the /carry skill into every AI tool found on this computer.
+  'install-skill'() {
+    const src = path.join(__dirname, 'skills', 'carry');
+    const tools = { 'Claude Code': '.claude', Codex: '.codex', 'shared agents folder': '.agents' };
+    let n = 0;
+    for (const [tool, dir] of Object.entries(tools)) {
+      if (!fs.existsSync(path.join(HOME, dir))) continue;
+      const dest = path.join(HOME, dir, 'skills', 'carry');
+      fs.cpSync(src, dest, { recursive: true });
+      console.log(`/carry added to ${tool} (${dest})`);
+      n++;
+    }
+    if (!n) console.log('No AI tools found (looked for ~/.claude, ~/.codex, ~/.agents). Install one, then run: carry install-skill');
+  },
   list(args) {
     const c = load();
     const rows = named(c, Number(flag(args, '-n')) || 20);
@@ -313,6 +327,7 @@ function ago(ms) {
 
 const USAGE = `carry setup --web [--as name] [--with emails]   connect Google Drive in the browser
 carry setup [folder] [--as name]                 or use a synced folder (Drive for desktop, Dropbox, iCloud)
+carry install-skill                              add /carry to Claude Code, Codex and ~/.agents
 carry list | name <chat> <new name>              this laptop's chats, by name
 carry share <chat> [--handoff f] [--with emails] [--link]
 carry sync | packs

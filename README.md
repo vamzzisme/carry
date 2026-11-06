@@ -10,10 +10,15 @@ Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Co
 ## Install (once per laptop)
 Works on macOS, Windows and Linux: every push runs an end-to-end smoke test on all three (`.github/workflows/smoke.yml`).
 
-1. Node 22.15+ and the txcript CLI: download the build for your OS from https://github.com/skillsynchq/txcript/releases and put it on your PATH.
-2. `npm install && npm link` in this folder → `carry` command.
-3. Copy `skills/carry/` into your AI tool's skills folder (`~/.agents/skills/` or `~/.claude/skills/` for Claude Code, `~/.codex/skills/` for Codex) → `/carry` in chat.
-4. Pick a mode:
+Needs Node 22.15+. Then:
+```
+git clone https://github.com/vamzzisme/carry
+cd carry
+npm install        # also downloads txcript for your OS into ./bin (checksum-verified)
+npm link           # → `carry` command
+carry install-skill   # → /carry in Claude Code, Codex and ~/.agents
+```
+Then pick a mode:
    - **Web Drive (default, nothing to install):** `carry setup --web --as <name> --with friend1@gmail.com,friend2@gmail.com`
      → Google sign-in opens in your browser. Shares are uploaded to a `carry` folder in your Drive and Google emails your friends a link.
    - **Synced folder:** `carry setup` (finds Google Drive for desktop on macOS and Windows) or `carry setup ~/Dropbox/carry`. Share the folder with friends in Drive/Dropbox.

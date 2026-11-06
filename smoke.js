@@ -31,6 +31,10 @@ function carry(...args) {
   return out;
 }
 
+assert.match(carry('install-skill'), /\/carry added to Claude Code[\s\S]*\/carry added to Codex/);
+assert(fs.existsSync(path.join(home, '.claude', 'skills', 'carry', 'SKILL.md')));
+assert(fs.existsSync(path.join(home, '.codex', 'skills', 'carry', 'SKILL.md')));
+
 const share = path.join(home, 'share');
 carry('setup', share, '--as', 'ci');
 const list = carry('list');
