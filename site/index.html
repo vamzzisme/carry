@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/style.css?v=3">
   <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
   <!-- Umami: fill in the website id from cloud.umami.is, then uncomment -->
   <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
@@ -29,7 +29,7 @@
   <header class="nav" id="nav">
     <a class="brand" href="/" aria-label="carry home">
       <img src="/favicon.svg" width="28" height="28" alt="">
-      <span><b>carry</b><br><small>by vxmz</small></span>
+      <b>carry</b>
     </a>
     <nav class="nav-links" aria-label="Main">
       <a href="#how"><span>01</span>How it works</a>
@@ -47,7 +47,6 @@
     <div class="wrap hero">
       <div class="hero-grid">
         <div>
-          <p class="eyebrow">A <strong>VXMZ</strong> Product · v0.2.0 · Free</p>
           <h1>Take your AI chat <em>with you.</em></h1>
           <p class="lede">Out of tokens on one account? Borrowing a friend's laptop? carry packs a chat into your own Google Drive so anyone in your group can pick it up in their AI tool and keep going.</p>
           <div class="cta">
@@ -56,8 +55,8 @@
           </div>
           <p class="note">No terminal? <a class="text-link" href="#apps">Use it inside Claude Desktop, Codex or Cursor</a></p>
         </div>
-        <div aria-label="Example: sharing a chat on one laptop and opening it on another">
-          <div class="term">
+        <div class="stack" id="stack" aria-label="Example: sharing a chat on one laptop and opening it on another">
+          <div class="term a">
             <div class="term-head"><i></i><i></i><i></i><span>your laptop</span></div>
 <pre><span class="p">$</span> carry list
 auth-bug-in-login        claude_code   2h ago
@@ -288,6 +287,6 @@ args = ["/c", "npx", "-y", "github:vamzzisme/carry", "mcp"]</div></div>
       <div class="product">A <strong>VXMZ</strong> Product</div>
     </div>
   </footer>
-  <script src="/main.js"></script>
+  <script src="/main.js?v=3"></script>
 </body>
 </html>

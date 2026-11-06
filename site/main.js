@@ -13,6 +13,55 @@ const nav = document.getElementById('nav'), menu = document.getElementById('menu
 menu?.addEventListener('click', () => menu.setAttribute('aria-expanded', nav.classList.toggle('open')));
 nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menu?.setAttribute('aria-expanded', 'false'); }));
 
+// Hero: type the share on your laptop, send that card back, bring Riya's forward, type the open, loop.
+// Without JS or with reduced motion, the static markup stays as is.
+const stack = document.getElementById('stack');
+if (stack && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const [a, b] = stack.querySelectorAll('.term');
+  const scenes = [
+    { card: a, other: b, lines: [
+      ['cmd', 'carry list'],
+      ['out', 'auth-bug-in-login        claude_code   2h ago'],
+      ['out', 'stacked-reveal-effect    codex         3d ago'],
+      ['cmd', 'carry share auth-bug-in-login --with riya@gmail.com'],
+      ['ok', 'Shared "auth-bug-in-login" → drive.google.com/file/d/1ke3…'],
+      ['c', '  2 secrets redacted · Google emailed Riya the link']] },
+    { card: b, other: a, lines: [
+      ['cmd', 'carry open drive.google.com/file/d/1ke3… --to codex'],
+      ['c', '  downloading the chat from Drive…'],
+      ['ok', '  Chat loaded into Codex on Riya\'s account'],
+      ['c', '  resume with: codex resume 01a1b1ba']] },
+  ];
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  const line = (kind, text) => kind === 'cmd' ? `<span class="p">$</span> ${esc(text)}` : kind === 'out' ? esc(text) : `<span class="${kind}">${esc(text)}</span>`;
+  stack.classList.add('live');
+  (async function loop() {
+    for (;;) {
+      for (const { card, other, lines } of scenes) {
+        const pre = card.querySelector('pre');
+        pre.innerHTML = '<span class="caret"></span>';
+        card.classList.replace('back', 'front') || card.classList.add('front');
+        other.classList.replace('front', 'back') || other.classList.add('back');
+        await wait(900);
+        let done = '';
+        for (const [kind, text] of lines) {
+          if (kind === 'cmd') {
+            for (let i = 1; i <= text.length; i++) {
+              pre.innerHTML = `${done}<span class="p">$</span> ${esc(text.slice(0, i))}<span class="caret"></span>`;
+              await wait(28 + Math.random() * 40);
+            }
+            await wait(350);
+          } else await wait(220);
+          done += `${line(kind, text)}\n`;
+          pre.innerHTML = `${done}<span class="caret"></span>`;
+        }
+        await wait(2200);
+      }
+    }
+  })();
+}
+
 // OS and app tabs. OS defaults to the visitor's system and is remembered; every OS picker on the page stays in sync.
 const pick = { os: /Win/i.test(navigator.userAgent) ? 'win' : /Linux|X11/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent) ? 'linux' : 'mac', app: 'claude' };
 try { pick.os = localStorage.getItem('carry-os') || pick.os; } catch (e) {}
