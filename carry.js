@@ -158,19 +158,23 @@ function buildPack(c, s, handoffFile) {
 }
 
 // Synced-folder mode writes the file and lets Drive/Dropbox/iCloud upload it; web mode uploads through the Drive API.
-async function share(c, s, { handoffFile, emails = [], link = false } = {}) {
-  const p = buildPack(c, s, handoffFile), body = JSON.stringify(p);
-  const prev = c.shared[s.name] || {};
-  let where = prev.where;
+async function publish(c, name, p, { emails = [], link = false } = {}) {
+  const body = JSON.stringify(p), prev = c.shared[name] || {};
+  let where;
   if (c.web) {
-    const f = await drive.upload(`${s.name}.carry`, body, c.web.folderId, prev.fileId);
+    const f = await drive.upload(`${name}.carry`, body, c.web.folderId, prev.fileId);
     const to = emails.length ? emails : prev.fileId ? [] : (c.friends || []); // first share goes to your friends
-    if (to.length || link) await drive.share(f.id, to, link, `${c.user} shared the AI chat "${s.name}" with you. Continue it with: carry open <this link>`);
-    Object.assign(prev, { fileId: f.id }); where = f.webViewLink;
+    if (to.length || link) await drive.share(f.id, to, link, `${c.user} shared the AI chat "${name}" with you. Continue it with: carry open <this link>`);
+    prev.fileId = f.id; where = f.webViewLink;
   } else {
-    where = path.join(needFolder(c), `${s.name}.carry`);
+    where = path.join(needFolder(c), `${name}.carry`);
     fs.writeFileSync(where, body);
   }
+  return { prev, where };
+}
+async function share(c, s, opts = {}) {
+  const p = buildPack(c, s, opts.handoffFile);
+  const { prev, where } = await publish(c, s.name, p, opts);
   c.shared[s.name] = { ...prev, harness: s.harness, id: s.id, mtime: s.mtime, where };
   save(c);
   return { where, count: p.meta.redacted };
@@ -233,6 +237,7 @@ const cmds = {
     save(c);
     console.log(`Share folder: ${c.folder}\nYou appear as: ${c.user}`);
   },
+  mcp() { require('./mcp').serve(); },
   // Copies the /carry skill into every AI tool found on this computer.
   'install-skill'() {
     const src = path.join(__dirname, 'skills', 'carry');
@@ -267,6 +272,20 @@ const cmds = {
     const { where, count } = await share(c, s, { handoffFile: flag(args, '--handoff'), emails, link: args.includes('--link') });
     console.log(`Shared "${s.name}" → ${where}${count ? `  (${count} secret(s) redacted)` : ''}`);
   },
+  // Share just a summary, e.g. from the Claude app or ChatGPT, whose chats live on their servers.
+  async note(args) {
+    const usage = 'Usage: carry note "<name>" --handoff summary.md [--with emails] [--link]';
+    if (!args[0] || args[0].startsWith('--')) die(usage);
+    const c = load(), name = slug(args[0].replace(/-/g, ' ')), file = flag(args, '--handoff') || die(usage);
+    const { text, count } = redact(fs.readFileSync(file, 'utf8'));
+    const p = { carry: 1, meta: { name, from: 'chat app', by: c.user, cwd: '', updated: new Date().toISOString(), redacted: count },
+      handoff: text, transcript: '', pack: null };
+    const emails = (flag(args, '--with') || '').split(',').map(e => e.trim()).filter(Boolean);
+    const { prev, where } = await publish(c, name, p, { emails, link: args.includes('--link') });
+    c.shared[name] = { ...prev, note: true, where };
+    save(c);
+    console.log(`Shared summary "${name}" → ${where}${count ? `  (${count} secret(s) redacted)` : ''}`);
+  },
   async sync() {
     const c = load();
     for (const s of named(c, Infinity)) {
@@ -292,6 +311,8 @@ const cmds = {
     const c = load(), ref = args[0] || die('Usage: carry open <pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
     const p = await readPack(c, ref), name = p.meta.name;
     const to = flag(args, '--to') || 'claude_code';
+    if (to === 'here') return console.log(`${p.handoff}\n\n---\n\n${p.transcript}`); // for an AI reading stdout (MCP, skills)
+    if (!p.pack && to !== 'chat') die(`"${name}" is a summary shared from a chat app, not a full chat. Open it with --to chat or --to here.`);
     if (to === 'chat' || !CONTINUE_TOOLS.includes(to)) {
       // Chat apps (Claude app, ChatGPT, Antigravity app): attach the files.
       const dir = path.join(path.dirname(CONF), 'opened', name);
@@ -319,8 +340,7 @@ const cmds = {
   },
 };
 
-function flag(args, f) { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : undefined; }
-function ago(ms) {
+function flag(args, f) { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : undefined; }function ago(ms) {
   const s = (Date.now() - ms) / 1000;
   return s < 3600 ? `${Math.round(s / 60)}m ago` : s < 86400 ? `${Math.round(s / 3600)}h ago` : `${Math.round(s / 86400)}d ago`;
 }
@@ -330,8 +350,10 @@ carry setup [folder] [--as name]                 or use a synced folder (Drive f
 carry install-skill                              add /carry to Claude Code, Codex and ~/.agents
 carry list | name <chat> <new name>              this laptop's chats, by name
 carry share <chat> [--handoff f] [--with emails] [--link]
+carry note "<name>" --handoff f [--with emails] [--link]   share just a summary (from a chat app)
 carry sync | packs
-carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat]`;
+carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here]
+carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)`;
 
 module.exports = { redact, slug, cleanPrompt, readPack, TXCRIPT };
 if (require.main === module) {

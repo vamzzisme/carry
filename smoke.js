@@ -55,6 +55,31 @@ assert.match(packs, /add-dark-mode-to-settings\s+by ci/);
 assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'chat'), /handoff\.md/);
 assert(fs.existsSync(path.join(home, '.carry', 'opened', 'add-dark-mode-to-settings', 'handoff.md')));
 
+// Summary-only share (what a chat app does) and reading a pack back as text.
+fs.writeFileSync(path.join(home, 'note.md'), '# Plan\nShip the landing page. Token: ghp_abcdefghijklmnopqrstuvwxyz0123456789');
+assert.match(carry('note', 'landing page plan', '--handoff', path.join(home, 'note.md')), /Shared summary "landing-page-plan".*1 secret/);
+assert.match(carry('open', 'landing-page-plan', '--to', 'here'), /Ship the landing page/);
+
+// MCP server: same flows over JSON-RPC, as Claude Desktop / Codex would drive it.
+const rpc = (id, method, params) => JSON.stringify({ jsonrpc: '2.0', id, method, params });
+const mcpRun = spawnSync(process.execPath, [path.join(__dirname, 'carry.js'), 'mcp'], { env, cwd: home, encoding: 'utf8', timeout: 120e3,
+  input: [rpc(1, 'initialize', { protocolVersion: '2025-06-18', capabilities: {}, clientInfo: { name: 'smoke', version: '1' } }),
+    JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }),
+    rpc(2, 'tools/list', {}),
+    rpc(3, 'tools/call', { name: 'carry_list_chats', arguments: {} }),
+    rpc(4, 'tools/call', { name: 'carry_share_summary', arguments: { name: 'mcp note', summary: 'Continue the onboarding flow.' } }),
+    rpc(5, 'tools/call', { name: 'carry_open', arguments: { ref: 'mcp-note' } }),
+    rpc(6, 'tools/call', { name: 'carry_status', arguments: {} })].join('\n') + '\n' });
+const res = Object.fromEntries(mcpRun.stdout.trim().split('\n').map(l => JSON.parse(l)).map(m => [m.id, m]));
+const txt = id => res[id].result.content[0].text;
+console.log(`$ carry mcp (6 requests)\n  tools: ${res[2].result.tools.map(t => t.name).join(', ')}`);
+assert.strictEqual(res[1].result.serverInfo.name, 'carry');
+assert.strictEqual(res[2].result.tools.length, 7);
+assert.match(txt(3), /fix-the-login-bug-please/);
+assert.match(txt(4), /Shared summary "mcp-note"/);
+assert.match(txt(5), /Continue the onboarding flow/);
+assert.match(txt(6), /synced folder/);
+
 // TXCRIPT comes from `npm install` (./bin) or $TXCRIPT. On CI it must exist, so the open steps can't be skipped.
 const { TXCRIPT } = require('./carry');
 const haveTx = fs.existsSync(TXCRIPT);
