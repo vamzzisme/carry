@@ -220,6 +220,11 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
   Not tested: inside Claude Desktop / Codex / Cursor apps themselves; long carry_connect_google_drive may hit client tool timeouts.
 - Site: OS tabs (auto-detect, remembered, synced across sections) for install; new 05 "No terminal" section with app tabs
   (Claude Desktop / Codex / Cursor) × OS (Windows uses `cmd /c npx`).
+- Product styling (2026-11-06): no hero eyebrow, no "by vxmz" in navbar (VXMZ only in curtain + footer); carry accent
+  Harbor Teal `#3fd9c1` (band `#0c2421`, light-mode text `#0b7a6a`); rule + per-product colour table added to
+  `../VXMZ_STUDIO_STANDARD.md` section 1b. Hero terminals animate (type → swap → type → loop); CSS/JS links carry `?v=3`, bump on changes.
+- Name check (2026-11-06): renaming touches 316 mentions in 18 files + repo name + Vercel project + Google OAuth app name.
+  npm name doesn't matter (we install from GitHub). Free everywhere checked: `batonai`. Short words (baton, relay, ferry, handoff…) taken on npm.
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
