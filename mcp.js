@@ -106,10 +106,10 @@ const TOOLS = [
   { name: 'carry_open', description: 'Open a shared chat (name, .carry file path, or Drive link). By default returns its handoff and history so you can continue it right here. Set continue_in to load it as a real session in a coding tool instead.',
     inputSchema: { type: 'object', properties: {
       ref: { type: 'string', description: 'Pack name, path to a .carry file, or Google Drive link' },
-      continue_in: { type: 'string', enum: ['claude_code', 'codex', 'opencode', 'cursor', 'pi'] },
+      continue_in: { type: 'string', enum: ['claude_code', 'claude_app', 'codex', 'opencode', 'cursor', 'pi'], description: 'claude_app opens it in the Claude desktop app\'s Code tab; the others write a session to resume in that tool' },
       dir: { type: 'string', description: 'For project packs with continue_in: the local project folder (absolute path)' } }, required: ['ref'] },
     run: a => {
-      if (a.continue_in) return carry(['open', a.ref, '--to', a.continue_in, '--no-resume', ...(a.dir ? ['--dir', a.dir] : [])], 5 * 60e3);
+      if (a.continue_in) return carry(['open', a.ref, '--to', a.continue_in, ...(a.continue_in === 'claude_app' ? [] : ['--no-resume']), ...(a.dir ? ['--dir', a.dir] : [])], 5 * 60e3);
       const r = carry(['open', a.ref, '--to', 'here'], 5 * 60e3);
       return r.text.length > MAX_TEXT ? { ...r, text: `${r.text.slice(0, MAX_TEXT)}\n\n[history truncated; the handoff above has the essentials]` } : r;
     } },

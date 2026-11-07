@@ -4,7 +4,10 @@
 - Pairing codes are about 4x shorter (`carry2.<inbox>.<secret>`, about 63 characters). Your name and the pair id now
   travel inside the encrypted inbox. Old `carry1.` codes still work.
 - `carry setup` turns on Tab completion in zsh by itself (one line in `~/.zshrc` that sources `~/.carry/completion.zsh`).
-- Opening into Claude Code or Codex works without their command-line tools installed: carry runs them through `npx`.
+- `carry open <chat> --to claude_app` opens the chat as a real Claude Code session in the Claude desktop app's Code tab
+  (through its `claude://resume` link). The MCP tool `carry_open` takes `continue_in: claude_app` too.
+- Opening into Claude Code or Codex works without their command-line tools installed: carry uses the `codex` inside
+  ChatGPT for Mac when it's there, otherwise runs them through `npx`.
 - An unknown command prints help on stderr and exits 1, so `carry <typo> >> file` no longer writes the help text into the file.
 
 ## 0.4.2 (2026-11-07)

@@ -48,6 +48,7 @@
         <div class="codebox"><button class="copy" data-copy="npm install -g @heyvamz/carry&#10;carry install-skill&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="p">$ </span>npm install -g @heyvamz/carry
 <span class="p">$ </span>carry install-skill                 <span class="c"># adds /carry to Claude Code and Codex</span>
 <span class="p">$ </span>carry setup --web --as yourname     <span class="c"># sign in to Google Drive in your browser</span></div></div>
+        <p class="note">Then open a new terminal: setup also turns on Tab completion, so <code>carry open </code> + Tab fills in your chats and friends.</p>
 
         <h2 id="install" data-toc="Install">Install</h2>
         <p>Works on macOS, Windows and Linux. You need Node 22.15 or newer, and git if you share whole projects.</p>
@@ -77,7 +78,7 @@
         <p>carry needs somewhere to put shared chats. Pick one, once per laptop.</p>
         <h3>Web mode (default)</h3>
         <div class="codebox"><button class="copy" data-copy="carry setup --web --as yourname">Copy</button><div class="code"><span class="p">$ </span>carry setup --web --as yourname</div></div>
-        <p>Opens Google sign-in in your browser. You sign in and click Allow. carry asks only for <code>drive.file</code>: it can see and edit the files it creates, nothing else in your Drive. The name after <code>--as</code> is what friends see. Add <code>--with a@gmail.com,b@gmail.com</code> to share with the same people by default.</p>
+        <p>Opens Google sign-in in your browser. You sign in and click Allow. carry asks only for <code>drive.file</code>: it can see and edit the files it creates, nothing else in your Drive. The name after <code>--as</code> is what friends see. Setup also turns on Tab completion for chat and friend names (zsh, the macOS default); open a new terminal to use it. Add <code>--with a@gmail.com,b@gmail.com</code> to share with the same people by default.</p>
         <p class="note">If Google shows "Google hasn't verified this app", click Advanced, then continue.</p>
         <h3>Synced folder mode</h3>
         <div class="codebox"><button class="copy" data-copy="carry setup">Copy</button><div class="code"><span class="p">$ </span>carry setup                     <span class="c"># finds Google Drive for desktop</span>
@@ -135,8 +136,9 @@ stacked-reveal-effect    codex         3d ago
         <p><code>carry open &lt;name | file.carry | Drive link | inbox number&gt; --to &lt;target&gt;</code></p>
         <div class="table-wrap"><table>
           <tr><th>--to</th><th>What happens</th></tr>
-          <tr><td><code>claude_code</code></td><td>Loaded as a real Claude Code session, full history. Tested end to end.</td></tr>
-          <tr><td><code>codex</code></td><td>Converted into a Codex session.</td></tr>
+          <tr><td><code>claude_code</code></td><td>Loaded as a real Claude Code session, full history, and opened in your terminal. No <code>claude</code> command? carry runs it with npx.</td></tr>
+          <tr><td><code>claude_app</code></td><td>Same session, opened in the Claude desktop app's Code tab. No terminal tool needed.</td></tr>
+          <tr><td><code>codex</code></td><td>Converted into a Codex session and opened with <code>codex</code>, the copy inside ChatGPT for Mac, or npx. After that first run it also shows in the Codex app's recent chats.</td></tr>
           <tr><td><code>opencode</code> · <code>cursor</code> · <code>pi</code></td><td>Converted by txcript. Less tested.</td></tr>
           <tr><td><code>chat</code></td><td>For claude.ai, ChatGPT or the Claude app: copies a prompt and shows the handoff file to attach.</td></tr>
           <tr><td><code>here</code></td><td>Prints the handoff and history, for an AI that is already reading your terminal.</td></tr>

@@ -735,7 +735,9 @@ const cmds = {
   async open(args) {
     const c = load(), ref = await pickArg(args, 'pack', packNames(c).reverse().slice(0, 9),
       'Usage: carry open <inbox number | pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
-    const to = flag(args, '--to') || 'claude_code', tool = CONTINUE_TOOLS.includes(to), noResume = args.includes('--no-resume');
+    // claude_app: write it as a Claude Code session, then the Claude desktop app imports it (claude://resume) into its Code tab.
+    const app = flag(args, '--to') === 'claude_app';
+    const to = app ? 'claude_code' : flag(args, '--to') || 'claude_code', tool = CONTINUE_TOOLS.includes(to), noResume = args.includes('--no-resume');
     let p, item;
     if (/^\d+$/.test(ref)) { // a number from `carry inbox`
       item = (c.lastInbox || [])[Number(ref) - 1] || die('No such item. Run: carry inbox');
@@ -788,7 +790,10 @@ const cmds = {
       }
     }
     save(c);
-    if (!noResume) launch(r.cmd, cwd);
+    if (noResume) return;
+    if (app && r.id && openTarget(`claude://resume?session=${r.id}`)) return console.log('\nOpening it in the Claude app (Code tab).');
+    if (app) console.log('\nCouldn\'t reach the Claude desktop app, so opening it in Claude Code instead.');
+    launch(r.cmd, cwd);
   },
   // Pair once: `carry friend add <email or name>` prints a code for them; `carry friend add <code>` accepts one (and prints yours back).
   async friend([sub, ...rest]) {
@@ -884,11 +889,13 @@ function continueIn(pack, to, cwd, txPath) {
 }
 // No `claude` or `codex` command installed (only the desktop apps)? Run the same tool through npx; nothing to install.
 const NPX = { claude: '@anthropic-ai/claude-code', codex: '@openai/codex' };
+const IN_APP = { codex: '/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex' }; // ChatGPT for Mac ships codex, already signed in
 const onPath = bin => (process.env.PATH || '').split(path.delimiter).some(d => ['', '.cmd', '.exe'].some(e => d && fs.existsSync(path.join(d, bin + e))));
 function launch(cmd, cwd) {
   if (!cmd) return;
   const bin = cmd.split(/\s+/)[0];
-  if (NPX[bin] && !onPath(bin)) {
+  if (IN_APP[bin] && !onPath(bin) && fs.existsSync(IN_APP[bin])) cmd = `"${IN_APP[bin]}"${cmd.slice(bin.length)}`;
+  else if (NPX[bin] && !onPath(bin)) {
     console.log(`\n${bin} isn't installed as a command, so carry runs it with npx (the first time takes a minute).`);
     cmd = `npx -y ${NPX[bin]}${cmd.slice(bin.length)}`;
   }
@@ -909,7 +916,7 @@ _carry() {
     return
   fi
   case $words[CURRENT-1] in
-    --to) if [[ $words[2] == open ]]; then compadd claude_code codex opencode cursor pi chat here
+    --to) if [[ $words[2] == open ]]; then compadd claude_code claude_app codex opencode cursor pi chat here
           else compadd -- \${(f)"$(carry __names friends 2>/dev/null)"}; fi; return ;;
     --project) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"}; return ;;
     --handoff|--dir) _files; return ;;
@@ -958,7 +965,7 @@ carry inbox                                      what friends sent you; open one
 carry return <chat> | return --project <name>    send a chat/project you opened from a friend back, with your work
 carry install-hook                               run carry sync after each Claude Code session (for --auto-return)
 carry sync | packs
-carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here] [--dir project folder]
+carry open <name | file.carry | Drive link> [--to claude_code|claude_app|codex|opencode|cursor|pi|chat|here] [--dir project folder]
 carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
 carry completion zsh >> ~/.zshrc                 Tab-complete commands and chat names (new terminal after)
 carry update | doctor | --version`;
