@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Docs · carry</title>
+  <meta name="description" content="Install carry, connect Google Drive, share chats and projects with friends, and use it inside Claude Desktop, Codex or Cursor.">
+  <link rel="icon" href="/favicon.svg?v=13" type="image/svg+xml">
+  <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=13">
+  <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/" aria-label="carry home"><img src="/favicon.svg?v=13" width="26" height="26" alt=""><b>carry</b></a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/docs" aria-current="page">Docs</a>
+        <a href="/blog">Blog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry">GitHub</a>
+      </nav>
+      <div class="toc"></div>
+      <div class="side-foot">A <strong>VXMZ</strong> Product</div>
+    </aside>
+
+    <main class="page">
+      <div class="col doc">
+        <span class="label">Docs · v0.4.1</span>
+        <h1 style="margin-top:12px">carry docs</h1>
+        <p class="lede">Everything carry does, with the exact commands. carry runs on your computer and shares through your own Google Drive or a synced folder. There is no carry account.</p>
+
+        <h2 id="quick-start" data-toc="Quick start">Quick start</h2>
+        <p>The fastest way: let your AI do it. Copy the setup prompt and paste it into Claude Code, Codex or Cursor. It checks Node, installs carry and connects your Drive, asking you before each step.</p>
+        <div class="prompt">
+          <button class="btn copy-prompt" type="button"><span>Copy setup prompt</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="13" height="13" rx="1"/><path d="M16 8V4H3v13h5"/></svg></button>
+          <button class="btn more" type="button" aria-label="More ways to use the setup prompt"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="prompt-menu">
+            <p>Open it in:</p>
+            <a data-open="claude" href="#">Claude</a><a data-open="chatgpt" href="#">ChatGPT</a><a data-open="cursor" href="#">Cursor</a>
+            <p class="prompt-text" style="font-family:var(--mono);font-size:11.5px;user-select:all"></p>
+          </div>
+        </div>
+        <p class="note">The prompt points at <a href="/setup.md">carry-si.vercel.app/setup.md</a>, a page written for AI assistants. Read it first if you like.</p>
+        <p style="margin-top:20px">Or by hand, with Node 22.15 or newer:</p>
+        <div class="codebox"><button class="copy" data-copy="npm install -g @heyvamz/carry&#10;carry install-skill&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="p">$ </span>npm install -g @heyvamz/carry
+<span class="p">$ </span>carry install-skill                 <span class="c"># adds /carry to Claude Code and Codex</span>
+<span class="p">$ </span>carry setup --web --as yourname     <span class="c"># sign in to Google Drive in your browser</span></div></div>
+
+        <h2 id="install" data-toc="Install">Install</h2>
+        <p>Works on macOS, Windows and Linux. You need Node 22.15 or newer, and git if you share whole projects.</p>
+        <h3>1. Node and git</h3>
+        <div class="tabs" role="tablist" aria-label="Your system"><button class="tab" data-os-tab="mac">macOS</button><button class="tab" data-os-tab="win">Windows</button><button class="tab" data-os-tab="linux">Linux</button></div>
+        <div data-os="mac"><div class="codebox"><button class="copy" data-copy="brew install node git">Copy</button><div class="code"><span class="p">$ </span>brew install node git</div></div>
+          <p class="note">No Homebrew? Get the installer from <a href="https://nodejs.org">nodejs.org</a>. macOS asks to install git the first time you use it.</p></div>
+        <div data-os="win"><div class="codebox"><button class="copy" data-copy="winget install OpenJS.NodeJS.LTS&#10;winget install Git.Git">Copy</button><div class="code"><span class="c"># in PowerShell</span>
+<span class="p">&gt; </span>winget install OpenJS.NodeJS.LTS
+<span class="p">&gt; </span>winget install Git.Git</div></div>
+          <p class="note">Then close PowerShell and open a new window so it finds <code>node</code> and <code>git</code>.</p></div>
+        <div data-os="linux"><div class="codebox"><button class="copy" data-copy="curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -&#10;sudo apt-get install -y nodejs git">Copy</button><div class="code"><span class="c"># Ubuntu or Debian</span>
+<span class="p">$ </span>curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+<span class="p">$ </span>sudo apt-get install -y nodejs git</div></div>
+          <p class="note">Other distros: any Node 22.15 or newer from your package manager or <a href="https://nodejs.org">nodejs.org</a>.</p></div>
+        <h3>2. carry</h3>
+        <div data-os="mac win"><div class="codebox"><button class="copy" data-copy="npm install -g @heyvamz/carry&#10;carry doctor">Copy</button><div class="code"><span class="p">$ </span>npm install -g @heyvamz/carry
+<span class="p">$ </span>carry doctor     <span class="c"># versions, txcript, and how sharing is set up</span></div></div></div>
+        <div data-os="linux"><div class="codebox"><button class="copy" data-copy="sudo npm install -g @heyvamz/carry&#10;carry doctor">Copy</button><div class="code"><span class="p">$ </span>sudo npm install -g @heyvamz/carry
+<span class="p">$ </span>carry doctor     <span class="c"># versions, txcript, and how sharing is set up</span></div></div></div>
+        <p>carry uses <a href="https://github.com/skillsynchq/txcript">txcript</a> to convert chats between tools. It is downloaded and checksum-checked for your system on install, or the first time carry needs it.</p>
+        <h3>3. The /carry command</h3>
+        <div class="codebox"><button class="copy" data-copy="carry install-skill">Copy</button><div class="code"><span class="p">$ </span>carry install-skill</div></div>
+        <p>Adds the <code>/carry</code> skill to Claude Code, Codex and <code>~/.agents</code>. Type <code>/carry</code> in a chat and the AI runs the commands below for you.</p>
+
+        <h2 id="drive" data-toc="Connect Drive">Connect Google Drive</h2>
+        <p>carry needs somewhere to put shared chats. Pick one, once per laptop.</p>
+        <h3>Web mode (default)</h3>
+        <div class="codebox"><button class="copy" data-copy="carry setup --web --as yourname">Copy</button><div class="code"><span class="p">$ </span>carry setup --web --as yourname</div></div>
+        <p>Opens Google sign-in in your browser. You sign in and click Allow. carry asks only for <code>drive.file</code>: it can see and edit the files it creates, nothing else in your Drive. The name after <code>--as</code> is what friends see. Add <code>--with a@gmail.com,b@gmail.com</code> to share with the same people by default.</p>
+        <p class="note">If Google shows "Google hasn't verified this app", click Advanced, then continue.</p>
+        <h3>Synced folder mode</h3>
+        <div class="codebox"><button class="copy" data-copy="carry setup">Copy</button><div class="code"><span class="p">$ </span>carry setup                     <span class="c"># finds Google Drive for desktop</span>
+<span class="p">$ </span>carry setup ~/Dropbox/carry     <span class="c"># or any synced folder</span></div></div>
+        <p>Already use Google Drive for desktop, Dropbox or iCloud? Point carry at a folder and share that folder with your group. No Google sign-in.</p>
+
+        <h2 id="chats" data-toc="Your chats">Your chats</h2>
+        <div class="codebox"><button class="copy" data-copy="carry list">Copy</button><div class="code"><span class="p">$ </span>carry list
+fix-the-login-bug        claude_code   2h ago
+stacked-reveal-effect    codex         3d ago
+<span class="p">$ </span>carry name stacked-reveal-effect landing page animation</div></div>
+        <p>carry reads Claude Code chats from <code>~/.claude/projects</code> and Codex chats from <code>~/.codex/sessions</code>. Names come from the first real prompt, with secrets removed. Rename any chat with <code>carry name</code>.</p>
+
+        <h2 id="friends" data-toc="Share with friends">Share with friends</h2>
+        <h3>Pair once</h3>
+        <div class="codebox"><button class="copy" data-copy="carry friend add riya@gmail.com">Copy</button><div class="code"><span class="c"># You</span>
+<span class="p">$ </span>carry friend add riya@gmail.com     <span class="c"># prints a pairing code: send it to Riya on any chat app</span>
+<span class="c"># Riya</span>
+<span class="p">$ </span>carry friend add &lt;your code&gt;        <span class="c"># prints her code back</span>
+<span class="c"># You</span>
+<span class="p">$ </span>carry friend add &lt;Riya's code&gt;      <span class="c"># done, both ways</span></div></div>
+        <p>The codes carry a key that encrypts everything you send each other (AES-256-GCM). <code>carry friends</code> lists who you're paired with; <code>carry friend remove &lt;name&gt;</code> unpairs.</p>
+        <h3>Send, open, send back</h3>
+        <div class="codebox"><button class="copy" data-copy="carry share fix-the-login-bug --to riya">Copy</button><div class="code"><span class="c"># You</span>
+<span class="p">$ </span>carry share fix-the-login-bug --to riya
+<span class="c"># Riya</span>
+<span class="p">$ </span>carry inbox                   <span class="c"># 1. fix-the-login-bug   chat from you   NEW</span>
+<span class="p">$ </span>carry open 1 --to codex       <span class="c"># or --to claude_code</span>
+<span class="p">$ </span>carry return fix-the-login-bug
+<span class="c"># You</span>
+<span class="p">$ </span>carry inbox                   <span class="c"># 1. fix-the-login-bug   UPDATED by Riya (+18 messages)</span>
+<span class="p">$ </span>carry open 1 --to claude_code</div></div>
+        <p>The chat opens on Riya's own account, so her tokens are used. If you also kept working on your copy, carry opens her version next to yours and overwrites nothing.</p>
+        <h3>Send back automatically</h3>
+        <p>Share with <code>--auto-return</code> and Riya's carry sends the chat back after she works on it, when <code>carry sync</code> runs. <code>carry install-hook</code> runs it after every Claude Code session.</p>
+
+        <h2 id="links" data-toc="Without pairing">Share without pairing</h2>
+        <div class="codebox"><button class="copy" data-copy="carry share fix-the-login-bug --with riya@gmail.com">Copy</button><div class="code"><span class="p">$ </span>carry share fix-the-login-bug --with riya@gmail.com   <span class="c"># Google emails Riya a link</span>
+<span class="p">$ </span>carry share fix-the-login-bug --link                  <span class="c"># anyone with the link</span>
+<span class="c"># Riya</span>
+<span class="p">$ </span>carry open &lt;drive link&gt; --to codex</div></div>
+        <p>A private (email) link opens in Riya's browser; she clicks Download and carry picks the file up from Downloads. <code>carry packs</code> lists what you've shared, and <code>carry sync</code> re-uploads shared chats that changed.</p>
+
+        <h2 id="projects" data-toc="Projects">Share a whole project</h2>
+        <div class="codebox"><button class="copy" data-copy="carry projects">Copy</button><div class="code"><span class="p">$ </span>carry projects                <span class="c"># your repos, with chats and Claude memory notes</span>
+<span class="p">$ </span>carry projects my-app         <span class="c"># its chats, plus related chats started elsewhere</span>
+<span class="p">$ </span>carry share --project my-app --add &lt;related chat&gt; --to riya</div></div>
+        <p>A project pack holds the newest chats started in the repo (5 by default, <code>--chats N</code>), any you <code>--add</code>, minus any you <code>--skip</code> (or <code>--related</code> for all related chats), Claude Code's memory notes, CLAUDE.md and AGENTS.md, and a handoff. The code itself goes through git.</p>
+        <div class="codebox"><button class="copy" data-copy="carry open 1 --to claude_code --dir ./my-app">Copy</button><div class="code"><span class="c"># Riya, after cloning the repo</span>
+<span class="p">$ </span>carry open 1 --to claude_code --dir ./my-app
+<span class="p">$ </span>carry return --project my-app      <span class="c"># her new chats and memory notes come back</span></div></div>
+        <p>Claude Code gets your memory notes and a handoff note where it reads them at the start of a session. Codex gets a <code>.carry/</code> folder and a pointer line in AGENTS.md. Nothing of Riya's is overwritten: a note changed on both sides is kept as <code>&lt;note&gt;.from-&lt;friend&gt;.md</code>.</p>
+
+        <h2 id="open" data-toc="Open and continue">Open and continue</h2>
+        <p><code>carry open &lt;name | file.carry | Drive link | inbox number&gt; --to &lt;target&gt;</code></p>
+        <div class="table-wrap"><table>
+          <tr><th>--to</th><th>What happens</th></tr>
+          <tr><td><code>claude_code</code></td><td>Loaded as a real Claude Code session, full history. Tested end to end.</td></tr>
+          <tr><td><code>codex</code></td><td>Converted into a Codex session.</td></tr>
+          <tr><td><code>opencode</code> · <code>cursor</code> · <code>pi</code></td><td>Converted by txcript. Less tested.</td></tr>
+          <tr><td><code>chat</code></td><td>For claude.ai, ChatGPT or the Claude app: copies a prompt and shows the handoff file to attach.</td></tr>
+          <tr><td><code>here</code></td><td>Prints the handoff and history, for an AI that is already reading your terminal.</td></tr>
+        </table></div>
+
+        <h2 id="chat-apps" data-toc="Chat apps">Chat apps</h2>
+        <p>claude.ai, ChatGPT and the Claude app keep chats on their servers, so carry can't read their history. Ask the AI to write a handoff (goal, what was done, decisions, next steps), save it, and share it as a summary:</p>
+        <div class="codebox"><button class="copy" data-copy='carry note "auth bug in login" --handoff summary.md'>Copy</button><div class="code"><span class="p">$ </span>carry note "auth bug in login" --handoff summary.md</div></div>
+        <p>With the connector installed, just say "share this conversation with Riya" and the AI writes and sends the summary itself.</p>
+
+        <h2 id="apps" data-toc="In AI apps (MCP)">Use it inside AI apps</h2>
+        <p>carry runs as an MCP connector. Add it once, then ask in plain words. It always runs the latest version. You need Node installed, nothing else.</p>
+        <h3>Claude Desktop: one click</h3>
+        <p><a class="btn btn-primary btn-sm" href="https://github.com/vamzzisme/carry/releases/latest/download/carry.mcpb">Download carry.mcpb</a></p>
+        <p>Double-click the file (or drag it into Claude Desktop) and click Install.</p>
+        <h3>Claude Code: plugin</h3>
+        <div class="codebox"><button class="copy" data-copy="claude plugin marketplace add vamzzisme/carry&#10;claude plugin install carry@carry">Copy</button><div class="code"><span class="p">$ </span>claude plugin marketplace add vamzzisme/carry
+<span class="p">$ </span>claude plugin install carry@carry</div></div>
+        <p>Installs the connector and the <code>/carry</code> skill together.</p>
+        <h3>By hand: Claude Desktop, Codex, Cursor</h3>
+        <div class="tabs" role="tablist" aria-label="Your AI app"><button class="tab" data-app-tab="claude">Claude Desktop</button><button class="tab" data-app-tab="codex">Codex</button><button class="tab" data-app-tab="cursor">Cursor</button></div>
+        <div class="tabs" role="tablist" aria-label="Your system"><button class="tab" data-os-tab="mac">macOS</button><button class="tab" data-os-tab="win">Windows</button><button class="tab" data-os-tab="linux">Linux</button></div>
+        <div data-app="claude" data-os="mac linux"><div class="codebox"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
+  "mcpServers": {
+    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }
+  }
+}</div></div></div>
+        <div data-app="claude" data-os="win"><div class="codebox"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
+  "mcpServers": {
+    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }
+  }
+}</div></div></div>
+        <div data-app="codex" data-os="mac linux"><div class="codebox"><button class="copy" data-copy='[mcp_servers.carry]&#10;command = "npx"&#10;args = ["-y", "@heyvamz/carry@latest", "mcp"]'>Copy</button><div class="code">[mcp_servers.carry]
+command = "npx"
+args = ["-y", "@heyvamz/carry@latest", "mcp"]</div></div></div>
+        <div data-app="codex" data-os="win"><div class="codebox"><button class="copy" data-copy='[mcp_servers.carry]&#10;command = "cmd"&#10;args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]'>Copy</button><div class="code">[mcp_servers.carry]
+command = "cmd"
+args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div></div>
+        <div data-app="cursor" data-os="mac linux"><div class="codebox"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
+  "mcpServers": {
+    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }
+  }
+}</div></div></div>
+        <div data-app="cursor" data-os="win"><div class="codebox"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
+  "mcpServers": {
+    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }
+  }
+}</div></div></div>
+        <p data-app="claude" class="note">Claude Desktop: Settings, Developer, Edit Config. Merge with any servers already there, save, restart Claude.</p>
+        <p data-app="codex" class="note">Add it to <code>~/.codex/config.toml</code> (Windows: <code>%USERPROFILE%\.codex\config.toml</code>) and restart Codex.</p>
+        <p data-app="cursor" class="note">Cursor Settings, MCP, Add new global MCP server. Paste into <code>~/.cursor/mcp.json</code> and save.</p>
+        <h3>Then just ask</h3>
+        <p>"Connect carry to my Google Drive" · "Share this chat with Riya" · "What's in my carry inbox?" · "Open the first one in Codex" · "Send it back to Riya".</p>
+        <h3 id="tools" data-toc="Connector tools">Connector tools</h3>
+        <div class="table-wrap"><table>
+          <tr><th>Tool</th><th>Does</th></tr>
+          <tr><td><code>carry_status</code></td><td>Is carry set up, where shares go, update notice. Read only.</td></tr>
+          <tr><td><code>carry_connect_google_drive</code></td><td>Opens Google sign-in in your browser.</td></tr>
+          <tr><td><code>carry_list_chats</code> · <code>carry_list_projects</code></td><td>Your chats and projects, by name. Read only.</td></tr>
+          <tr><td><code>carry_share_chat</code> · <code>carry_share_project</code></td><td>Share to friends, emails or a link, with a handoff the AI writes.</td></tr>
+          <tr><td><code>carry_share_summary</code></td><td>Share this conversation from a chat app as a summary.</td></tr>
+          <tr><td><code>carry_add_friend</code></td><td>Make or accept a pairing code.</td></tr>
+          <tr><td><code>carry_inbox</code> · <code>carry_list_shared</code></td><td>What friends sent you; what's been shared. Read only.</td></tr>
+          <tr><td><code>carry_open</code></td><td>Open a share here, or as a real session in a coding tool.</td></tr>
+          <tr><td><code>carry_return</code></td><td>Send a chat or project back with your work.</td></tr>
+        </table></div>
+
+        <h2 id="commands" data-toc="All commands">All commands</h2>
+        <div class="table-wrap"><table>
+          <tr><th>Command</th><th>What it does</th></tr>
+          <tr><td><code>carry setup --web [--as name] [--with emails]</code></td><td>Connect Google Drive in the browser</td></tr>
+          <tr><td><code>carry setup [folder] [--as name]</code></td><td>Use a synced folder instead</td></tr>
+          <tr><td><code>carry install-skill</code></td><td>Add <code>/carry</code> to Claude Code, Codex and <code>~/.agents</code></td></tr>
+          <tr><td><code>carry list</code> · <code>carry name &lt;chat&gt; &lt;new name&gt;</code></td><td>This laptop's chats, by name; rename one</td></tr>
+          <tr><td><code>carry friend add &lt;email or code&gt;</code> · <code>friend remove &lt;name&gt;</code> · <code>friends</code></td><td>Pair once with a friend</td></tr>
+          <tr><td><code>carry share &lt;chat&gt; --to &lt;friend&gt; [--auto-return]</code></td><td>Into their inbox</td></tr>
+          <tr><td><code>carry share &lt;chat&gt; [--with emails] [--link] [--handoff file]</code></td><td>Share without pairing</td></tr>
+          <tr><td><code>carry projects [name]</code></td><td>Your projects, or the chats in one</td></tr>
+          <tr><td><code>carry share --project [name] [--chats 5] [--add a,b] [--skip c] [--related] [--to friend]</code></td><td>Share a whole repo</td></tr>
+          <tr><td><code>carry note "&lt;name&gt;" --handoff file [--with emails] [--link]</code></td><td>Share just a summary</td></tr>
+          <tr><td><code>carry inbox</code></td><td>What friends sent you, including your own chats coming back UPDATED</td></tr>
+          <tr><td><code>carry open &lt;ref&gt; [--to target] [--dir folder]</code></td><td>Continue it here (see <a href="#open">targets</a>)</td></tr>
+          <tr><td><code>carry return &lt;chat&gt;</code> · <code>return --project &lt;name&gt;</code></td><td>Send borrowed work back</td></tr>
+          <tr><td><code>carry install-hook</code></td><td>Run <code>carry sync</code> after each Claude Code session</td></tr>
+          <tr><td><code>carry sync</code> · <code>carry packs</code></td><td>Re-upload changed shares; list your shares</td></tr>
+          <tr><td><code>carry mcp</code></td><td>Run as an MCP connector</td></tr>
+          <tr><td><code>carry update</code> · <code>carry doctor</code> · <code>carry --version</code></td><td>Update; check setup; version</td></tr>
+        </table></div>
+
+        <h2 id="updates" data-toc="Updates">Updates</h2>
+        <p>Run <code>carry update</code>. carry checks npm once a day and tells you when a new version is out; turn that off with <code>CARRY_NO_UPDATE_CHECK=1</code>. The connector (<code>@heyvamz/carry@latest</code>) updates itself. See the <a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">changelog</a>.</p>
+
+        <h2 id="security" data-toc="Privacy and security">Privacy and security</h2>
+        <ul>
+          <li>carry runs on your computer. Chats go from your computer to your Google Drive (or synced folder) and nowhere else. No carry server, no telemetry.</li>
+          <li>Google access is <code>drive.file</code> only. Your sign-in token stays in <code>~/.carry/google.json</code>, readable only by you. Revoke it at <a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>.</li>
+          <li>Before anything leaves your laptop, carry replaces common secret shapes with [REDACTED]: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and <code>KEY=value</code> lines. It is pattern based, so don't share chats full of secrets you care about.</li>
+          <li>Friend shares are encrypted with AES-256-GCM using a key that lives only in your pairing codes.</li>
+          <li>Shared files stay in your Drive until you delete them. Settings live in <code>~/.carry/</code>.</li>
+        </ul>
+        <p>Full policy: <a href="/privacy">Privacy</a> · <a href="/terms">Terms</a></p>
+
+        <h2 id="troubleshooting" data-toc="Troubleshooting">Troubleshooting</h2>
+        <div class="faq">
+          <details><summary><code>carry: command not found</code></summary><p>npm's global bin folder isn't on your PATH. Run <code>npm prefix -g</code>, add its <code>bin</code> folder to PATH and open a new terminal. On Windows, open a new PowerShell window.</p></details>
+          <details><summary>Permission denied on <code>npm install -g</code> (Linux)</summary><p>Use <code>sudo npm install -g @heyvamz/carry</code>, or install Node with nvm so global installs don't need root.</p></details>
+          <details><summary>Couldn't get txcript</summary><p>Run <code>carry doctor</code> again once you're online. Opening with <code>--to chat</code> or <code>--to here</code> doesn't need txcript.</p></details>
+          <details><summary>Sign-in times out or the browser doesn't open</summary><p>carry prints the sign-in link; open it yourself. It waits 5 minutes.</p></details>
+          <details><summary>My Codex chats don't show up</summary><p>carry reads <code>~/.codex/sessions</code> (or <code>$CODEX_HOME/sessions</code>). Chats from the Antigravity app and from claude.ai or ChatGPT on the web can't be read; share a summary instead.</p></details>
+          <details><summary>The connector doesn't show up</summary><p>Restart the app after editing its config. Check <code>node -v</code> is 22.15 or newer. On Windows the config must use <code>"command": "cmd"</code> with <code>"/c", "npx"</code>.</p></details>
+          <details><summary>Opening a project changed nothing</summary><p>carry never overwrites existing files; it prints "kept your existing …" for those. Merge by hand if you want the incoming version.</p></details>
+        </div>
+        <p class="note">More: <a href="https://github.com/vamzzisme/carry/blob/main/TROUBLESHOOTING.md">TROUBLESHOOTING.md</a> · <a href="https://github.com/vamzzisme/carry/issues">open an issue</a></p>
+
+        <h2 id="faq" data-toc="FAQ">FAQ</h2>
+        <div class="faq">
+          <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;ref&gt; --to codex</code> converts the full conversation into a Codex session.</p></details>
+          <details><summary>Do I need the Google Drive app?</summary><p>No. Web mode signs in through your browser. If you already use Drive for desktop, Dropbox or iCloud, you can use a synced folder instead.</p></details>
+          <details><summary>Can carry read my claude.ai or ChatGPT web chats?</summary><p>Not yet. Those live on their servers. Share a summary instead.</p></details>
+          <details><summary>Does it work on Windows and Linux?</summary><p>Yes. Every release is tested on macOS, Windows and Linux.</p></details>
+          <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source (Apache-2.0).</p></details>
+        </div>
+
+        <footer>
+          <div class="foot-cols">
+            <div><span class="label">Product</span><a href="/docs">Docs</a><a href="/blog">Blog</a><a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a><a href="/setup.md">Setup page for AI</a></div>
+            <div><span class="label">Open source</span><a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://github.com/skillsynchq/txcript">txcript</a></div>
+            <div><span class="label">Studio</span><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a><a href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+          </div>
+          <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.1</span><span>·</span><span>© 2026</span></div>
+          <div class="product">A <strong>VXMZ</strong> Product</div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script src="/main.js?v=13"></script>
+</body>
+</html>

@@ -5,20 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Privacy · carry</title>
   <meta name="description" content="How carry handles your chats and your Google Drive.">
-  <link rel="icon" href="/favicon.svg?v=12" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg?v=13" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=12">
+  <link rel="stylesheet" href="/style.css?v=13">
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
 <body>
-  <header class="nav">
-    <a class="brand" href="/"><img src="/favicon.svg?v=12" width="28" height="28" alt=""><b>carry</b></a>
-    <a class="btn btn-primary btn-sm" href="/#install" style="display:inline-flex">Install</a>
-  </header>
-  <main class="wrap legal">
-    <article>
-      <p class="eyebrow">Effective 6 November 2026</p>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/" aria-label="carry home"><img src="/favicon.svg?v=13" width="26" height="26" alt=""><b>carry</b></a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/docs">Docs</a>
+        <a href="/blog">Blog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry">GitHub</a>
+      </nav>
+      <div class="toc"></div>
+      <div class="side-foot">A <strong>VXMZ</strong> Product</div>
+    </aside>
+
+    <main class="page">
+      <div class="col legal">
+      <p class="label">Effective 6 November 2026</p>
       <h1>Privacy</h1>
       <p>carry is a command line tool that runs on your computer. This page explains what it touches and where your data goes. Short version: your chats go from your computer to your own Google Drive, and we never receive them.</p>
 
@@ -47,14 +58,18 @@
 
       <h2>Contact</h2>
       <p>Questions or deletion requests: <a href="mailto:pvamshikrishna369@gmail.com">pvamshikrishna369@gmail.com</a>.</p>
-    </article>
-  </main>
-  <footer>
-    <div class="wrap">
-      <div class="foot-links"><a href="/">Home</a><a href="/#faq">FAQ</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a></div>
-      <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.0</span></div>
-      <div class="product">A <strong>VXMZ</strong> Product</div>
-    </div>
-  </footer>
+        <footer>
+          <div class="foot-cols">
+            <div><span class="label">Product</span><a href="/docs">Docs</a><a href="/blog">Blog</a><a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a><a href="/setup.md">Setup page for AI</a></div>
+            <div><span class="label">Open source</span><a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://github.com/skillsynchq/txcript">txcript</a></div>
+            <div><span class="label">Studio</span><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a><a href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+          </div>
+          <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.1</span><span>·</span><span>© 2026</span></div>
+          <div class="product">A <strong>VXMZ</strong> Product</div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script src="/main.js?v=13"></script>
 </body>
 </html>

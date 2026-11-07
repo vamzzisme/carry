@@ -7,13 +7,10 @@
   <meta name="description" content="Hit your Claude Code limit? Move the session, with its full history, to Codex, another account or a friend's laptop. Or hand over the whole project. A VXMZ product.">
   <meta property="og:title" content="carry · keep coding on any account">
   <meta property="og:description" content="Move a coding session with its full history, or a whole project with its memory, to any account, tool or laptop.">
-  <link rel="icon" href="/favicon.svg?v=12" type="image/svg+xml">
-  <link rel="preconnect" href="https://api.fontshare.com">
+  <link rel="icon" href="/favicon.svg?v=13" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=12">
+  <link rel="stylesheet" href="/style.css?v=13">
   <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
   <!-- Analytics: self-hosted Umami (cookie-free), counts only carry-si.vercel.app, honours Do Not Track -->
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
@@ -26,273 +23,147 @@
     <small>Tap to skip</small>
   </div>
 
-  <header class="nav" id="nav">
-    <a class="brand" href="/" aria-label="carry home">
-      <img src="/favicon.svg?v=12" width="28" height="28" alt="">
-      <b>carry</b>
-    </a>
-    <nav class="nav-links" aria-label="Main">
-      <a href="#how"><span>01</span>How it works</a>
-      <a href="#tools"><span>02</span>Tools</a>
-      <a href="#private"><span>03</span>Privacy</a>
-      <a href="#faq"><span>04</span>FAQ</a>
-    </nav>
-    <a class="btn btn-primary btn-sm" href="#install">Install</a>
-    <button class="menu-btn" id="menu" aria-label="Open menu" aria-expanded="false">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
-  </header>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/" aria-label="carry home"><img src="/favicon.svg?v=13" width="26" height="26" alt=""><b>carry</b></a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <nav aria-label="Main">
+        <a href="/" aria-current="page">Home</a>
+        <a href="/docs">Docs</a>
+        <a href="/blog">Blog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry">GitHub</a>
+      </nav>
+      <div class="toc"></div>
+      <div class="side-foot">A <strong>VXMZ</strong> Product</div>
+    </aside>
 
-  <main>
-    <div class="wrap hero">
-      <div class="hero-grid">
-        <div>
-          <h1>Out of tokens? <em>Keep coding.</em></h1>
-          <p class="lede">carry moves a Claude Code or Codex session, with its full history, to another account, another tool or a friend's laptop. Or hand over the whole project, memory and all, so the next agent knows what was tried and why.</p>
-          <div class="cta">
-            <a class="btn btn-primary" href="#install">Install carry</a>
-            <a class="btn btn-secondary" href="#how">See how it works</a>
-          </div>
-          <p class="note">No terminal? <a class="text-link" href="#apps">Use it inside Claude Desktop, Codex or Cursor</a></p>
+    <main class="page">
+      <div class="col">
+        <div class="pill"><span>New: one-click install in Claude Desktop</span><a href="/blog/claude-desktop-extension">Read the post ↗</a></div>
+        <h1 id="top">Out of tokens? <em>Keep coding.</em> carry moves your AI coding session to another account, tool or laptop.</h1>
+        <p class="lede">The full Claude Code or Codex session, every message, command and dead end, or a whole project with its memory. Through your own Google Drive. Nothing hosted by us.</p>
+        <div class="cta">
+          <a class="btn btn-primary" href="/docs#install">Install carry</a>
+          <a class="btn btn-secondary" href="/docs">Read the docs</a>
         </div>
-        <div class="stack" id="stack" aria-label="Example: sharing a chat on one laptop and opening it on another">
-          <div class="term a">
-            <div class="term-head"><i></i><i></i><i></i><span>your laptop</span></div>
+        <div class="prompt">
+          <button class="btn copy-prompt" type="button"><span>Copy setup prompt</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="8" width="13" height="13" rx="1"/><path d="M16 8V4H3v13h5"/></svg></button>
+          <button class="btn more" type="button" aria-label="More ways to use the setup prompt"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg></button>
+          <div class="prompt-menu">
+            <p>Paste it into Claude Code, Codex or Cursor and it installs carry for you. Or open it in:</p>
+            <a data-open="claude" href="#">Claude</a><a data-open="chatgpt" href="#">ChatGPT</a><a data-open="cursor" href="#">Cursor</a>
+            <p class="prompt-text" style="font-family:var(--mono);font-size:11.5px;user-select:all"></p>
+          </div>
+        </div>
+        <div class="works"><span class="label">Works with</span><span>Claude Code</span><span>Codex</span><span>Claude Desktop</span><span>Cursor</span></div>
+
+        <figure>
+          <div class="stage">
+            <div class="stack" id="stack" aria-label="Example: sharing a chat on one laptop and opening it on another">
+              <div class="term a">
+                <div class="term-head"><i></i><i></i><i></i><span>your laptop</span></div>
 <pre><span class="p">$</span> carry list
 auth-bug-in-login        claude_code   2h ago
 stacked-reveal-effect    codex         3d ago
 <span class="p">$</span> carry share auth-bug-in-login --to riya
 <span class="ok">Sent "auth-bug-in-login" to riya's inbox.</span>
 <span class="c">  2 secrets redacted · encrypted for riya</span></pre>
-          </div>
-          <div class="term b">
-            <div class="term-head"><i></i><i></i><i></i><span>riya's laptop</span></div>
+              </div>
+              <div class="term b">
+                <div class="term-head"><i></i><i></i><i></i><span>riya's laptop</span></div>
 <pre><span class="p">$</span> carry inbox
   1. auth-bug-in-login   chat from vamshi   NEW
 <span class="p">$</span> carry open 1 --to codex
 <span class="c">  continuing on Riya's Codex account…</span></pre>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
+          <figcaption><b>Figure 1.</b> You share a Claude Code chat with Riya. She continues the same session in Codex, on her own account, and can send her work back.</figcaption>
+        </figure>
 
-    <section id="how">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>01</b>How it works</div>
-          <div>
-            <h2>Three commands. <em>No copy paste.</em></h2>
-            <p class="sub">Type <code>/carry</code> inside Claude Code or Codex and it runs these for you.</p>
+        <section>
+          <h2 id="what" data-toc="What it does">Not a summary. <em>The whole session.</em></h2>
+          <p class="muted">A pasted summary keeps what the AI chose to remember. carry keeps every message, command, error and dead end, so the next agent doesn't retry the fix that already failed.</p>
+          <div class="items">
+            <div><span class="label">001</span><div><h3>Full session, resumed</h3><p>Hit your limit in Claude Code? Continue the same session in Codex or on another account. It arrives as a real session, history and all.</p></div></div>
+            <div><span class="label">002</span><div><h3>Whole project, handed over</h3><p>Recent chats, Claude's memory notes, CLAUDE.md and AGENTS.md, plus a handoff. A fresh session on your friend's laptop answers from your decisions. The code goes through git.</p></div></div>
+            <div><span class="label">003</span><div><h3>Chat apps, summarized</h3><p>The Claude app and ChatGPT keep chats on their servers, so there carry hands over a written summary. Same as pasting, just organized.</p></div></div>
           </div>
-        </div>
-        <div class="steps">
-          <div class="card"><span class="n">1</span><h3>Pick a chat</h3><p><code>carry list</code> shows your chats by name, not by long IDs. Rename any of them. Nothing is shared until you pick it.</p></div>
-          <div class="card"><span class="n">2</span><h3>Send it</h3><p>Pair with a friend once. <code>carry share --to riya</code> strips API keys and tokens, encrypts the chat for her and drops it in her carry inbox, through your own Drive.</p></div>
-          <div class="card"><span class="n">3</span><h3>Keep going, then hand it back</h3><p><code>carry inbox</code> and <code>carry open 1</code> load the full chat into Claude Code or Codex on her account. <code>carry return</code> brings her work back to you, updated.</p></div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section id="tools">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>02</b>Tools</div>
-          <div>
-            <h2>Not a summary. <em>The whole session.</em></h2>
-            <p class="sub">A pasted summary keeps what the AI chose to remember. carry keeps every message, command, error and dead end, so the next agent doesn't retry the fix that already failed.</p>
+        <section>
+          <h2 id="how" data-toc="How it works">Pair once. <em>Then just pick.</em></h2>
+          <p class="muted">Type <code>/carry</code> in Claude Code or Codex, or ask your AI app. It runs these for you.</p>
+          <div class="items">
+            <div><span class="label">Step 1</span><div><h3>Pick a chat</h3><p><code>carry list</code> shows your chats by name, not long IDs. Nothing is shared until you pick it.</p></div></div>
+            <div><span class="label">Step 2</span><div><h3>Send it</h3><p><code>carry share --to riya</code> strips API keys and tokens, encrypts the chat for her and drops it in her carry inbox, through your Drive.</p></div></div>
+            <div><span class="label">Step 3</span><div><h3>Keep going, hand it back</h3><p>She runs <code>carry inbox</code> and <code>carry open 1</code>. When she's done, <code>carry return</code> brings her work back to you, updated.</p></div></div>
           </div>
-        </div>
-        <div class="tools">
-          <div class="card">
-            <h3>Full session, resumed</h3>
-            <div class="chips"><span class="chip on">Claude Code</span><span class="chip">Codex</span><span class="chip">OpenCode</span><span class="chip">Cursor</span><span class="chip">pi</span></div>
-            <p>Hit your limit in Claude Code? Continue the same session in Codex or on another account. It arrives as a real session, history and all. Claude Code is tested end to end; the others go through txcript's converter.</p>
-          </div>
-          <div class="card">
-            <h3>Whole project, handed over</h3>
-            <div class="chips"><span class="chip on">Recent chats</span><span class="chip on">Claude memory</span><span class="chip">CLAUDE.md</span><span class="chip">AGENTS.md</span></div>
-            <p><code>carry share --project</code> bundles the repo's recent chats, Claude's memory notes and its instruction files. A fresh Claude Code session on your friend's laptop answers from your decisions. The code goes through git.</p>
-          </div>
-          <div class="card">
-            <h3>Chat apps, summarized</h3>
-            <div class="chips"><span class="chip">Claude app</span><span class="chip">ChatGPT</span><span class="chip">Antigravity</span><span class="chip">Gemini</span></div>
-            <p>The Claude app and ChatGPT keep chats on their servers, so here carry hands over a written summary. Same as pasting, just organized.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+          <a class="more-link" href="/docs#friends">How sharing works →</a>
+        </section>
 
-    <section id="private" class="band">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>03</b>Privacy</div>
-          <div>
-            <h2>Your Drive. <em>Not our servers.</em></h2>
-            <p class="sub">carry runs on your laptop. There is no carry server and no account with us. Chats go from your computer to your Google Drive and nowhere else.</p>
+        <section>
+          <h2 id="privacy" data-toc="Privacy">Your Drive. <em>Not our servers.</em></h2>
+          <p class="muted">carry runs on your laptop. There is no carry server and no account with us.</p>
+          <div class="items">
+            <div><span class="label">Drive</span><div><h3>Only its own files</h3><p>carry asks Google for the narrowest Drive permission: it sees only the files it created.</p></div></div>
+            <div><span class="label">Secrets</span><div><h3>Stripped before upload</h3><p>API keys, tokens, private keys and <code>KEY=value</code> lines become [REDACTED] before anything leaves your laptop.</p></div></div>
+            <div><span class="label">Access</span><div><h3>You choose who sees it</h3><p>Paired friends, named emails, or a link. Nothing is shared by default. Delete it from Drive any time.</p></div></div>
+            <div><span class="label">Code</span><div><h3>Open source</h3><p>Built on txcript, the open chat converter by SkillSync. Apache-2.0.</p></div></div>
           </div>
-        </div>
-        <div class="points">
-          <div class="card"><h3>Only its own files</h3><p>carry asks Google for the narrowest Drive permission: it can see and edit only the files it created. The rest of your Drive stays off limits.</p></div>
-          <div class="card"><h3>Secrets stripped first</h3><p>API keys, tokens, private keys and <code style="background:rgba(255,255,255,.08);color:inherit">KEY=value</code> lines are replaced with [REDACTED] before anything leaves your laptop.</p></div>
-          <div class="card"><h3>You choose who sees it</h3><p>Share with named friends by email, or make a link. Nothing is shared by default, and you can delete the file from Drive at any time.</p></div>
-          <div class="card"><h3>Open source</h3><p>Built on txcript, the open chat converter by SkillSync. Read the code, run it yourself, change it.</p></div>
-        </div>
-      </div>
-    </section>
+        </section>
 
-    <section id="install">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>04</b>Install</div>
-          <div>
-            <h2>Two minutes, <em>once per laptop.</em></h2>
-            <p class="sub">Works on macOS, Windows and Linux. All you need first is Node 22.15 or newer.</p>
+        <section>
+          <h2 id="writing" data-toc="Writing">Writing</h2>
+          <div class="writing">
+            <a href="/blog/claude-desktop-extension"><span class="label">01</span><span class="t">carry is now one click in Claude Desktop</span><span class="d">7 Nov 2026</span></a>
+            <a href="/blog/introducing-carry"><span class="label">02</span><span class="t">Introducing carry: keep coding when you run out of tokens</span><span class="d">7 Nov 2026</span></a>
           </div>
-        </div>
-        <div class="tabs" role="tablist" aria-label="Your system">
-          <button class="tab" data-os-tab="mac">macOS</button><button class="tab" data-os-tab="win">Windows</button><button class="tab" data-os-tab="linux">Linux</button>
-        </div>
-        <div class="install">
-          <div class="codebox">
-            <div data-os="mac"><button class="copy" data-copy="brew install node git">Copy</button><div class="code"><span class="c"># 1. Node and git (skip if you have them)</span>
-<span class="p">$ </span>brew install node git</div>
-            <p class="note">No Homebrew? Get the installer from <a href="https://nodejs.org">nodejs.org</a>; macOS asks to install git the first time you use it.</p></div>
-            <div data-os="win"><button class="copy" data-copy="winget install OpenJS.NodeJS.LTS&#10;winget install Git.Git">Copy</button><div class="code"><span class="c"># 1. Node and git, in PowerShell (skip if you have them)</span>
-<span class="p">&gt; </span>winget install OpenJS.NodeJS.LTS
-<span class="p">&gt; </span>winget install Git.Git</div>
-            <p class="note">Then close PowerShell and open a new window so it finds <code>node</code> and <code>git</code>.</p></div>
-            <div data-os="linux"><button class="copy" data-copy="curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -&#10;sudo apt-get install -y nodejs git">Copy</button><div class="code"><span class="c"># 1. Node and git on Ubuntu or Debian (skip if you have them)</span>
-<span class="p">$ </span>curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
-<span class="p">$ </span>sudo apt-get install -y nodejs git</div>
-            <p class="note">Other distros: any Node 22.15 or newer works, from your package manager or <a href="https://nodejs.org">nodejs.org</a>.</p></div>
-          </div>
-          <div class="codebox">
-            <div data-os="mac win"><button class="copy" data-copy="npm install -g @heyvamz/carry&#10;carry install-skill&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="c"># 2. carry (txcript comes with it)</span>
-<span class="p">$ </span>npm install -g @heyvamz/carry
-<span class="c"># 3. add /carry to Claude Code and Codex, sign in to Drive</span>
-<span class="p">$ </span>carry install-skill
-<span class="p">$ </span>carry setup --web --as yourname</div></div>
-            <div data-os="linux"><button class="copy" data-copy="sudo npm install -g @heyvamz/carry&#10;carry install-skill&#10;carry setup --web --as yourname">Copy</button><div class="code"><span class="c"># 2. carry (txcript comes with it)</span>
-<span class="p">$ </span>sudo npm install -g @heyvamz/carry
-<span class="c"># 3. add /carry to Claude Code and Codex, sign in to Drive</span>
-<span class="p">$ </span>carry install-skill
-<span class="p">$ </span>carry setup --web --as yourname</div></div>
-            <p class="note">It also downloads and checks txcript for your system. Updates: <code>carry update</code>; carry tells you when there's a new version. Use Drive for desktop, Dropbox or iCloud already? Run <code>carry setup</code> instead to share one synced folder.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+          <a class="more-link" href="/blog">Read the blog ↗</a>
+        </section>
 
-    <section id="apps">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>05</b>No terminal</div>
-          <div>
-            <h2>Rather not type commands? <em>Ask your AI.</em></h2>
-            <p class="sub">carry also runs as an MCP connector. Add it to your AI app once, then just say "share this chat with Riya" or "open the carry link Riya sent me". Needs <a href="https://nodejs.org">Node</a> installed, nothing else, and it always runs the latest version.</p>
+        <section>
+          <h2 id="faq" data-toc="FAQ">FAQ</h2>
+          <div class="faq">
+            <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
+            <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
+            <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
+            <details><summary>Do I have to send links every time?</summary><p>No. Pair with a friend once and everything you send lands in their <code>carry inbox</code>. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
+            <details><summary>Can my friend send the work back?</summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED. If you also kept working, carry opens theirs next to yours and overwrites nothing.</p></details>
+            <details><summary>Can I use carry without the terminal?</summary><p>Yes. Install it in Claude Desktop with one click, or add it to Codex or Cursor as a connector, then ask in plain words. <a href="/docs#apps">See the docs</a>.</p></details>
+            <details><summary>What does the setup prompt do?</summary><p>It is one line that points your AI at <a href="/setup.md">carry's setup page</a>. Claude Code, Codex or Cursor then checks Node, installs carry and connects your Drive, asking you before each step. In a browser chat it explains how to install the desktop app instead.</p></details>
+            <details><summary>What gets redacted?</summary><p>Common secret shapes: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and lines like <code>API_KEY=value</code>. It is pattern based, so do not share chats full of secrets you care about.</p></details>
+            <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source. If it saves you a few hours, a coffee keeps the studio going.</p></details>
           </div>
-        </div>
-        <div class="tabs" role="tablist" aria-label="Your AI app">
-          <button class="tab" data-app-tab="claude">Claude Desktop</button><button class="tab" data-app-tab="codex">Codex</button><button class="tab" data-app-tab="cursor">Cursor</button>
-        </div>
-        <div class="tabs tabs-sm" role="tablist" aria-label="Your system">
-          <button class="tab" data-os-tab="mac">macOS</button><button class="tab" data-os-tab="win">Windows</button><button class="tab" data-os-tab="linux">Linux</button>
-        </div>
-        <div class="install">
-          <div class="codebox">
-            <div data-app="claude" data-os="mac linux"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
-  "mcpServers": {
-    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }
-  }
-}</div></div>
-            <div data-app="claude" data-os="win"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
-  "mcpServers": {
-    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }
-  }
-}</div></div>
-            <div data-app="codex" data-os="mac linux"><button class="copy" data-copy='[mcp_servers.carry]&#10;command = "npx"&#10;args = ["-y", "@heyvamz/carry@latest", "mcp"]'>Copy</button><div class="code">[mcp_servers.carry]
-command = "npx"
-args = ["-y", "@heyvamz/carry@latest", "mcp"]</div></div>
-            <div data-app="codex" data-os="win"><button class="copy" data-copy='[mcp_servers.carry]&#10;command = "cmd"&#10;args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]'>Copy</button><div class="code">[mcp_servers.carry]
-command = "cmd"
-args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
-            <div data-app="cursor" data-os="mac linux"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
-  "mcpServers": {
-    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }
-  }
-}</div></div>
-            <div data-app="cursor" data-os="win"><button class="copy" data-copy='{&#10;  "mcpServers": {&#10;    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }&#10;  }&#10;}'>Copy</button><div class="code">{
-  "mcpServers": {
-    "carry": { "command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"] }
-  }
-}</div></div>
-          </div>
-          <div>
-            <div data-app="claude"><h3>Where it goes</h3><p class="note" style="margin-top:0">Easiest: <a href="https://github.com/vamzzisme/carry/releases/latest/download/carry.mcpb">download carry.mcpb</a> and double-click it. Claude Desktop installs it in one click. Or by hand: in Claude Desktop, Settings, Developer, Edit Config. Paste this into the file (merge with any servers already there), save, and restart Claude.</p></div>
-            <div data-app="codex"><h3>Where it goes</h3><p class="note" style="margin-top:0">Add it to <code>~/.codex/config.toml</code> (on Windows <code>%USERPROFILE%\.codex\config.toml</code>) and restart Codex.</p></div>
-            <div data-app="cursor"><h3>Where it goes</h3><p class="note" style="margin-top:0">Cursor Settings, MCP, Add new global MCP server. Paste this into the file it opens (<code>~/.cursor/mcp.json</code>) and save.</p></div>
-            <h3 style="margin-top:24px">Then just ask</h3>
-            <p class="note" style="margin-top:0">"Connect carry to my Google Drive" · "Share this chat with Riya" · "What's in my carry inbox?" · "Send it back to Riya". In chat apps carry shares a written summary, since their history lives on their servers.</p>
-          </div>
-        </div>
-      </div>
-    </section>
+          <a class="more-link" href="/docs#faq">More questions in the docs →</a>
+        </section>
 
-    <section id="faq">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>06</b>FAQ</div>
-          <div><h2>Questions, <em>answered.</em></h2></div>
-        </div>
-        <div class="faq">
-          <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
-          <details><summary>Do I have to send links every time?</summary><p>No. Pair with a friend once (<code>carry friend add</code>, you swap two short codes). After that, everything you send lands in their <code>carry inbox</code> and they pick it by number. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
-          <details><summary>Can my friend send the work back to me?</summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED, with everything they did. If you also kept working on your copy, carry opens theirs next to yours and overwrites nothing. With <code>--auto-return</code> their carry does it on its own after each session.</p></details>
-          <details><summary>Can I share a whole project?</summary><p>Yes. Run <code>carry share --project</code> in the repo. Pick it from <code>carry projects</code>, which also finds related chats you started in another folder that worked on the repo. carry bundles the chats you choose, Claude Code's memory notes and CLAUDE.md / AGENTS.md with a handoff. Your friend clones the code, runs <code>carry open &lt;link&gt; --dir &lt;their clone&gt;</code>, and Claude or Codex picks up with your context. Nothing of theirs gets overwritten.</p></details>
-          <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
-          <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
-          <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;link&gt; --to codex</code> converts the full conversation into a Codex session. For chat apps like ChatGPT, carry gives you a short handoff file to attach instead.</p></details>
-          <details><summary>What gets redacted?</summary><p>Common secret shapes: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and lines like <code>API_KEY=value</code>. It is pattern based, so do not share chats full of secrets you care about.</p></details>
-          <details><summary>Why does Google say the app isn't verified?</summary><p>carry is new and still in Google's testing stage. Click Advanced, then continue. It only asks for access to files carry itself creates.</p></details>
-          <details><summary>Can I use carry without the terminal?</summary><p>Yes. Add carry as an MCP connector to Claude Desktop, Codex or Cursor (<a href="#apps">steps above</a>) and ask in plain words: "share this chat", "open the link Riya sent me". You only need Node installed.</p></details>
-          <details><summary>Do I need the Google Drive app?</summary><p>No. Web mode signs in through your browser. If you already use Drive for desktop, Dropbox or iCloud, you can point carry at a synced folder instead.</p></details>
-          <details><summary>Can carry read my claude.ai or ChatGPT web chats?</summary><p>Not yet. Those live on their servers. Inside those apps, ask the AI to write a handoff and attach it on the other side. A browser extension is on the roadmap.</p></details>
-          <details><summary>How do I update?</summary><p>Run <code>carry update</code>. carry checks for a new version once a day and tells you when one is out. The MCP connector always runs the latest version on its own.</p></details>
-          <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source. If it saves you a few hours, a coffee keeps the studio going.</p></details>
-        </div>
-      </div>
-    </section>
+        <section>
+          <h2 id="feedback" data-toc="Feedback">Feedback</h2>
+          <p class="muted">Found a bug or have an idea? This opens your mail app with the note filled in.</p>
+          <form id="fb">
+            <div class="row">
+              <div><label for="fb-type">Type</label><select id="fb-type"><option>Bug</option><option>Feature idea</option><option>Design note</option></select></div>
+              <div><label for="fb-name">Your name (optional)</label><input id="fb-name" autocomplete="name"></div>
+            </div>
+            <div><label for="fb-msg">Message</label><textarea id="fb-msg" required></textarea></div>
+            <div><button class="btn btn-primary" type="submit">Send feedback</button></div>
+          </form>
+        </section>
 
-    <section id="feedback">
-      <div class="wrap">
-        <div class="sec-head">
-          <div class="sec-num"><b>07</b>Feedback</div>
-          <div><h2>Found a bug? <em>Got an idea?</em></h2><p class="sub">This opens your mail app with the note filled in.</p></div>
-        </div>
-        <form id="fb">
-          <div class="row">
-            <div><label for="fb-type">Type</label>
-              <select id="fb-type"><option>Bug</option><option>Feature idea</option><option>Design note</option></select></div>
-            <div><label for="fb-name">Your name (optional)</label><input id="fb-name" autocomplete="name"></div>
+        <footer>
+          <div class="foot-cols">
+            <div><span class="label">Product</span><a href="/docs">Docs</a><a href="/blog">Blog</a><a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a><a href="/setup.md">Setup page for AI</a></div>
+            <div><span class="label">Open source</span><a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://github.com/skillsynchq/txcript">txcript</a></div>
+            <div><span class="label">Studio</span><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a><a href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
           </div>
-          <div><label for="fb-msg">Message</label><textarea id="fb-msg" required></textarea></div>
-          <div><button class="btn btn-primary" type="submit">Send feedback</button></div>
-        </form>
+          <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.1</span><span>·</span><span>© 2026</span></div>
+          <div class="product">A <strong>VXMZ</strong> Product</div>
+        </footer>
       </div>
-    </section>
-  </main>
-
-  <footer>
-    <div class="wrap">
-      <div class="bmc"><a class="btn btn-secondary btn-sm" href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a></div>
-      <div class="foot-links">
-        <a href="#faq">FAQ</a><a href="#feedback">Feedback</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a>
-        <a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a>
-      </div>
-      <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.1</span><span>·</span><span>© 2026</span></div>
-      <div class="product">A <strong>VXMZ</strong> Product</div>
-    </div>
-  </footer>
-  <script src="/main.js?v=12"></script>
+    </main>
+  </div>
+  <script src="/main.js?v=13"></script>
 </body>
 </html>

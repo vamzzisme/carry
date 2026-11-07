@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>carry is now one click in Claude Desktop · carry</title>
+  <meta name="description" content="carry 0.4.1 ships as a Claude Desktop extension, a Claude Code plugin and an MCP Registry listing.">
+  <link rel="icon" href="/favicon.svg?v=13" type="image/svg+xml">
+  <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=13">
+  <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/" aria-label="carry home"><img src="/favicon.svg?v=13" width="26" height="26" alt=""><b>carry</b></a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/docs">Docs</a>
+        <a href="/blog" aria-current="page">Blog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry">GitHub</a>
+      </nav>
+      <div class="toc"></div>
+      <div class="side-foot">A <strong>VXMZ</strong> Product</div>
+    </aside>
+
+    <main class="page">
+      <div class="col prose">
+        <span class="label"><a href="/blog" style="color:inherit;text-decoration:none">Blog</a></span>
+        <h1 style="margin-top:12px">carry is now one click in Claude Desktop</h1>
+        <div class="post-meta">7 Nov 2026 · by @heyvamz</div>
+        <p>Until now, using carry inside Claude Desktop meant opening a config file and pasting JSON into it. That is fine for developers and a wall for everyone else. carry 0.4.1 removes it.</p>
+        <h2 id="desktop">Claude Desktop: download, double-click</h2>
+        <p>Every release now comes with <code>carry.mcpb</code>, a Claude Desktop extension. <a href="https://github.com/vamzzisme/carry/releases/latest/download/carry.mcpb">Download it</a>, double-click, click Install. Then ask Claude "connect carry to my Google Drive" and "share this chat with Riya". You still need Node installed.</p>
+        <h2 id="plugin">Claude Code: a plugin</h2>
+        <p>The carry repo is now its own plugin marketplace. Two commands install the connector and the <code>/carry</code> skill together:</p>
+        <div class="codebox"><div class="code"><span class="p">$ </span>claude plugin marketplace add vamzzisme/carry
+<span class="p">$ </span>claude plugin install carry@carry</div></div>
+        <h2 id="registry">Listed in the MCP Registry</h2>
+        <p>carry is in the official MCP Registry as <code>io.github.vamzzisme/carry</code>, so apps that search the registry can find it.</p>
+        <h2 id="hints">Safer by default</h2>
+        <p>Every carry tool now tells your AI app whether it only reads (listing chats, checking your inbox) or sends something (sharing, returning). Apps use that to ask you before anything leaves your laptop.</p>
+        <p>Full list of changes in the <a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">changelog</a>. Setting up from scratch? <a href="/docs#quick-start">Copy the setup prompt</a> and let your AI do it.</p>
+        <footer>
+          <div class="foot-cols">
+            <div><span class="label">Product</span><a href="/docs">Docs</a><a href="/blog">Blog</a><a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a><a href="/setup.md">Setup page for AI</a></div>
+            <div><span class="label">Open source</span><a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://github.com/skillsynchq/txcript">txcript</a></div>
+            <div><span class="label">Studio</span><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a><a href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+          </div>
+          <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.1</span><span>·</span><span>© 2026</span></div>
+          <div class="product">A <strong>VXMZ</strong> Product</div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script src="/main.js?v=13"></script>
+</body>
+</html>

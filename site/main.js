@@ -1,20 +1,52 @@
-// Curtain (once per session, tap to skip), mobile drawer, copy buttons, feedback via mail app.
+// Curtain, sidebar menu + "on this page", setup prompt, hero terminals, OS/app tabs, copy buttons, feedback.
 const curtain = document.getElementById('curtain');
 if (curtain) {
-  const hide = () => {
-    curtain.classList.add('gone');
-    try { sessionStorage.setItem('vxmz-curtain', '1'); } catch (e) {}
-  };
+  const hide = () => { curtain.classList.add('gone'); try { sessionStorage.setItem('vxmz-curtain', '1'); } catch (e) {} };
   if (document.documentElement.classList.contains('no-curtain')) hide();
   else { curtain.addEventListener('click', hide); setTimeout(hide, 1500); }
 }
 
-const nav = document.getElementById('nav'), menu = document.getElementById('menu');
-menu?.addEventListener('click', () => menu.setAttribute('aria-expanded', nav.classList.toggle('open')));
-nav?.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { nav.classList.remove('open'); menu?.setAttribute('aria-expanded', 'false'); }));
+// Small screens: the sidebar is a top bar with a menu button.
+const side = document.querySelector('.side'), menu = document.getElementById('menu');
+menu?.addEventListener('click', () => menu.setAttribute('aria-expanded', side.classList.toggle('open')));
+side?.querySelectorAll('nav a').forEach(a => a.addEventListener('click', () => side.classList.remove('open')));
+
+// "On this page": built from the page's h2s (and docs h3s marked data-toc), highlighted while scrolling.
+const toc = document.querySelector('.toc');
+if (toc) {
+  const heads = [...document.querySelectorAll('main h2[id], main h3[id][data-toc]')];
+  if (heads.length > 1) {
+    toc.innerHTML = '<div class="label">On this page</div>' + heads.map(h =>
+      `<a href="#${h.id}"${h.tagName === 'H3' ? ' class="sub"' : ''}>${h.dataset.toc || h.textContent}</a>`).join('');
+    const links = [...toc.querySelectorAll('a')];
+    const spy = () => {
+      let i = 0;
+      heads.forEach((h, n) => { if (h.getBoundingClientRect().top < innerHeight * .3) i = n; });
+      links.forEach((a, n) => a.classList.toggle('on', n === i));
+    };
+    addEventListener('scroll', spy, { passive: true }); spy();
+  }
+}
+
+// Copy setup prompt: one line any AI can act on, plus "open in" links.
+const PROMPT = 'Set up carry for me. Read https://carry-si.vercel.app/setup.md and follow it.';
+document.querySelectorAll('.prompt').forEach(box => {
+  const copyBtn = box.querySelector('.copy-prompt'), label = copyBtn.querySelector('span');
+  copyBtn.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(PROMPT); label.textContent = 'Setup prompt copied'; }
+    catch (e) { box.classList.add('open'); label.textContent = 'Copy it below'; }
+    setTimeout(() => (label.textContent = 'Copy setup prompt'), 1800);
+  });
+  box.querySelector('.more').addEventListener('click', e => { e.stopPropagation(); box.classList.toggle('open'); });
+  const q = encodeURIComponent(PROMPT);
+  box.querySelectorAll('[data-open]').forEach(a => (a.href = {
+    claude: `https://claude.ai/new?q=${q}`, chatgpt: `https://chatgpt.com/?q=${q}`, cursor: `cursor://anysphere.cursor-deeplink/prompt?text=${q}`,
+  }[a.dataset.open]));
+  const text = box.querySelector('.prompt-text'); if (text) text.textContent = PROMPT;
+});
+document.addEventListener('click', e => document.querySelectorAll('.prompt.open').forEach(b => !b.contains(e.target) && b.classList.remove('open')));
 
 // Hero: type the share on your laptop, send that card back, bring Riya's forward, type the open, loop.
-// Without JS or with reduced motion, the static markup stays as is.
 const stack = document.getElementById('stack');
 if (stack && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const [a, b] = stack.querySelectorAll('.term');
@@ -63,7 +95,7 @@ if (stack && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   })();
 }
 
-// OS and app tabs. OS defaults to the visitor's system and is remembered; every OS picker on the page stays in sync.
+// OS and app tabs. OS defaults to the visitor's system and is remembered; every picker on the page stays in sync.
 const pick = { os: /Win/i.test(navigator.userAgent) ? 'win' : /Linux|X11/i.test(navigator.userAgent) && !/Android/i.test(navigator.userAgent) ? 'linux' : 'mac', app: 'claude' };
 try { pick.os = localStorage.getItem('carry-os') || pick.os; } catch (e) {}
 function applyTabs() {
