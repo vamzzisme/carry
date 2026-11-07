@@ -56,5 +56,6 @@ It is the template the other product sites (Lobe, DClutter, Drapr, Manga Reader)
 
 ## Rules learned the hard way
 - Version-tag CSS and JS (`style.css?v=N`, `main.js?v=N`) and bump N on every change, or browsers keep old files.
+- Shared layout CSS comes from the VXMZ Kit (`https://thevxmzstudio.vercel.app/kit/site.css`, source in `vxmz-studio/client/public/kit/`). `site/style.css` holds only carry's tokens, mark, setup prompt, terminals and the `.pname` highlight. Change shared styles in the kit, not here.
 - Check every page at 390px wide with no horizontal scroll.
 - A one-shot CSS animation left on an element replays when a hover animation ends: remove the intro class once it has played.
