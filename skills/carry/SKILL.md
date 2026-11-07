@@ -65,7 +65,7 @@ and a handoff note in its memory; Codex gets `.carry/` plus a pointer in AGENTS.
    If the download landed elsewhere, run `carry open <path to the .carry file>`.
 2. Ask where to continue if unclear:
    - Here / a coding tool → `carry open <name> --to <claude_code|codex|opencode|cursor|pi>` (tell the user it launches that tool with the chat loaded on this laptop's account).
-   - The Claude desktop app → `carry open <name> --to claude_app`: the same Claude Code session, opened in the app's Code tab.
+   - The desktop apps → `carry open <name> --to claude_app` (Claude app's Code tab) or `--to codex_app` (Codex app): the same session, opened in the app.
    - In a chat app (Claude app, ChatGPT, Antigravity app) → `carry open <name> --to chat`: copies a prompt and reveals handoff.md to attach.
    - To continue inside THIS conversation instead: `carry open <ref> --to chat`, then read the handoff.md it wrote
      (under `~/.carry/opened/<name>/`) yourself and carry on.

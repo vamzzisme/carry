@@ -735,9 +735,11 @@ const cmds = {
   async open(args) {
     const c = load(), ref = await pickArg(args, 'pack', packNames(c).reverse().slice(0, 9),
       'Usage: carry open <inbox number | pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
-    // claude_app: write it as a Claude Code session, then the Claude desktop app imports it (claude://resume) into its Code tab.
-    const app = flag(args, '--to') === 'claude_app';
-    const to = app ? 'claude_code' : flag(args, '--to') || 'claude_code', tool = CONTINUE_TOOLS.includes(to), noResume = args.includes('--no-resume');
+    // claude_app / codex_app: write a Claude Code or Codex session, then hand it to the desktop app by its link
+    // (claude://resume imports it into the Code tab; codex://threads opens it in the Codex app).
+    const APPS = { claude_app: ['claude_code', id => `claude://resume?session=${id}`, 'the Claude app (Code tab)'], codex_app: ['codex', id => `codex://threads/${id}`, 'the Codex app'] };
+    const app = APPS[flag(args, '--to')];
+    const to = app ? app[0] : flag(args, '--to') || 'claude_code', tool = CONTINUE_TOOLS.includes(to), noResume = args.includes('--no-resume');
     let p, item;
     if (/^\d+$/.test(ref)) { // a number from `carry inbox`
       item = (c.lastInbox || [])[Number(ref) - 1] || die('No such item. Run: carry inbox');
@@ -791,8 +793,8 @@ const cmds = {
     }
     save(c);
     if (noResume) return;
-    if (app && r.id && openTarget(`claude://resume?session=${r.id}`)) return console.log('\nOpening it in the Claude app (Code tab).');
-    if (app) console.log('\nCouldn\'t reach the Claude desktop app, so opening it in Claude Code instead.');
+    if (app && r.id && openTarget(app[1](r.id))) return console.log(`\nOpening it in ${app[2]}.`);
+    if (app) console.log(`\nCouldn't reach ${app[2]}, so opening it in the terminal instead.`);
     launch(r.cmd, cwd);
   },
   // Pair once: `carry friend add <email or name>` prints a code for them; `carry friend add <code>` accepts one (and prints yours back).
@@ -916,7 +918,7 @@ _carry() {
     return
   fi
   case $words[CURRENT-1] in
-    --to) if [[ $words[2] == open ]]; then compadd claude_code claude_app codex opencode cursor pi chat here
+    --to) if [[ $words[2] == open ]]; then compadd claude_code claude_app codex codex_app opencode cursor pi chat here
           else compadd -- \${(f)"$(carry __names friends 2>/dev/null)"}; fi; return ;;
     --project) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"}; return ;;
     --handoff|--dir) _files; return ;;
@@ -965,7 +967,7 @@ carry inbox                                      what friends sent you; open one
 carry return <chat> | return --project <name>    send a chat/project you opened from a friend back, with your work
 carry install-hook                               run carry sync after each Claude Code session (for --auto-return)
 carry sync | packs
-carry open <name | file.carry | Drive link> [--to claude_code|claude_app|codex|opencode|cursor|pi|chat|here] [--dir project folder]
+carry open <name | file.carry | Drive link> [--to claude_code|claude_app|codex|codex_app|opencode|cursor|pi|chat|here] [--dir project folder]
 carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
 carry completion zsh >> ~/.zshrc                 Tab-complete commands and chat names (new terminal after)
 carry update | doctor | --version`;

@@ -59,7 +59,7 @@ Then the person just asks: "Connect carry to my Google Drive", "Share this chat 
 - Pair with a friend once: `carry friend add <their email>`, send the printed code, and run `carry friend add <their code>`
   with the code they send back.
 - Share: `carry share <chat> --to <friend>`. The friend runs `carry inbox` and `carry open 1 --to codex`
-  (or `claude_code` for the terminal, `claude_app` for the Claude desktop app's Code tab).
+  (or `claude_code` for the terminal, `claude_app` / `codex_app` to open it in the Claude or Codex desktop app).
 - Send work back: `carry return <chat>`.
 - Whole project: `carry projects`, then `carry share --project <name> --to <friend>`.
 - Secrets (API keys, tokens, `KEY=value` lines) are redacted before anything leaves the computer. It is pattern based.
