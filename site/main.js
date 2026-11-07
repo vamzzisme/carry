@@ -1,10 +1,15 @@
 // Curtain, sidebar menu + "on this page", setup prompt, hero terminals, OS/app tabs, copy buttons, feedback.
+// Logo intro (the C draws, the arrow slides in): once per visit, right after the curtain lifts.
+const playMark = () => {
+  try { if (sessionStorage.getItem('carry-mark')) return; sessionStorage.setItem('carry-mark', '1'); } catch (e) {}
+  document.querySelector('.brand .mark')?.classList.add('intro');
+};
 const curtain = document.getElementById('curtain');
 if (curtain) {
-  const hide = () => { curtain.classList.add('gone'); try { sessionStorage.setItem('vxmz-curtain', '1'); } catch (e) {} };
+  const hide = () => { if (curtain.classList.contains('gone')) return; curtain.classList.add('gone'); playMark(); try { sessionStorage.setItem('vxmz-curtain', '1'); } catch (e) {} };
   if (document.documentElement.classList.contains('no-curtain')) hide();
   else { curtain.addEventListener('click', hide); setTimeout(hide, 1500); }
-}
+} else playMark();
 
 // Small screens: the sidebar is a top bar with a menu button.
 const side = document.querySelector('.side'), menu = document.getElementById('menu');
