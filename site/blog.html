@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Blog · carry</title>
   <meta name="description" content="Releases and notes from building carry.">
-  <link rel="icon" href="/favicon.svg?v=13" type="image/svg+xml">
+  <link rel="icon" href="/favicon.svg?v=14" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=13">
+  <link rel="stylesheet" href="/style.css?v=14">
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
 <body>
   <div class="shell">
     <aside class="side">
-      <a class="brand" href="/" aria-label="carry home"><img src="/favicon.svg?v=13" width="26" height="26" alt=""><b>carry</b></a>
+      <a class="brand" href="/" aria-label="carry home"><img src="/mark.svg?v=14" width="26" height="24" alt=""><b>carry</b></a>
       <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
       <nav aria-label="Main">
         <a href="/">Home</a>
@@ -32,9 +32,14 @@
         <span class="label">Blog</span>
         <h1 style="margin-top:12px">Writing</h1>
         <p class="lede">Releases, how carry works, and notes from building it.</p>
-        <div class="writing">
-            <a href="/blog/claude-desktop-extension"><span class="label">01</span><span><span class="t">carry is now one click in Claude Desktop</span><br><span class="muted" style="font-size:14px">carry 0.4.1 ships as a Claude Desktop extension, a Claude Code plugin and an MCP Registry listing.</span></span><span class="d">7 Nov 2026</span></a>
-            <a href="/blog/introducing-carry"><span class="label">02</span><span><span class="t">Introducing carry: keep coding when you run out of tokens</span><br><span class="muted" style="font-size:14px">Why carry moves the whole coding session instead of a summary, and how it stays on your own Drive.</span></span><span class="d">7 Nov 2026</span></a>
+        <div class="blog-tools">
+          <input class="blog-search" type="search" placeholder="Search posts" aria-label="Search posts">
+          <div class="tag-filter"><button type="button" class="on" data-tag="">All</button><button type="button" data-tag="Announcement">Announcement</button><button type="button" data-tag="Claude Desktop">Claude Desktop</button><button type="button" data-tag="MCP">MCP</button><button type="button" data-tag="Privacy">Privacy</button><button type="button" data-tag="Release">Release</button></div>
+        </div>
+        <div class="writing posts">
+          <a href="/blog/claude-desktop-extension" data-tags="Release|Claude Desktop|MCP"><span><span class="t">carry is now one click in Claude Desktop</span><br><span class="muted" style="font-size:14px">carry 0.4.1 ships as a Claude Desktop extension, a Claude Code plugin and an MCP Registry listing.</span><span class="tags"><i>Release</i><i>Claude Desktop</i><i>MCP</i></span></span><span class="d">7 Nov 2026</span></a>
+          <a href="/blog/introducing-carry" data-tags="Announcement|Privacy"><span><span class="t">Introducing carry: keep coding when you run out of tokens</span><br><span class="muted" style="font-size:14px">Why carry moves the whole coding session instead of a summary, and how it stays on your own Drive.</span><span class="tags"><i>Announcement</i><i>Privacy</i></span></span><span class="d">7 Nov 2026</span></a>
+          <p class="none muted hide">No posts match.</p>
         </div>
         <footer>
           <div class="foot-cols">
@@ -48,6 +53,6 @@
       </div>
     </main>
   </div>
-  <script src="/main.js?v=13"></script>
+  <script src="/main.js?v=14"></script>
 </body>
 </html>

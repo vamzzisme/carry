@@ -129,3 +129,25 @@ document.getElementById('fb')?.addEventListener('submit', e => {
   const body = `${msg}\n\n${name ? `From: ${name}\n` : ''}Sent from the carry site`;
   location.href = `mailto:pvamshikrishna369@gmail.com?subject=${encodeURIComponent(`carry: ${type}`)}&body=${encodeURIComponent(body)}`;
 });
+
+// Blog: search box + tag filter over the post list.
+const posts = [...document.querySelectorAll('.posts a')];
+if (posts.length) {
+  const box = document.querySelector('.blog-search'), none = document.querySelector('.posts .none');
+  let tag = '';
+  const filter = () => {
+    const q = box.value.trim().toLowerCase();
+    let shown = 0;
+    posts.forEach(a => {
+      const ok = (!tag || a.dataset.tags.split('|').includes(tag)) && (!q || a.textContent.toLowerCase().includes(q));
+      a.classList.toggle('hide', !ok); shown += ok;
+    });
+    none.classList.toggle('hide', shown > 0);
+  };
+  box.addEventListener('input', filter);
+  document.querySelectorAll('.tag-filter button').forEach(b => b.addEventListener('click', () => {
+    tag = b.dataset.tag;
+    document.querySelectorAll('.tag-filter button').forEach(x => x.classList.toggle('on', x === b));
+    filter();
+  }));
+}
