@@ -29,6 +29,7 @@ code, pre, kbd { font-family: var(--mono); }
 :not(pre) > code { font-size: .86em; background: var(--soft); padding: 2px 6px; border-radius: 3px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .hide { display: none !important; }
+.pname { color: var(--accent-ink); font-weight: 600; } /* "carry" in running text (main.js) */
 
 /* ---------- shell: sidebar + column ---------- */
 .shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); max-width: 1160px; margin: 0 auto; }

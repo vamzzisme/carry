@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>carry · keep coding on any account</title>
-  <meta name="description" content="Hit your Claude Code limit? Move the session, with its full history, to Codex, another account or a friend's laptop. Or hand over the whole project. A VXMZ product.">
-  <meta property="og:title" content="carry · keep coding on any account">
-  <meta property="og:description" content="Move a coding session with its full history, or a whole project with its memory, to any account, tool or laptop.">
+  <title>carry · AirDrop for AI chats and projects</title>
+  <meta name="description" content="AirDrop for AI chats and projects. Send a Claude Code or Codex session, or a whole project, to a friend, another account or another laptop through your own Google Drive. Serverless: nothing hosted by us.">
+  <meta property="og:title" content="carry · AirDrop for AI chats and projects">
+  <meta property="og:description" content="AirDrop for AI chats and projects. Serverless: it travels through your own Google Drive, nothing hosted by us.">
   <link rel="icon" href="/favicon.svg?v=17" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=19">
+  <link rel="stylesheet" href="/style.css?v=20">
   <!-- Analytics: self-hosted Umami (cookie-free), counts only carry-si.vercel.app, honours Do Not Track -->
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
@@ -32,8 +32,8 @@
     <main class="page">
       <div class="col">
         <div class="pill"><span>New: open chats in the Claude and Codex apps</span><a href="/blog/open-in-desktop-apps">Read the post ↗</a></div>
-        <h1 id="top">out of tokens? <em>Keep coding.</em> carry moves your AI coding session to another account, tool or laptop.</h1>
-        <p class="lede">The full Claude Code or Codex session, every message, command and dead end, or a whole project with its memory. Through your own Google Drive. Nothing hosted by us.</p>
+        <h1 id="top">out of tokens mid-session? <em>Keep working.</em> carry moves your AI session to another account, tool or laptop.</h1>
+        <p class="lede">Send a Claude Code or Codex session, every message and dead end, or a whole project with its memory, to a friend, another account or another laptop. It travels through your own Google Drive, encrypted. Nothing is ever hosted by us. It's AirDrop for AI chats.</p>
         <div class="cta">
           <a class="btn btn-primary" href="/docs#install">Install carry</a>
           <a class="btn btn-secondary" href="/docs">Read the docs</a>
@@ -75,7 +75,7 @@ stacked-reveal-effect    codex         3d ago
 
         <section>
           <h2 id="what" data-toc="What it does">Not a summary. <em>The whole session.</em></h2>
-          <p class="muted">A pasted summary keeps what the AI chose to remember. carry keeps every message, command, error and dead end, so the next agent doesn't retry the fix that already failed.</p>
+          <p class="muted">A "copy & paste" summary keeps what the AI chose to remember. carry keeps every message, command, error and dead end, so the next agent doesn't retry the fix that already failed.</p>
           <div class="items">
             <div><span class="label">Session</span><div><h3>Full session, resumed</h3><p>Hit your limit in Claude Code? Continue the same session in Codex or on another account. It arrives as a real session, history and all.</p></div></div>
             <div><span class="label">Project</span><div><h3>Whole project, handed over</h3><p>Recent chats, Claude's memory notes, CLAUDE.md and AGENTS.md, plus a handoff. A fresh session on your friend's laptop answers from your decisions. The code goes through git.</p></div></div>
@@ -119,7 +119,7 @@ stacked-reveal-effect    codex         3d ago
           <h2 id="faq" data-toc="FAQ">FAQ</h2>
           <div class="faq">
             <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
-            <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
+            <details><summary>Is carry really serverless?</summary><p>Yes: there is no carry server and no carry account. carry runs on your laptop, puts what you share in your own Google Drive, and your friend's carry picks it up from there. We never see your chats, and there is nothing of ours that can go down or shut down. (Not "serverless" as in cloud functions: there are none of those either.)</p></details>
             <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
             <details><summary>Do I have to send links every time?</summary><p>No. Pair with a friend once and everything you send lands in their <code>carry inbox</code>. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
             <details><summary>Can my friend send the work back?</summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED. If you also kept working, carry opens theirs next to yours and overwrites nothing.</p></details>
@@ -156,6 +156,6 @@ stacked-reveal-effect    codex         3d ago
       </div>
     </main>
   </div>
-  <script src="/main.js?v=20"></script>
+  <script src="/main.js?v=23"></script>
 </body>
 </html>

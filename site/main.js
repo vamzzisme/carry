@@ -10,6 +10,17 @@
 })();
 
 
+// "carry" in running text gets the accent, so it reads as the product's name and not the verb. Not in code, commands,
+// labels, buttons or the footer, and not inside names like carry-si.vercel.app, @heyvamz/carry or carry.mcpb.
+const NAME = /(?<![\w/@.-])(carry)(?![\w/@-]|\.\w)/;
+const texts = document.createTreeWalker(document.querySelector('main') || document.body, NodeFilter.SHOW_TEXT,
+  { acceptNode: n => NAME.test(n.data) && !n.parentElement.closest('code, pre, .codebox, .label, footer, button, .btn, .tags, .pname, [data-plain]') ? 1 : 2 });
+const hits = []; for (let n; (n = texts.nextNode());) hits.push(n);
+hits.forEach(n => {
+  const parts = n.data.split(new RegExp(NAME.source, 'g'));
+  n.replaceWith(...parts.map((t, i) => i % 2 ? Object.assign(document.createElement('span'), { className: 'pname', textContent: t }) : t));
+});
+
 // Small screens: the sidebar is a top bar with a menu button.
 const side = document.querySelector('.side'), menu = document.getElementById('menu');
 menu?.addEventListener('click', () => menu.setAttribute('aria-expanded', side.classList.toggle('open')));
