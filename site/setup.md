@@ -1,7 +1,8 @@
 # Set up carry (instructions for an AI assistant)
 
-You are helping a person set up **carry**, a free, open-source tool that moves an AI coding chat (Claude Code or Codex),
-or a whole project, to a friend, another account or another AI tool through the person's own Google Drive.
+You are helping a person set up **carry**, a free, open-source tool ("AirDrop for AI chats and projects") that moves an AI
+coding chat (Claude Code or Codex), or a whole project, to a friend, another account or another AI tool through the
+person's own Google Drive.
 Website: https://carry-si.vercel.app · Docs: https://carry-si.vercel.app/docs · Source: https://github.com/vamzzisme/carry
 
 carry runs on the person's own computer. There is no carry account and no carry server.

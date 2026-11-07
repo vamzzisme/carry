@@ -1,6 +1,7 @@
 # carry
 
-**Out of tokens? Keep coding.**
+**AirDrop for AI chats and projects.** Serverless: it travels through your own Google Drive, nothing is hosted by us.
+Out of tokens? Keep coding.
 
 carry moves a Claude Code or Codex session, with its full history, to another account, another tool or a friend's
 laptop. Or hand over a whole project, memory and all, so the next agent knows what was tried and why.

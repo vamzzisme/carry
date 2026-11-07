@@ -22,7 +22,7 @@ fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify({
   name: 'carry',
   display_name: 'carry',
   version: pkg.version,
-  description: 'Share Claude Code and Codex chats or whole projects with friends through your own Google Drive.',
+  description: 'AirDrop for AI chats and projects: share Claude Code and Codex sessions through your own Google Drive.',
   long_description: 'Ask Claude to share a chat or project, check your carry inbox, open what a friend sent, or send it back with your work. Secrets are redacted before upload. carry has no server: files go only to your own Google Drive.',
   author: { name: 'heyvamz', url: 'https://x.com/heyvamz' },
   repository: { type: 'git', url: 'https://github.com/vamzzisme/carry' },

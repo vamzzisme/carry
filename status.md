@@ -1,6 +1,7 @@
 # Status — Shared Project Brain
 
-Last updated: 2026-11-06 · Stage: **carry v0.1 built and tested end to end** (see "Build log" at the bottom)
+Last updated: 2026-11-07 · Stage: **carry 0.4.4 released** (npm, Claude Code plugin, carry.mcpb, MCP Registry, site).
+Positioning (7 Nov): "AirDrop for AI chats and projects", serverless (no carry server, own Google Drive). Build log at the bottom.
 Notion page: https://app.notion.com/p/40e08c931db68187a8f8e7d3a41971ce (older than this file; this file wins)
 
 ## Product in one line

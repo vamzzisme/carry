@@ -2,7 +2,7 @@
   "name": "@heyvamz/carry",
   "version": "0.4.4",
   "mcpName": "io.github.vamzzisme/carry",
-  "description": "Out of tokens? Keep coding. Move a Claude Code or Codex session, or a whole project, to another account, tool or laptop through your own Google Drive.",
+  "description": "AirDrop for AI chats and projects. Send a Claude Code or Codex session, or a whole project, to a friend, another account or another laptop through your own Google Drive. Serverless: nothing hosted by us.",
   "keywords": ["claude-code", "codex", "ai", "chat", "handoff", "mcp", "google-drive", "txcript"],
   "homepage": "https://carry-si.vercel.app",
   "repository": { "type": "git", "url": "git+https://github.com/vamzzisme/carry.git" },
