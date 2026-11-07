@@ -30,7 +30,8 @@ function writeSession(who, cwd, id, messages) {
 }
 // Simulate someone continuing a Claude Code session: append messages to the session file carry wrote.
 function continueSession(who, id, ...texts) {
-  const file = require('child_process').execSync(`find "${home(who)}/.claude/projects" -name "${id}.jsonl"`).toString().trim();
+  const dir = path.join(home(who), '.claude', 'projects'); // no `find`: on Windows that's a different program
+  const file = fs.readdirSync(dir).map(d => path.join(dir, d, `${id}.jsonl`)).find(f => fs.existsSync(f));
   const c = JSON.parse(tx.toCommon(fs.readFileSync(file, 'utf8'), 'claude_code'));
   texts.forEach((t, i) => c.messages.push(msg(i % 2 ? 'assistant' : 'user', t)));
   fs.writeFileSync(file, tx.fromCommon(JSON.stringify(c), 'claude_code'));
