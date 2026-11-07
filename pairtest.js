@@ -37,7 +37,7 @@ function continueSession(who, id, ...texts) {
   fs.writeFileSync(file, tx.fromCommon(JSON.stringify(c), 'claude_code'));
   const later = new Date(Date.now() + 2000); fs.utimesSync(file, later, later);
 }
-const code = out => out.match(/carry1\.[A-Za-z0-9_-]+/)[0];
+const code = out => out.match(/carry2\.[A-Za-z0-9_.-]+/)[0];
 const newId = out => out.match(/claude --resume ([0-9a-f-]{36})/)[1];
 const lastId = out => [...out.matchAll(/claude --resume ([0-9a-f-]{36})/g)].pop()[1];
 

@@ -456,12 +456,28 @@ async function storeGet(c, store, id) {
   if (!file || !fs.existsSync(file)) throw new Error('not in your synced folder yet (is it the same shared folder, and synced?)');
   return fs.readFileSync(file, 'utf8');
 }
-const pairCode = (c, pair, out) => 'carry1.' + Buffer.from(JSON.stringify({ v: 1, pair, from: c.user, store: out.store, inbox: out.inbox, key: out.key })).toString('base64url');
+// A pairing code is just where your inbox for them lives plus a 128-bit secret: carry2.<Drive file id or folder path>.<secret>.
+// Your name and the pair id sit inside the sealed inbox, so the code stays short. The AES-256 key is sha256(secret).
+const keyFrom = secret => crypto.createHash('sha256').update(secret).digest('base64');
+const pairCode = (c, pair, out) => `carry2.${out.inbox.replace(/^carry-friends\/(.*)\.json$/, '$1')}.${out.secret}`;
 async function makeOutbound(c, pair) {
   if (!c.web && !c.folder) die('Set up sharing first: carry setup --web');
-  const out = { key: crypto.randomBytes(32).toString('base64'), store: c.web ? 'drive' : 'folder', items: [], sent: {} };
-  out.inbox = await storePut(c, `inbox-${slug(c.user)}-${pair.slice(0, 8)}.json`, seal(out.key, JSON.stringify({ from: c.user, items: [] })));
+  const secret = crypto.randomBytes(16).toString('base64url');
+  const out = { secret, key: keyFrom(secret), store: c.web ? 'drive' : 'folder', items: [], sent: {} };
+  out.inbox = await storePut(c, `inbox-${slug(c.user)}-${pair.slice(0, 8)}.json`, seal(out.key, JSON.stringify({ from: c.user, pair, items: [] })));
   return out;
+}
+// Read a friend's code (carry2, or the older long carry1) into { pair, from, store, inbox, key }.
+async function readCode(c, code) {
+  const bad = () => die('That pairing code looks broken. Copy all of it again.');
+  if (code.startsWith('carry1.')) { try { return JSON.parse(Buffer.from(code.slice(7), 'base64url').toString('utf8')); } catch { bad(); } }
+  const rest = code.slice(7), dot = rest.lastIndexOf('.');
+  if (dot < 1) bad();
+  const id = rest.slice(0, dot), key = keyFrom(rest.slice(dot + 1)), store = id.startsWith('inbox-') ? 'folder' : 'drive';
+  const inbox = store === 'folder' ? `carry-friends/${id}.json` : id;
+  if (store === 'folder' && !c.folder) die('Your friend uses a shared synced folder. Run carry setup <that same folder> first.');
+  let box; try { box = JSON.parse(unseal(key, await storeGet(c, store, inbox))); } catch (e) { die(`Couldn't read that code's inbox: ${e.message}`); }
+  return { pair: box.pair || bad(), from: box.from, store, inbox, key };
 }
 function findFriend(c, ref, soft) {
   const r = String(ref).toLowerCase();
@@ -473,7 +489,7 @@ async function sendTo(c, ref, name, pack, kind, extra = {}) {
   const [pair, f] = findFriend(c, ref), k = `${kind}:${name}`;
   f.out.sent[k] = await storePut(c, `sent-${slug(c.user)}-${pair.slice(0, 8)}-${kind}-${name}.carry`, seal(f.out.key, JSON.stringify(pack)), f.out.sent[k]);
   f.out.items = [...f.out.items.filter(i => `${i.kind}:${i.name}` !== k), { name, kind, file: f.out.sent[k], at: Date.now(), ...extra }];
-  await storePut(c, '', seal(f.out.key, JSON.stringify({ from: c.user, items: f.out.items })), f.out.inbox);
+  await storePut(c, '', seal(f.out.key, JSON.stringify({ from: c.user, pair, items: f.out.items })), f.out.inbox);
   save(c);
   return f.name || f.label;
 }
@@ -522,6 +538,7 @@ const CONTINUE_TOOLS = ['claude_code', 'codex', 'opencode', 'cursor', 'pi', 'ant
 const cmds = {
   async setup(args) {
     const c = load();
+    enableCompletion();
     c.user = flag(args, '--as') || c.user || os.userInfo().username;
     const friends = flag(args, '--with');
     if (friends) c.friends = friends.split(',').map(e => e.trim()).filter(Boolean);
@@ -784,8 +801,8 @@ const cmds = {
       return console.log(`Removed ${f.name || f.label}. They can't read anything you send from now on.`);
     }
     if (sub !== 'add' || !arg) die('Usage: carry friend add <their email or name>   or   carry friend add <their pairing code>');
-    if (arg.startsWith('carry1.')) {
-      let p; try { p = JSON.parse(Buffer.from(arg.slice(7), 'base64url').toString('utf8')); } catch { die('That pairing code looks broken. Copy all of it again.'); }
+    if (/^carry[12]\./.test(arg)) {
+      const p = await readCode(c, arg);
       if (p.store === 'folder' && !c.folder) die(`${p.from} uses a shared synced folder. Run carry setup <that same folder> first.`);
       const f = c.friends[p.pair] ||= { label: p.from };
       f.name = p.from;
@@ -865,7 +882,18 @@ function continueIn(pack, to, cwd, txPath) {
   const cmd = ((r.stdout || '').match(/resume with: (.+)$/m) || [])[1]?.trim();
   return { status: r.status, id: cmd && cmd.split(/\s+/).pop(), cmd };
 }
-function launch(cmd, cwd) { if (cmd) spawnSync(cmd, { cwd, stdio: 'inherit', shell: true }); }
+// No `claude` or `codex` command installed (only the desktop apps)? Run the same tool through npx; nothing to install.
+const NPX = { claude: '@anthropic-ai/claude-code', codex: '@openai/codex' };
+const onPath = bin => (process.env.PATH || '').split(path.delimiter).some(d => ['', '.cmd', '.exe'].some(e => d && fs.existsSync(path.join(d, bin + e))));
+function launch(cmd, cwd) {
+  if (!cmd) return;
+  const bin = cmd.split(/\s+/)[0];
+  if (NPX[bin] && !onPath(bin)) {
+    console.log(`\n${bin} isn't installed as a command, so carry runs it with npx (the first time takes a minute).`);
+    cmd = `npx -y ${NPX[bin]}${cmd.slice(bin.length)}`;
+  }
+  spawnSync(cmd, { cwd, stdio: 'inherit', shell: true });
+}
 
 function flag(args, f) { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : undefined; }
 function ago(ms) {
@@ -901,6 +929,20 @@ _carry() {
 }
 compdef _carry carry
 `;
+
+// zsh users get Tab completion from setup: the script lives in ~/.carry, ~/.zshrc gets one line that sources it.
+function enableCompletion() {
+  if (!/zsh$/.test(process.env.SHELL || '')) return;
+  try {
+    const file = path.join(HOME, '.carry', 'completion.zsh'), rc = path.join(HOME, '.zshrc');
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, ZSH_COMPLETION);
+    const now = fs.existsSync(rc) ? fs.readFileSync(rc, 'utf8') : '';
+    if (now.includes('compdef _carry carry') || now.includes('.carry/completion.zsh')) return;
+    fs.appendFileSync(rc, `${now && !now.endsWith('\n') ? '\n' : ''}[ -f ~/.carry/completion.zsh ] && source ~/.carry/completion.zsh  # carry Tab completion\n`);
+    console.log('Turned on Tab completion for carry (chat and friend names). Open a new terminal to use it.');
+  } catch {}
+}
 
 const USAGE = `carry setup --web [--as name] [--with emails]   connect Google Drive in the browser
 carry setup [folder] [--as name]                 or use a synced folder (Drive for desktop, Dropbox, iCloud)

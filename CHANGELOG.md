@@ -1,6 +1,10 @@
 # Changelog
 
 ## Unreleased
+- Pairing codes are about 4x shorter (`carry2.<inbox>.<secret>`, about 63 characters). Your name and the pair id now
+  travel inside the encrypted inbox. Old `carry1.` codes still work.
+- `carry setup` turns on Tab completion in zsh by itself (one line in `~/.zshrc` that sources `~/.carry/completion.zsh`).
+- Opening into Claude Code or Codex works without their command-line tools installed: carry runs them through `npx`.
 - An unknown command prints help on stderr and exits 1, so `carry <typo> >> file` no longer writes the help text into the file.
 
 ## 0.4.2 (2026-11-07)

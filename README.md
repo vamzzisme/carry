@@ -140,7 +140,7 @@ On Windows, use `"command": "cmd"` and put `"/c", "npx"` at the start of the arg
 | `carry share --project [name] [--add chats] [--skip chats] [--related] [--to friend]` | Share a whole repo |
 | `carry open <link, file or name> --to claude_code\|codex\|chat` | Continue it here |
 | `carry packs` | What you've shared |
-| `carry completion zsh >> ~/.zshrc` | Tab-complete commands and chat names (open a new terminal after) |
+| `carry completion zsh` | Tab completion for zsh. `carry setup` turns it on for you; open a new terminal after |
 | `carry sync` | Re-upload shared chats that changed |
 | `carry note "<name>" --handoff summary.md` | Share just a summary (from a chat app) |
 | `carry doctor` | Versions, txcript, and how sharing is set up |
