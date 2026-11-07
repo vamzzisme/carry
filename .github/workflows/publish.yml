@@ -30,7 +30,9 @@ jobs:
       - name: Publish (skipped if this version is already on npm)
         run: |
           v=$(node -p 'require("./package.json").version')
-          if npm view "@heyvamz/carry@$v" version >/dev/null 2>&1; then echo "v$v already on npm"; else npm publish --provenance; fi
+          if npm view "@heyvamz/carry@$v" version >/dev/null 2>&1; then echo "v$v already on npm"
+          # a hand publish can take minutes to show up: then the publish fails, so wait and check again
+          else npm publish --provenance || { sleep 120; npm view "@heyvamz/carry@$v" version; }; fi
       - name: GitHub Release with this version's changelog
         env:
           GH_TOKEN: ${{ github.token }}

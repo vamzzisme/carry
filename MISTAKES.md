@@ -40,3 +40,10 @@
 - Did: read only `args[1]`
 - Symptom: renamed to `carry`, then `share carry-project` → "No chat named…"
 - Rule: commands taking free text join the remaining args
+
+## Pushed the release tag right after a hand `npm publish`
+- When: 0.4.2 release, `git push origin main --tags` seconds after the user's `npm publish` printed `+ @heyvamz/carry@0.4.2`
+- Did: assumed npm shows the version immediately
+- Symptom: publish.yml "Publish (skipped if this version is already on npm)" failed (`npm view` still said 0.4.1), so no GitHub Release and no carry.mcpb
+- Cause: npm takes minutes to list a new version ("Your package is being processed")
+- Rule: wait until `curl -s 'https://registry.npmjs.org/@heyvamz%2fcarry'` shows the version as latest, then push the tag (publish.yml now also retries after 120 s). Re-run a failed run from the Actions page; deleting and re-pushing a tag is blocked
