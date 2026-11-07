@@ -9,9 +9,22 @@ const { openTarget, reveal, copyText, driveFolder } = require('./system');
 const HOME = os.homedir();
 const CONF = path.join(HOME, '.carry', 'config.json');
 const HEAD_BYTES = 256 * 1024; // enough of a session to find its first prompt
-// txcript: $TXCRIPT, else the copy `npm install` put in ./bin, else whatever is on PATH.
-const BUNDLED = path.join(__dirname, 'bin', process.platform === 'win32' ? 'txcript.exe' : 'txcript');
-const TXCRIPT = process.env.TXCRIPT || (fs.existsSync(BUNDLED) ? BUNDLED : 'txcript');
+// txcript: $TXCRIPT, else the copy `npm install` put in ./bin, else one carry fetched into ~/.carry/bin, else PATH.
+// npm 12 blocks install scripts by default, so if none exists carry downloads it on first use.
+const TX = require('./install-txcript');
+const BUNDLED = path.join(__dirname, 'bin', TX.EXE);
+function findTxcript() {
+  if (process.env.TXCRIPT) return process.env.TXCRIPT;
+  for (const p of [BUNDLED, path.join(TX.USER_DIR, TX.EXE)]) if (fs.existsSync(p)) return p;
+  return spawnSync('txcript', ['--version']).error ? null : 'txcript';
+}
+async function txcriptPath() {
+  const found = findTxcript();
+  if (found) return found;
+  console.error(`Fetching txcript ${TX.VERSION} (one time)...`);
+  try { return await TX.install(TX.USER_DIR); }
+  catch (e) { die(`Couldn't get txcript (${e.message}). Install it from https://github.com/skillsynchq/txcript/releases and put it on PATH.`); }
+}
 
 // ---------- config ----------
 function load() {
@@ -263,7 +276,7 @@ function buildProject(c, root, { handoffFile, max = 5 } = {}) {
 
 // Claude Code: memory notes go where Claude loads them, the handoff becomes a memory note too.
 // Codex and others: everything goes in .carry/ and AGENTS.md points at it. Existing files are never overwritten.
-function openProject(p, to, args) {
+function openProject(p, to, args, txPath) {
   const dir = path.resolve(flag(args, '--dir') || process.cwd()), name = p.meta.name;
   const latest = p.chats[0];
   if (to === 'here') return console.log(`${projectBrief(p)}\n---\n\n${latest ? latest.transcript : ''}`);
@@ -296,7 +309,7 @@ function openProject(p, to, args) {
   if (to !== 'claude_code') console.log('  tip: add .carry/ to .gitignore');
   // Oldest first, so the newest chat is the last one written and the resume command printed last.
   let status = 0;
-  for (const ch of [...p.chats].reverse()) status = continueIn(ch.pack, to, dir, true) || status;
+  for (const ch of [...p.chats].reverse()) status = continueIn(ch.pack, to, dir, true, txPath) || status;
   process.exitCode = status;
 }
 
@@ -333,6 +346,13 @@ const cmds = {
     const r = spawnSync('npm', ['install', '-g', `${PKG.name}@latest`], { stdio: 'inherit', shell: process.platform === 'win32' });
     if (r.status !== 0) die(`Update failed.${process.platform === 'linux' ? ` If npm needs root here: sudo npm install -g ${PKG.name}@latest` : ''}`);
     try { fs.rmSync(UPDATE_FILE); } catch {}
+  },
+  // Versions, where txcript is (fetching it if missing) and how sharing is set up.
+  async doctor() {
+    const c = load();
+    console.log(`carry ${PKG.version} · node ${process.version} · ${process.platform}-${process.arch}`);
+    console.log(`txcript: ${await txcriptPath()}`);
+    console.log(`sharing: ${c.web ? `Google Drive (web) as ${c.user}` : c.folder ? `synced folder ${c.folder} as ${c.user}` : 'not set up (run: carry setup --web)'}`);
   },
   version() { console.log(PKG.version); },
   '--version'() { console.log(PKG.version); },
@@ -420,11 +440,11 @@ const cmds = {
     const c = load(), ref = args[0] || die('Usage: carry open <pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
     const p = await readPack(c, ref), name = p.meta.name;
     const to = flag(args, '--to') || 'claude_code';
-    if (p.kind === 'project') return openProject(p, to, args);
+    if (p.kind === 'project') return openProject(p, to, args, CONTINUE_TOOLS.includes(to) ? await txcriptPath() : null);
     if (to === 'here') return console.log(`${p.handoff}\n\n---\n\n${p.transcript}`); // for an AI reading stdout (MCP, skills)
     if (!p.pack && to !== 'chat') die(`"${name}" is a summary shared from a chat app, not a full chat. Open it with --to chat or --to here.`);
     if (to === 'chat' || !CONTINUE_TOOLS.includes(to)) return handToChat(name, p.handoff, p.transcript);
-    process.exitCode = continueIn(p.pack, to, process.cwd(), args.includes('--no-resume'));
+    process.exitCode = continueIn(p.pack, to, process.cwd(), args.includes('--no-resume'), await txcriptPath());
   },
 };
 
@@ -443,13 +463,13 @@ function handToChat(name, handoff, transcript) {
 }
 
 // Write a chat into a coding tool as a real session. New id so it never clashes with the original; cwd = this laptop's folder.
-function continueIn(pack, to, cwd, noResume) {
+function continueIn(pack, to, cwd, noResume, txPath) {
   const doc = { ...pack, id: crypto.randomUUID(), cwd };
   const tmp = path.join(os.tmpdir(), `carry-${doc.id}.json`);
   fs.writeFileSync(tmp, JSON.stringify(doc));
-  const r = spawnSync(TXCRIPT, ['continue', tmp, '--with', to, ...(noResume ? ['--no-resume'] : [])], { stdio: 'inherit', cwd });
+  const r = spawnSync(txPath, ['continue', tmp, '--with', to, ...(noResume ? ['--no-resume'] : [])], { stdio: 'inherit', cwd });
   fs.rmSync(tmp, { force: true });
-  if (r.error) die(`txcript not found. Fetch it with: node "${path.join(__dirname, 'install-txcript.js')}"`);
+  if (r.error) die(`Couldn't run txcript at ${txPath}: ${r.error.message}`);
   return r.status;
 }
 
@@ -469,9 +489,9 @@ carry note "<name>" --handoff f [--with emails] [--link]   share just a summary 
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here] [--dir project folder]
 carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
-carry update | --version`;
+carry update | doctor | --version`;
 
-module.exports = { redact, slug, cleanPrompt, readPack, TXCRIPT };
+module.exports = { redact, slug, cleanPrompt, readPack, findTxcript };
 // ---------- updates ----------
 // Shows a cached "new version" line on stderr; refreshes the cache at most once a day in a detached child, so commands never wait.
 const PKG = require('./package.json');

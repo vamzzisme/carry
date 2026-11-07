@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 (2026-11-07)
+- Fix: with npm 12 (which blocks install scripts by default) txcript wasn't downloaded, so opening into Claude Code or Codex
+  failed. carry now fetches txcript on first use into `~/.carry/bin`.
+- `carry doctor`: shows carry, Node and txcript versions and how sharing is set up (fetches txcript if missing).
+
 ## 0.3.0 (2026-11-07)
 - Published on npm as `@heyvamz/carry`: `npm install -g @heyvamz/carry`.
 - `carry update` and a once-a-day "new version" notice (opt out with `CARRY_NO_UPDATE_CHECK=1`).

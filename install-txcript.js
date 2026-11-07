@@ -1,5 +1,6 @@
-// Runs on `npm install`: downloads the txcript CLI for this OS into ./bin, checksum-verified.
-// Never fails the install; if it can't, carry falls back to a txcript on your PATH.
+// Downloads the txcript CLI for this OS, checksum-verified.
+// Runs on `npm install` into ./bin. npm 12 blocks install scripts by default, so carry also calls install() on first use,
+// into ~/.carry/bin/<version>/ (see txcriptPath() in carry.js).
 const fs = require('fs'), path = require('path'), os = require('os'), crypto = require('crypto');
 const { spawnSync } = require('child_process');
 
@@ -11,13 +12,15 @@ const TARGETS = {
   'linux-x64': 'x86_64-unknown-linux-gnu.tar.gz',
   'win32-x64': 'x86_64-pc-windows-msvc.zip',
 };
-const BIN = path.join(__dirname, 'bin');
 const EXE = process.platform === 'win32' ? 'txcript.exe' : 'txcript';
+const USER_DIR = path.join(os.homedir(), '.carry', 'bin', VERSION);
 
-async function main() {
-  if (fs.existsSync(path.join(BIN, EXE))) return;
+// Returns the path of the installed binary; throws if it can't.
+async function install(dir) {
+  const dest = path.join(dir, EXE);
+  if (fs.existsSync(dest)) return dest;
   const target = TARGETS[`${process.platform}-${process.arch}`];
-  if (!target) return console.warn(`carry: no txcript build for ${process.platform}-${process.arch}; install it yourself and put it on PATH.`);
+  if (!target) throw new Error(`no txcript build for ${process.platform}-${process.arch}`);
   const url = `https://github.com/skillsynchq/txcript/releases/download/v${VERSION}/txcript-${target}`;
   const get = async u => { const r = await fetch(u); if (!r.ok) throw new Error(`${r.status} ${u}`); return Buffer.from(await r.arrayBuffer()); };
   const [archive, sum] = await Promise.all([get(url), get(`${url}.sha256`)]);
@@ -37,11 +40,18 @@ async function main() {
     }
   })(tmp);
   if (!found) throw new Error(`${EXE} not found in the download`);
-  fs.mkdirSync(BIN, { recursive: true });
-  fs.copyFileSync(found, path.join(BIN, EXE));
-  fs.chmodSync(path.join(BIN, EXE), 0o755);
+  fs.mkdirSync(dir, { recursive: true });
+  fs.copyFileSync(found, dest);
+  fs.chmodSync(dest, 0o755);
   fs.rmSync(tmp, { recursive: true, force: true });
-  console.log(`carry: installed txcript ${VERSION} → ${path.join(BIN, EXE)}`);
+  return dest;
 }
 
-main().catch(e => console.warn(`carry: couldn't install txcript (${e.message}). Install it yourself: https://github.com/skillsynchq/txcript/releases`));
+module.exports = { install, VERSION, EXE, USER_DIR };
+
+// As an npm postinstall script: never fail the install; carry fetches it on first use instead.
+if (require.main === module) {
+  install(path.join(__dirname, 'bin'))
+    .then(p => console.log(`carry: installed txcript ${VERSION} → ${p}`))
+    .catch(e => console.warn(`carry: couldn't install txcript now (${e.message}); carry will fetch it the first time it's needed.`));
+}

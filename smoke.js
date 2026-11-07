@@ -1,5 +1,5 @@
 // node smoke.js — end-to-end run of carry in a throwaway home folder with two fake chats (Claude Code + Codex).
-// Runs on macOS, Linux and Windows. Uses the txcript that `npm install` fetched (or $TXCRIPT) to test `open --to <tool>`.
+// Runs on macOS, Linux and Windows. `open --to <tool>` uses ./bin/txcript, or carry fetches it into the temp home on first use.
 const assert = require('assert');
 const fs = require('fs'), path = require('path'), os = require('os'), zlib = require('zlib');
 const { spawnSync } = require('child_process');
@@ -108,11 +108,8 @@ assert.match(here, /Stripe Checkout because it handles tax/);
 assert.match(here, /Never touch prod/);
 assert.match(here, /refactor-the-billing-module/);
 
-// TXCRIPT comes from `npm install` (./bin) or $TXCRIPT. On CI it must exist, so the open steps can't be skipped.
-const { TXCRIPT } = require('./carry');
-const haveTx = fs.existsSync(TXCRIPT);
-assert(haveTx || !process.env.CI, `CI: txcript missing at ${TXCRIPT} (npm install should have fetched it)`);
-if (haveTx) {
+// Open into real tools (needs txcript: ./bin from npm install, or fetched on first use).
+{
   assert.match(carry('open', 'add-dark-mode-to-settings', '--to', 'claude_code', '--no-resume'), /resume with: claude --resume/);
   assert.match(carry('open', path.join(share, 'fix-the-login-bug-please.carry'), '--to', 'codex', '--no-resume'), /resume with: codex resume/);
 
@@ -132,7 +129,7 @@ if (haveTx) {
   assert.match(carry('open', 'billing-app', '--to', 'codex', '--dir', sam), /resume with: codex resume/);
   assert.match(fs.readFileSync(path.join(sam, 'AGENTS.md'), 'utf8'), /read \.carry\/HANDOFF\.md/);
   assert(fs.existsSync(path.join(sam, '.carry', 'memory', 'stripe.md')));
-} else console.log('(txcript not installed: skipped open --to claude_code/codex)');
+}
 
 fs.rmSync(home, { recursive: true, force: true });
 console.log(`smoke ok on ${process.platform}`);
