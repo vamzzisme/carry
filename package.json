@@ -1,6 +1,7 @@
 {
   "name": "@heyvamz/carry",
-  "version": "0.4.0",
+  "version": "0.4.1",
+  "mcpName": "io.github.vamzzisme/carry",
   "description": "Out of tokens? Keep coding. Move a Claude Code or Codex session, or a whole project, to another account, tool or laptop through your own Google Drive.",
   "keywords": ["claude-code", "codex", "ai", "chat", "handoff", "mcp", "google-drive", "txcript"],
   "homepage": "https://carry-si.vercel.app",

@@ -1,0 +1,16 @@
+{
+  "name": "carry",
+  "displayName": "carry",
+  "version": "0.4.1",
+  "description": "Move a Claude Code or Codex chat, or a whole project, to a friend, another account or another AI tool through your own Google Drive.",
+  "author": { "name": "heyvamz", "url": "https://x.com/heyvamz" },
+  "homepage": "https://carry-si.vercel.app",
+  "repository": "https://github.com/vamzzisme/carry",
+  "license": "Apache-2.0",
+  "keywords": ["handoff", "share", "chat", "codex", "google-drive"],
+  "privacyPolicyUrl": "https://carry-si.vercel.app/privacy",
+  "termsOfServiceUrl": "https://carry-si.vercel.app/terms",
+  "mcpServers": {
+    "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] }
+  }
+}

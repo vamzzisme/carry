@@ -1,0 +1,8 @@
+{
+  "name": "carry",
+  "description": "carry by heyvamz, The VXMZ Studio",
+  "owner": { "name": "heyvamz" },
+  "plugins": [
+    { "name": "carry", "source": "./", "description": "Share AI chats and projects through your own Google Drive" }
+  ]
+}

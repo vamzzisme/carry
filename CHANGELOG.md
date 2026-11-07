@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.1 (2026-11-07)
+- Claude Desktop extension: download `carry.mcpb` from the latest GitHub release and double-click to install.
+- Claude Code plugin: `claude plugin marketplace add vamzzisme/carry`, then `claude plugin install carry@carry`.
+- Listed in the official MCP Registry as `io.github.vamzzisme/carry`.
+- MCP tools now have titles and read-only / write hints, so apps can ask before carry shares anything.
+
 ## 0.4.0 (2026-11-07)
 - **Friends, inbox and return.** Pair once (`carry friend add`), then `carry share <chat> --to <friend>` (also projects).
   Friends pick from `carry inbox` and `carry open <number>`; no emails or links. Everything a friend can read is encrypted

@@ -95,7 +95,17 @@ claude.ai, ChatGPT and the Claude app keep chats on their servers, so carry shar
 carry also runs as an MCP connector. Add it once, then just say "share this chat with Riya", "what's in my carry inbox?"
 or "send it back to Riya".
 
-**Claude Desktop** (Settings, Developer, Edit Config) and **Cursor** (`~/.cursor/mcp.json`):
+**Claude Desktop, one click:** download [carry.mcpb](https://github.com/vamzzisme/carry/releases/latest/download/carry.mcpb)
+and double-click it.
+
+**Claude Code plugin** (connector + `/carry` skill together):
+
+```bash
+claude plugin marketplace add vamzzisme/carry
+claude plugin install carry@carry
+```
+
+**Claude Desktop by hand** (Settings, Developer, Edit Config) and **Cursor** (`~/.cursor/mcp.json`):
 
 ```json
 {
@@ -142,6 +152,11 @@ On Windows, use `"command": "cmd"` and put `"/c", "npx"` at the start of the arg
 - API keys, tokens, private keys and `KEY=value` lines are replaced with `[REDACTED]` before anything leaves your laptop.
   This is pattern based, so don't share chats full of secrets you care about.
 - Nothing is shared unless you pick it.
+- We collect nothing. carry has no server and no telemetry; the only network calls are to Google Drive (your account),
+  npm (update check) and GitHub (downloading txcript once).
+- Shared files stay in your Drive until you delete them there. Local settings live in `~/.carry/` until you delete that folder.
+- Who sees a shared chat is up to you: paired friends, the emails you name, or anyone with the link if you choose `--link`.
+- Contact: pvamshikrishna369@gmail.com
 
 Full policy: [carry-si.vercel.app/privacy](https://carry-si.vercel.app/privacy)
 

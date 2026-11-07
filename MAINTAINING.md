@@ -13,7 +13,7 @@ node pkgtest.js           # pack + global install like a user, checks files and 
 CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, with the bundled npm and npm@latest.
 
 ## Release
-1. Bump `version` in package.json and add a `CHANGELOG.md` entry.
+1. Bump `version` in package.json, `.claude-plugin/plugin.json` and `server.json` (twice), and add a `CHANGELOG.md` entry.
 2. Site: bump the footer version and the `?v=` on CSS/JS/icon links in `site/*.html`.
 3. `git tag v<version> && git push origin main --tags`. `.github/workflows/publish.yml` tests, publishes to npm (skips if
    that version exists) and creates a GitHub Release from the changelog.
@@ -21,6 +21,12 @@ CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, w
      repo `vamzzisme/carry`, workflow `publish.yml`.
    - Until that's set, publish by hand: `npm publish` (asks for 2FA in the browser).
 4. Site deploys from `main` to https://carry-si.vercel.app (Vercel project `carry-site`, root `site/`).
+5. The workflow also builds `carry.mcpb` (`node mcpb/build.js`) and attaches it to the release; the site and README link to
+   `releases/latest/download/carry.mcpb`.
+6. MCP Registry (after npm has the version): `mcp-publisher login github` (once; device code in the browser), then
+   `mcp-publisher publish` from the repo root. Name `io.github.vamzzisme/carry` must match `mcpName` in package.json.
+7. Claude Code plugin: nothing to do, `vamzzisme/carry` is its own marketplace (`.claude-plugin/`). Check with
+   `claude plugin validate .`. Directory listing: claude.ai/directory/manage → Submit new → Plugin bundle.
 
 ## Analytics (VXMZ-wide)
 Self-hosted Umami 3.4 at https://vxmz-analytics.vercel.app (Vercel project `vxmz-analytics`, fork `vamzzisme/vxmz-analytics`).

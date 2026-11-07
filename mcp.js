@@ -115,6 +115,19 @@ const TOOLS = [
     } },
 ];
 
+// Titles + hints for clients and directory review. Nothing carry does deletes user data.
+const LOOK = { readOnlyHint: true, openWorldHint: false };
+const SEND = { readOnlyHint: false, destructiveHint: false, openWorldHint: true };
+const ANNOTATIONS = {
+  carry_status: ['Carry status', LOOK], carry_list_chats: ['List chats', LOOK], carry_inbox: ['Carry inbox', { ...LOOK, openWorldHint: true }],
+  carry_list_projects: ['List projects', LOOK], carry_list_shared: ['List shared chats', { ...LOOK, openWorldHint: true }],
+  carry_connect_google_drive: ['Connect Google Drive', SEND], carry_share_chat: ['Share a chat', SEND],
+  carry_add_friend: ['Add a friend', SEND], carry_return: ['Send back to friend', SEND],
+  carry_share_project: ['Share a project', SEND], carry_share_summary: ['Share this conversation', SEND],
+  carry_open: ['Open a shared chat', SEND],
+};
+for (const t of TOOLS) { const [title, hints] = ANNOTATIONS[t.name]; t.title = title; t.annotations = { title, ...hints }; }
+
 function serve() {
   console.log = console.error; // stdout is the protocol channel
   const send = m => process.stdout.write(`${JSON.stringify({ jsonrpc: '2.0', ...m })}\n`);
