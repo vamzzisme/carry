@@ -170,12 +170,24 @@ function buildPack(c, s, handoffFile) {
   return { carry: 1, meta, handoff, transcript: transcriptMd({ ...clean, name: s.name, from: s.harness }), pack: clean };
 }
 
+// Upload to the carry Drive folder. If the user deleted the old file, make a new one; if they deleted the folder, recreate it.
+async function driveUpload(c, name, text, id) {
+  try { return await drive.upload(name, text, c.web.folderId, id); }
+  catch (e) {
+    if (!/not found/i.test(e.message)) throw e;
+    if (id) return driveUpload(c, name, text);
+    c.web.folderId = await drive.makeFolder('carry'); save(c);
+    return drive.upload(name, text, c.web.folderId);
+  }
+}
+
 // Synced-folder mode writes the file and lets Drive/Dropbox/iCloud upload it; web mode uploads through the Drive API.
 async function publish(c, name, p, { emails = [], link = false } = {}) {
   const body = JSON.stringify(p), prev = c.shared[name] || {};
   let where;
   if (c.web) {
-    const f = await drive.upload(`${name}.carry`, body, c.web.folderId, prev.fileId);
+    const f = await driveUpload(c, `${name}.carry`, body, prev.fileId);
+    if (f.id !== prev.fileId) delete prev.fileId; // a new file: share it again
     const to = emails.length ? emails : prev.fileId ? [] : (c.friends || []); // first share goes to your friends
     if (to.length || link) await drive.share(f.id, to, link, `${c.user} shared the AI chat "${name}" with you. Continue it with: carry open <this link>`);
     prev.fileId = f.id; where = f.webViewLink;
@@ -193,13 +205,32 @@ async function share(c, s, opts = {}) {
   return { where, count: p.meta.redacted };
 }
 
+// Names you can open: your web shares, or the packs in the synced folder.
+function packNames(c) {
+  if (c.web) return Object.keys(c.shared).filter(n => c.shared[n].fileId);
+  const dir = c.folder && fs.existsSync(c.folder) ? c.folder : null;
+  return dir ? fs.readdirSync(dir).filter(f => f.endsWith('.carry')).map(f => f.slice(0, -6)) : [];
+}
+// The first plain argument, or ask: "carry share" alone lists the newest and you type a number. Not in scripts or MCP (no TTY).
+async function pickArg(args, what, rows, usage) {
+  if (args[0] && !args[0].startsWith('--')) return args[0];
+  if (!rows.length || !process.stdin.isTTY) die(usage);
+  rows.forEach((r, i) => console.log(`${String(i + 1).padStart(3)}. ${r}`));
+  const rl = require('readline/promises').createInterface({ input: process.stdin, output: process.stdout });
+  const n = Number(await rl.question(`Which ${what}? [1] `) || 1); rl.close();
+  return rows[n - 1]?.split(' ')[0] || die('No such number.');
+}
+
 // Read a pack from a Drive link, a .carry file, or a name in the synced folder.
 async function readPack(c, ref) {
   const id = drive.fileIdFrom(ref);
   let text;
-  if (id) text = await drive.publicDownload(id) || await viaBrowser(ref);
+  if (id) text = await drive.ownDownload(id) || await drive.publicDownload(id) || await viaBrowser(ref);
   else if (ref.endsWith('.carry') && fs.existsSync(ref)) text = fs.readFileSync(ref, 'utf8');
-  else {
+  else if (c.web) { // your own shares, by name; friends' arrive as Drive links
+    const id = c.shared[ref]?.fileId || die(`No share named "${ref}". Try: carry packs, or open the Drive link.`);
+    text = await drive.ownDownload(id) || die(`Couldn't download "${ref}" from Drive. Was it deleted? Share it again: carry share ${ref}`);
+  } else {
     const f = path.join(needFolder(c), `${ref}.carry`);
     if (!fs.existsSync(f)) die(`No pack "${ref}". Try: carry packs`);
     text = fs.readFileSync(f, 'utf8');
@@ -406,7 +437,7 @@ function unseal(key, text) {
 // Create (no id) or replace (id) a file the friend can read. Returns its id: a Drive file id, or a path inside the synced folder.
 async function storePut(c, name, text, id) {
   if (c.web) {
-    const f = await drive.upload(name, text, c.web.folderId, id);
+    const f = id ? await drive.upload(name, text, c.web.folderId, id) : await driveUpload(c, name, text);
     if (!id) await drive.share(f.id, [], true, '');
     return f.id;
   }
@@ -604,7 +635,8 @@ const cmds = {
       if (left.length) console.log(`  ${left.length} related chat(s) also worked on it: ${left.map(r => r.name).join(', ')}\n  Include with --add <name> or --related`);
       return;
     }
-    const c = load(), s = find(c, args[0] || die('Usage: carry share <chat> | --project [name] [--to friend] [--with emails] [--link] [--handoff file.md]'));
+    const c = load(), s = find(c, await pickArg(args, 'chat', named(c, 9).map(x => `${x.name.padEnd(36)} ${x.harness.padEnd(12)} ${ago(x.mtime)}`),
+      'Usage: carry share <chat> | --project [name] [--to friend] [--with emails] [--link] [--handoff file.md]'));
     if (friends.length) {
       const p = buildPack(c, s, flag(args, '--handoff'));
       for (const fr of friends) console.log(`Sent "${s.name}" to ${await sendTo(c, fr, s.name, p, 'chat', { autoReturn })}'s inbox.${p.meta.redacted ? `  (${p.meta.redacted} secret(s) redacted)` : ''}`);
@@ -658,6 +690,17 @@ const cmds = {
     fs.writeFileSync(file, JSON.stringify(s, null, 2));
     console.log(`Added a SessionEnd hook to ${file}: carry sync runs when a Claude Code session ends.`);
   },
+  // Tab completion for zsh: carry completion zsh >> ~/.zshrc
+  completion([shell]) {
+    if (shell !== 'zsh') die('Usage: carry completion zsh >> ~/.zshrc   (then open a new terminal)');
+    console.log(ZSH_COMPLETION);
+  },
+  __names([kind]) { // used by the completion script
+    const c = load();
+    const out = kind === 'chats' ? named(c, 30).map(s => s.name) : kind === 'packs' ? packNames(c)
+      : kind === 'projects' ? projectIndex(c).map(p => p.name) : kind === 'friends' ? Object.values(c.friends || {}).map(f => f.name || f.label) : [];
+    console.log(out.join('\n'));
+  },
   packs() {
     const c = load();
     if (c.web) { // drive.file can't list other people's files, so web mode shows your own shares; friends' arrive as emailed links
@@ -673,7 +716,8 @@ const cmds = {
     }
   },
   async open(args) {
-    const c = load(), ref = args[0] || die('Usage: carry open <inbox number | pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
+    const c = load(), ref = await pickArg(args, 'pack', packNames(c).reverse().slice(0, 9),
+      'Usage: carry open <inbox number | pack name | file.carry | Drive link> [--to claude_code|codex|chat]');
     const to = flag(args, '--to') || 'claude_code', tool = CONTINUE_TOOLS.includes(to), noResume = args.includes('--no-resume');
     let p, item;
     if (/^\d+$/.test(ref)) { // a number from `carry inbox`
@@ -829,6 +873,35 @@ function ago(ms) {
   return s < 3600 ? `${Math.round(s / 60)}m ago` : s < 86400 ? `${Math.round(s / 3600)}h ago` : `${Math.round(s / 86400)}d ago`;
 }
 
+const ZSH_COMPLETION = `# carry tab completion (zsh)
+(( $+functions[compdef] )) || { autoload -Uz compinit && compinit }
+_carry() {
+  if (( CURRENT == 2 )); then
+    compadd setup install-skill list name share projects note friend friends inbox return install-hook sync packs open mcp update doctor completion
+    return
+  fi
+  case $words[CURRENT-1] in
+    --to) if [[ $words[2] == open ]]; then compadd claude_code codex opencode cursor pi chat here
+          else compadd -- \${(f)"$(carry __names friends 2>/dev/null)"}; fi; return ;;
+    --project) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"}; return ;;
+    --handoff|--dir) _files; return ;;
+  esac
+  if [[ $words[CURRENT] == -* ]]; then
+    compadd -- --to --with --link --handoff --project --chats --add --skip --related --dir --auto-return --no-resume --web --as
+    return
+  fi
+  case $words[2] in
+    share|name|return) (( CURRENT == 3 )) && compadd -- \${(f)"$(carry __names chats 2>/dev/null)"} ;;
+    open) (( CURRENT == 3 )) && { compadd -- \${(f)"$(carry __names packs 2>/dev/null)"}; _files -g '*.carry' } ;;
+    projects) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"} ;;
+    friend) (( CURRENT == 3 )) && compadd add remove ;;
+    completion) compadd zsh ;;
+    setup) _files -/ ;;
+  esac
+}
+compdef _carry carry
+`;
+
 const USAGE = `carry setup --web [--as name] [--with emails]   connect Google Drive in the browser
 carry setup [folder] [--as name]                 or use a synced folder (Drive for desktop, Dropbox, iCloud)
 carry install-skill                              add /carry to Claude Code, Codex and ~/.agents
@@ -845,6 +918,7 @@ carry install-hook                               run carry sync after each Claud
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here] [--dir project folder]
 carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
+carry completion zsh >> ~/.zshrc                 Tab-complete commands and chat names (new terminal after)
 carry update | doctor | --version`;
 
 module.exports = { redact, slug, cleanPrompt, readPack, findTxcript };
@@ -877,7 +951,7 @@ module.exports.newer = newer;
 if (require.main === module) {
   const [cmd, ...args] = process.argv.slice(2);
   // No notice inside MCP (stdout is the protocol), CI, or when opted out with CARRY_NO_UPDATE_CHECK=1.
-  const quiet = ['mcp', 'update', '__check-update', 'version', '--version'].includes(cmd) || process.env.CI || process.env.CARRY_NO_UPDATE_CHECK;
+  const quiet = ['mcp', 'update', '__check-update', '__names', 'completion', 'version', '--version'].includes(cmd) || process.env.CI || process.env.CARRY_NO_UPDATE_CHECK;
   Promise.resolve((cmds[cmd] || (() => console.log(USAGE)))(args))
     .then(() => { if (!quiet) updateNotice(); })
     .catch(e => die(e.message));

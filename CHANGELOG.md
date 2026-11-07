@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2 (2026-11-07)
+- Tab completion for zsh: `carry completion zsh >> ~/.zshrc`. Completes commands, flags, chat names, pack names and `--to` targets.
+- `carry share` and `carry open` with no name show the newest few, numbered; type a number (Enter picks the first).
+- Web mode: open your own shares by name (`carry open <name>`), no Drive link needed. Your own Drive links open directly
+  instead of asking for a browser download.
+- Fix: `carry share` failed with "File not found" after the `carry` folder or a shared file was deleted in Drive. carry now
+  makes a new one.
+
 ## 0.4.1 (2026-11-07)
 - Claude Desktop extension: download `carry.mcpb` from the latest GitHub release and double-click to install.
 - Claude Code plugin: `claude plugin marketplace add vamzzisme/carry`, then `claude plugin install carry@carry`.

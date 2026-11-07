@@ -110,4 +110,12 @@ async function publicDownload(fileId) {
   } catch { return null; }
 }
 
-module.exports = { signIn, makeFolder, upload, share, fileIdFrom, publicDownload };
+// Files carry made with this Google login (drive.file scope); null for anyone else's file or when not signed in.
+async function ownDownload(fileId) {
+  try {
+    const r = await fetch(`${API}/files/${fileId}?alt=media`, { headers: { Authorization: `Bearer ${await accessToken()}` } });
+    return r.ok ? await r.text() : null;
+  } catch { return null; }
+}
+
+module.exports = { signIn, makeFolder, upload, share, fileIdFrom, publicDownload, ownDownload };
