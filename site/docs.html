@@ -8,7 +8,7 @@
   <link rel="icon" href="/favicon.svg?v=17" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=20">
+  <link rel="stylesheet" href="/style.css?v=21">
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
 <body>
@@ -245,23 +245,23 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div></div>
 
         <h2 id="troubleshooting" data-toc="Troubleshooting">Troubleshooting</h2>
         <div class="faq">
-          <details><summary><code>carry: command not found</code></summary><p>npm's global bin folder isn't on your PATH. Run <code>npm prefix -g</code>, add its <code>bin</code> folder to PATH and open a new terminal. On Windows, open a new PowerShell window.</p></details>
-          <details><summary>Permission denied on <code>npm install -g</code> (Linux)</summary><p>Use <code>sudo npm install -g @heyvamz/carry</code>, or install Node with nvm so global installs don't need root.</p></details>
-          <details><summary>Couldn't get txcript</summary><p>Run <code>carry doctor</code> again once you're online. Opening with <code>--to chat</code> or <code>--to here</code> doesn't need txcript.</p></details>
-          <details><summary>Sign-in times out or the browser doesn't open</summary><p>carry prints the sign-in link; open it yourself. It waits 5 minutes.</p></details>
-          <details><summary>My Codex chats don't show up</summary><p>carry reads <code>~/.codex/sessions</code> (or <code>$CODEX_HOME/sessions</code>). Chats from the Antigravity app and from claude.ai or ChatGPT on the web can't be read; share a summary instead.</p></details>
-          <details><summary>The connector doesn't show up</summary><p>Restart the app after editing its config. Check <code>node -v</code> is 22.15 or newer. On Windows the config must use <code>"command": "cmd"</code> with <code>"/c", "npx"</code>.</p></details>
-          <details><summary>Opening a project changed nothing</summary><p>carry never overwrites existing files; it prints "kept your existing …" for those. Merge by hand if you want the incoming version.</p></details>
+          <details><summary><span><code>carry: command not found</code></span></summary><p>npm's global bin folder isn't on your PATH. Run <code>npm prefix -g</code>, add its <code>bin</code> folder to PATH and open a new terminal. On Windows, open a new PowerShell window.</p></details>
+          <details><summary><span>Permission denied on <code>npm install -g</code> (Linux)</span></summary><p>Use <code>sudo npm install -g @heyvamz/carry</code>, or install Node with nvm so global installs don't need root.</p></details>
+          <details><summary><span>Couldn't get txcript</span></summary><p>Run <code>carry doctor</code> again once you're online. Opening with <code>--to chat</code> or <code>--to here</code> doesn't need txcript.</p></details>
+          <details><summary><span>Sign-in times out or the browser doesn't open</span></summary><p>carry prints the sign-in link; open it yourself. It waits 5 minutes.</p></details>
+          <details><summary><span>My Codex chats don't show up</span></summary><p>carry reads <code>~/.codex/sessions</code> (or <code>$CODEX_HOME/sessions</code>). Chats from the Antigravity app and from claude.ai or ChatGPT on the web can't be read; share a summary instead.</p></details>
+          <details><summary><span>The connector doesn't show up</span></summary><p>Restart the app after editing its config. Check <code>node -v</code> is 22.15 or newer. On Windows the config must use <code>"command": "cmd"</code> with <code>"/c", "npx"</code>.</p></details>
+          <details><summary><span>Opening a project changed nothing</span></summary><p>carry never overwrites existing files; it prints "kept your existing …" for those. Merge by hand if you want the incoming version.</p></details>
         </div>
         <p class="note">More: <a href="https://github.com/vamzzisme/carry/blob/main/TROUBLESHOOTING.md">TROUBLESHOOTING.md</a> · <a href="https://github.com/vamzzisme/carry/issues">open an issue</a></p>
 
         <h2 id="faq" data-toc="FAQ">FAQ</h2>
         <div class="faq">
-          <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;ref&gt; --to codex</code> converts the full conversation into a Codex session.</p></details>
-          <details><summary>Do I need the Google Drive app?</summary><p>No. Web mode signs in through your browser. If you already use Drive for desktop, Dropbox or iCloud, you can use a synced folder instead.</p></details>
-          <details><summary>Can carry read my claude.ai or ChatGPT web chats?</summary><p>Not yet. Those live on their servers. Share a summary instead.</p></details>
-          <details><summary>Does it work on Windows and Linux?</summary><p>Yes. Every release is tested on macOS, Windows and Linux.</p></details>
-          <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source (Apache-2.0).</p></details>
+          <details><summary><span>Can I move a Claude Code chat into Codex?</span></summary><p>Yes. <code>carry open &lt;ref&gt; --to codex</code> converts the full conversation into a Codex session.</p></details>
+          <details><summary><span>Do I need the Google Drive app?</span></summary><p>No. Web mode signs in through your browser. If you already use Drive for desktop, Dropbox or iCloud, you can use a synced folder instead.</p></details>
+          <details><summary><span>Can carry read my claude.ai or ChatGPT web chats?</span></summary><p>Not yet. Those live on their servers. Share a summary instead.</p></details>
+          <details><summary><span>Does it work on Windows and Linux?</span></summary><p>Yes. Every release is tested on macOS, Windows and Linux.</p></details>
+          <details><summary><span>What does it cost?</span></summary><p>Nothing. carry is free and open source (Apache-2.0).</p></details>
         </div>
 
         <footer>

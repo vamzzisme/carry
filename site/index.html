@@ -10,7 +10,7 @@
   <link rel="icon" href="/favicon.svg?v=17" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=20">
+  <link rel="stylesheet" href="/style.css?v=21">
   <!-- Analytics: self-hosted Umami (cookie-free), counts only carry-si.vercel.app, honours Do Not Track -->
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
@@ -118,15 +118,15 @@ stacked-reveal-effect    codex         3d ago
         <section>
           <h2 id="faq" data-toc="FAQ">FAQ</h2>
           <div class="faq">
-            <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
-            <details><summary>Is carry really serverless?</summary><p>Yes: there is no carry server and no carry account. carry runs on your laptop, puts what you share in your own Google Drive, and your friend's carry picks it up from there. We never see your chats, and there is nothing of ours that can go down or shut down. (Not "serverless" as in cloud functions: there are none of those either.)</p></details>
-            <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
-            <details><summary>Do I have to send links every time?</summary><p>No. Pair with a friend once and everything you send lands in their <code>carry inbox</code>. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
-            <details><summary>Can my friend send the work back?</summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED. If you also kept working, carry opens theirs next to yours and overwrites nothing.</p></details>
-            <details><summary>Can I use carry without the terminal?</summary><p>Yes. Install it in Claude Desktop with one click, or add it to Codex or Cursor as a connector, then ask in plain words. <a href="/docs#apps">See the docs</a>.</p></details>
-            <details><summary>What does the setup prompt do?</summary><p>It is one line that points your AI at <a href="/setup.md">carry's setup page</a>. Claude Code, Codex or Cursor then checks Node, installs carry and connects your Drive, asking you before each step. In a browser chat it explains how to install the desktop app instead.</p></details>
-            <details><summary>What gets redacted?</summary><p>Common secret shapes: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and lines like <code>API_KEY=value</code>. It is pattern based, so do not share chats full of secrets you care about.</p></details>
-            <details><summary>What does it cost?</summary><p>Nothing. carry is free and open source. If it saves you a few hours, a coffee keeps the studio going.</p></details>
+            <details><summary><span>Why not just paste a summary?</span></summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
+            <details><summary><span>Is carry really serverless?</span></summary><p>Yes: there is no carry server and no carry account. carry runs on your laptop, puts what you share in your own Google Drive, and your friend's carry picks it up from there. We never see your chats, and there is nothing of ours that can go down or shut down. (Not "serverless" as in cloud functions: there are none of those either.)</p></details>
+            <details><summary><span>Can my friend continue on their own account?</span></summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
+            <details><summary><span>Do I have to send links every time?</span></summary><p>No. Pair with a friend once and everything you send lands in their <code>carry inbox</code>. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
+            <details><summary><span>Can my friend send the work back?</span></summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED. If you also kept working, carry opens theirs next to yours and overwrites nothing.</p></details>
+            <details><summary><span>Can I use carry without the terminal?</span></summary><p>Yes. Install it in Claude Desktop with one click, or add it to Codex or Cursor as a connector, then ask in plain words. <a href="/docs#apps">See the docs</a>.</p></details>
+            <details><summary><span>What does the setup prompt do?</span></summary><p>It is one line that points your AI at <a href="/setup.md">carry's setup page</a>. Claude Code, Codex or Cursor then checks Node, installs carry and connects your Drive, asking you before each step. In a browser chat it explains how to install the desktop app instead.</p></details>
+            <details><summary><span>What gets redacted?</span></summary><p>Common secret shapes: OpenAI, Anthropic and Sarvam keys, GitHub tokens, AWS and Google keys, Slack tokens, JWTs, Bearer tokens, private keys and lines like <code>API_KEY=value</code>. It is pattern based, so do not share chats full of secrets you care about.</p></details>
+            <details><summary><span>What does it cost?</span></summary><p>Nothing. carry is free and open source. If it saves you a few hours, a coffee keeps the studio going.</p></details>
           </div>
           <a class="more-link" href="/docs#faq">More questions in the docs →</a>
         </section>

@@ -29,7 +29,8 @@ code, pre, kbd { font-family: var(--mono); }
 :not(pre) > code { font-size: .86em; background: var(--soft); padding: 2px 6px; border-radius: 3px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .hide { display: none !important; }
-.pname { color: var(--accent-ink); font-weight: 600; } /* "carry" in running text (main.js) */
+/* "carry" in running text (main.js): a soft clay highlighter stroke, same colour and weight as the words around it */
+.pname { background: linear-gradient(transparent 58%, rgba(194, 103, 75, .24) 58%, rgba(194, 103, 75, .24) 92%, transparent 92%); padding: 0 .08em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
 
 /* ---------- shell: sidebar + column ---------- */
 .shell { display: grid; grid-template-columns: 232px minmax(0, 1fr); max-width: 1160px; margin: 0 auto; }
