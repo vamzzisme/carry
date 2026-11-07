@@ -253,7 +253,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 1b. [x] 0.4.1 (2026-11-07): Claude Code plugin (repo is its own marketplace), carry.mcpb on every GitHub release
        (built by mcpb/build.js in publish.yml), MCP Registry io.github.vamzzisme/carry, tool titles + read-only/write hints.
        Next: submit plugin at claude.ai/directory/manage (Plugin bundle); double-click .mcpb in Claude Desktop (untested).
-1c. [ ] Unreleased 0.4.2 (2026-11-07, not committed; see CHANGELOG): Drive file/folder recreate, own links via API,
+1c. [x] 0.4.2 released 2026-11-07 (npm, GitHub release + carry.mcpb, MCP Registry, site): Drive file/folder recreate, own links via API,
        open by name in web mode, numbered picker, `carry completion zsh` (tested with stubbed compadd, not a real Tab press). ChatGPT app: carry added to
        ~/.codex/config.toml, unverified whether ChatGPT chat mode loads it.
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
