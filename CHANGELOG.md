@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- An unknown command prints help on stderr and exits 1, so `carry <typo> >> file` no longer writes the help text into the file.
+
 ## 0.4.2 (2026-11-07)
 - Tab completion for zsh: `carry completion zsh >> ~/.zshrc`. Completes commands, flags, chat names, pack names and `--to` targets.
 - `carry share` and `carry open` with no name show the newest few, numbered; type a number (Enter picks the first).

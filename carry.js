@@ -952,7 +952,8 @@ if (require.main === module) {
   const [cmd, ...args] = process.argv.slice(2);
   // No notice inside MCP (stdout is the protocol), CI, or when opted out with CARRY_NO_UPDATE_CHECK=1.
   const quiet = ['mcp', 'update', '__check-update', '__names', 'completion', 'version', '--version'].includes(cmd) || process.env.CI || process.env.CARRY_NO_UPDATE_CHECK;
-  Promise.resolve((cmds[cmd] || (() => console.log(USAGE)))(args))
+  // Unknown command: help on stderr + exit 1, so `carry <typo> >> file` never writes the help text into a file.
+  Promise.resolve((cmds[cmd] || (() => cmd ? die(`Unknown command "${cmd}".\n\n${USAGE}`) : console.log(USAGE)))(args))
     .then(() => { if (!quiet) updateNotice(); })
     .catch(e => die(e.message));
 }

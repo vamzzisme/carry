@@ -47,3 +47,10 @@
 - Symptom: publish.yml "Publish (skipped if this version is already on npm)" failed (`npm view` still said 0.4.1), so no GitHub Release and no carry.mcpb
 - Cause: npm takes minutes to list a new version ("Your package is being processed")
 - Rule: wait until `curl -s 'https://registry.npmjs.org/@heyvamz%2fcarry'` shows the version as latest, then push the tag (publish.yml now also retries after 120 s). Re-run a failed run from the Actions page; deleting and re-pushing a tag is blocked
+
+## Told the user to append `carry completion zsh` to ~/.zshrc without checking which carry was installed
+- When: after releasing 0.4.2, user ran `carry completion zsh >> ~/.zshrc`
+- Did: assumed the global `carry` was the published package
+- Symptom: `/opt/homebrew/bin/carry` was an old `npm link` (carry@0.2.0 → ~/carry/carry); it didn't know `completion`, printed USAGE to stdout, and 10 `carry …` lines landed in ~/.zshrc
+- Cause: unknown commands printed help to stdout with exit 0
+- Rule: before any `carry … >> file` instruction, run `carry --version`. Unknown commands now go to stderr with exit 1 (unreleased after 0.4.2)
