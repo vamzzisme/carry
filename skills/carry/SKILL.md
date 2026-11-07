@@ -45,6 +45,20 @@ Use when someone will keep working on this repo, not just this one chat.
 To open one: `carry open <name or link> --to claude_code|codex --dir <their clone of the repo>`. Claude Code gets the memory notes
 and a handoff note in its memory; Codex gets `.carry/` plus a pointer in AGENTS.md. Existing files are never overwritten.
 
+## Friends: pair once, then inbox and return (preferred over emails and links)
+- **Pair:** `carry friend add <their email>` prints a pairing code; the user sends it to the friend (any chat app). The friend runs
+  `carry friend add <code>`, which prints a code back; the user runs `carry friend add <that code>`. `carry friends` shows status.
+- **Send:** `carry share <chat> --to <friend>` or `carry share --project <name> --to <friend>`. Add `--auto-return` if the user
+  wants the friend's carry to send it back on its own after they work on it.
+- **Receive:** `carry inbox` lists what friends sent, numbered, including UPDATED items (the user's own shares coming back with
+  the friend's work). Open with `carry open <number> --to claude_code|codex` (projects: add `--dir <their clone>`).
+- **Return:** when work on a borrowed chat or project is done on this laptop, `carry return <chat>` or
+  `carry return --project <name>` (optionally `--handoff <file>` summarising what was done). The owner sees it as UPDATED.
+- If the owner also kept working on their copy, carry opens the friend's version next to theirs ("…-from-<friend>") and
+  changes nothing; tell the user which is which. Code still goes through git: remind them to push and pull.
+- `carry install-hook` (ask first; it edits ~/.claude/settings.json) runs `carry sync` after each Claude Code session, which
+  returns `--auto-return` shares automatically.
+
 ## Open a shared chat: `/carry open [name or link]`
 1. What to open: a Drive link the user got by email, a `.carry` file, or a name from `carry packs` (synced-folder mode).
    For a private Drive link, carry opens it in the browser; tell the user to click Download. carry picks it up from their Downloads folder.

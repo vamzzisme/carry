@@ -84,7 +84,7 @@ const res = Object.fromEntries(mcpRun.stdout.trim().split('\n').map(l => JSON.pa
 const txt = id => res[id].result.content[0].text;
 console.log(`$ carry mcp (6 requests)\n  tools: ${res[2].result.tools.map(t => t.name).join(', ')}`);
 assert.strictEqual(res[1].result.serverInfo.name, 'carry');
-assert.strictEqual(res[2].result.tools.length, 9);
+assert.strictEqual(res[2].result.tools.length, 12);
 assert.match(txt(3), /fix-the-login-bug-please/);
 assert.match(txt(4), /Shared summary "mcp-note"/);
 assert.match(txt(5), /Continue the onboarding flow/);

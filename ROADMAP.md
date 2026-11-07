@@ -9,6 +9,10 @@
 - [ ] npm trusted publisher for `@heyvamz/carry` (so `git tag vX` releases without a manual 2FA publish)
 
 ## Next
+- [x] Projects list, related chats, choose chats (0.4.0)
+- [x] Friends: pairing, encrypted inbox, return with updates and conflict handling, auto-return (0.4.0)
+- [ ] Test friends over real Google Drive with two accounts (CI covers folder mode only)
+- [ ] Received copies in your own Drive (`received/`), so they follow you to every laptop
 - [ ] `carry sync` refreshes project packs too; automatic sync (Claude Code SessionEnd hook, a scheduled `carry sync`)
 - [ ] `carry open --temp`: remove the pack and its files after use on someone else's laptop
 - [ ] Optional code snapshot in packs for repos without a shared remote

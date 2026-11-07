@@ -17,6 +17,7 @@ function withTempFile(content, fn) {
   try { return fn(f); } finally { fs.rmSync(path.dirname(f), { recursive: true, force: true }); }
 }
 const emailArgs = e => (e && e.length ? ['--with', e.join(',')] : []);
+const friendArgs = a => (a.to?.length ? ['--to', a.to.join(','), ...(a.auto_return ? ['--auto-return'] : [])] : []);
 
 const TOOLS = [
   { name: 'carry_status', description: 'Show whether carry is set up on this computer and where shared chats go.',
@@ -43,12 +44,30 @@ const TOOLS = [
     inputSchema: { type: 'object', properties: {
       chat: { type: 'string', description: 'Chat name from carry_list_chats' },
       handoff: { type: 'string', description: 'Markdown summary for whoever continues it' },
-      emails: { type: 'array', items: { type: 'string' } },
+      to: { type: 'array', items: { type: 'string' }, description: 'Paired friends (names): goes into their carry inbox. Preferred over emails.' },
+      auto_return: { type: 'boolean', description: 'With to: their carry sends it back automatically after they work on it' },
+      emails: { type: 'array', items: { type: 'string' }, description: 'Not paired: Google emails them a link' },
       link: { type: 'boolean', description: 'Anyone with the link can open it' } }, required: ['chat'] },
     run: a => {
-      const rest = [...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
+      const rest = [...friendArgs(a), ...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
       return a.handoff ? withTempFile(a.handoff, f => carry(['share', a.chat, '--handoff', f, ...rest], 3 * 60e3))
         : carry(['share', a.chat, ...rest], 3 * 60e3);
+    } },
+  { name: 'carry_add_friend', description: 'Pair with a friend once. Given their email or name, returns a pairing code for the user to send them. Given a code the friend sent (starts with carry1.), accepts it and returns the user\'s code to send back if they haven\'t paired that way yet.',
+    inputSchema: { type: 'object', properties: { email_or_code: { type: 'string' } }, required: ['email_or_code'] },
+    run: a => carry(['friend', 'add', a.email_or_code], 2 * 60e3) },
+  { name: 'carry_inbox', description: 'What paired friends sent: chats, projects, and UPDATED ones (your shares sent back with their work). Numbered; open one with carry_open ref "<number>".',
+    inputSchema: { type: 'object', properties: {} },
+    run: () => carry(['inbox'], 2 * 60e3) },
+  { name: 'carry_return', description: 'Send a chat or project that was opened from a friend back to them with the work done here. Optionally write a short summary of what was done as handoff.',
+    inputSchema: { type: 'object', properties: {
+      chat: { type: 'string', description: 'Chat name (from carry_list_chats)' },
+      project: { type: 'string', description: 'Project name, instead of chat' },
+      handoff: { type: 'string' } } },
+    run: a => {
+      const target = a.project ? ['return', '--project', a.project] : a.chat ? ['return', a.chat] : null;
+      if (!target) return { text: 'Say which chat or project to return.', isError: true };
+      return a.handoff ? withTempFile(a.handoff, f => carry([...target, '--handoff', f], 3 * 60e3)) : carry(target, 3 * 60e3);
     } },
   { name: 'carry_list_projects', description: 'List the user\'s projects (repos their Claude Code/Codex chats were started in), or with name, the chats in one project plus related chats started elsewhere that worked on its files. Use this to let the user pick what to share.',
     inputSchema: { type: 'object', properties: { name: { type: 'string', description: 'Project name from the list, for details' } } },
@@ -62,12 +81,14 @@ const TOOLS = [
       add: { type: 'array', items: { type: 'string' }, description: 'Extra chat names to include, e.g. related chats' },
       skip: { type: 'array', items: { type: 'string' }, description: 'Chat names to leave out' },
       related: { type: 'boolean', description: 'Include all related chats' },
+      to: { type: 'array', items: { type: 'string' }, description: 'Paired friends (names): goes into their carry inbox' },
+      auto_return: { type: 'boolean' },
       emails: { type: 'array', items: { type: 'string' } },
       link: { type: 'boolean' } } },
     run: a => {
       const ref = a.project || a.dir;
       if (!ref) return { text: 'Say which project: call carry_list_projects first.', isError: true };
-      const rest = ['--chats', String(a.chats || 5), ...(a.add?.length ? ['--add', a.add.join(',')] : []), ...(a.skip?.length ? ['--skip', a.skip.join(',')] : []),
+      const rest = ['--chats', String(a.chats || 5), ...friendArgs(a), ...(a.add?.length ? ['--add', a.add.join(',')] : []), ...(a.skip?.length ? ['--skip', a.skip.join(',')] : []),
         ...(a.related ? ['--related'] : []), ...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
       return a.handoff ? withTempFile(a.handoff, f => carry(['share', '--project', ref, '--handoff', f, ...rest], 5 * 60e3))
         : carry(['share', '--project', ref, ...rest], 5 * 60e3);

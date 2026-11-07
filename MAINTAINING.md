@@ -7,6 +7,7 @@ Internal notes. Not shipped to npm (`files` in package.json). Dev log and decisi
 npm install && npm link   # fetches txcript into ./bin, links `carry` to this checkout
 npm test                  # unit checks (redaction, names, links, versions)
 node smoke.js             # full run with fake chats in a temp home
+node pairtest.js          # three laptops sharing one folder: friends, inbox, return, conflicts, projects
 node pkgtest.js           # pack + global install like a user, checks files and txcript
 ```
 CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, with the bundled npm and npm@latest.

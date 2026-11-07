@@ -1,8 +1,15 @@
 # Changelog
 
-## 0.3.1 (2026-11-07)
-- Fix: with npm 12 (which blocks install scripts by default) txcript wasn't downloaded, so opening into Claude Code or Codex
-  failed. carry now fetches txcript on first use into `~/.carry/bin`.
+## 0.4.0 (2026-11-07)
+- **Friends, inbox and return.** Pair once (`carry friend add`), then `carry share <chat> --to <friend>` (also projects).
+  Friends pick from `carry inbox` and `carry open <number>`; no emails or links. Everything a friend can read is encrypted
+  (AES-256-GCM) with a key that only lives in the pairing code.
+- `carry return <chat>` / `carry return --project <name>` sends borrowed work back. The owner sees it as UPDATED and continues
+  from the latest; if both sides kept going, the friend's version opens next to theirs and nothing is overwritten. Projects
+  bring back new chats and memory notes (a note changed on both sides is kept as `<note>.from-<friend>.md`).
+- `--auto-return` + `carry sync` (or `carry install-hook` for Claude Code's SessionEnd) sends borrowed work back on its own.
+- MCP: `carry_add_friend`, `carry_inbox`, `carry_return`; share tools take `to`.
+- Fix: npm 12 (which blocks install scripts) left carry without txcript; carry now fetches it on first use.
 - `carry projects`: your repos with their chats, Claude memory notes and **related** chats (started elsewhere, e.g. the
   parent folder, that worked on the repo's files). `carry projects <name>` lists them to pick from.
 - `carry share --project <name>` by name, with `--add`, `--skip` and `--related` to choose chats. MCP: `carry_list_projects`.

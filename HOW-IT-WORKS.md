@@ -33,6 +33,18 @@ packs one into a file, puts that file in your Google Drive, and unpacks it on th
 CLAUDE.md / AGENTS.md. Opening it into Claude Code puts the notes where Claude reads them at the start of a session; into Codex it
 writes `.carry/` and a pointer line in AGENTS.md. Nothing that already exists gets overwritten.
 
+## Friends, inbox and return
+- **Pairing** (`carry friend add`): each direction (A to B, B to A) gets its own random key and an inbox file in the sender's
+  Drive (or the shared synced folder). The pairing code carries the inbox's location and the key, so only the friend can read it.
+- **Sending** (`share --to`): carry encrypts the pack with that friend's key (AES-256-GCM), puts it next to the inbox and adds a
+  line to the inbox. In Drive these files are "anyone with the link": carry's Drive permission only sees files carry created,
+  so the friend's carry reads them by link, and without the key they're unreadable.
+- **Inbox** (`carry inbox`): reads every friend's inbox, decrypts it, numbers the items. `carry open <number>` opens one.
+- **Borrowed work** is remembered (which friend, how many messages it had). `carry return` sends the continued chat back as an
+  update. On the owner's side carry compares message counts: if the owner didn't keep going, the update becomes their chat;
+  if they did, it opens next to theirs. Projects return their chats plus new memory notes; a note both changed is kept twice.
+- `--auto-return` + `carry sync` (run by `carry install-hook` after each Claude Code session) sends borrowed work back on its own.
+
 ## Updates
 carry checks npm at most once a day (in the background) and prints one line when a newer version exists. `carry update` installs it.
 Releases: bump the version, add a CHANGELOG entry, push a `v*` tag; GitHub Actions tests on 3 OSes and publishes.

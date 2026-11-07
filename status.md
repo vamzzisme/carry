@@ -236,6 +236,13 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
   MCP `carry_share_project`, `carry_open` takes `dir`. Verified for real: a fresh Claude Code session in the opened folder
   answered a payment-provider decision from carried memory and "pnpm" from carried CLAUDE.md.
   Not done: `sync` doesn't refresh project packs.
+- 0.4.0 (2026-11-07, unpublished): `carry projects` (git-root grouping, related chats by path mentions >= 3, --add/--skip/
+  --related), friends (pair codes `carry1.<base64url json>`, per-direction AES-256-GCM key + inbox file, `sent-…carry`,
+  `carry inbox`, `open <n>`, borrowed/borrowedProjects records, `carry return`, UPDATED + conflict by message count,
+  projects return new chats + memory with `.from-<friend>.md` on conflict, --auto-return via sync, install-hook).
+  `continueIn` now always writes with --no-resume, captures the new id, then `launch()`es the tool.
+  Tests: pairtest.js (A/B/C, folder mode) in CI; real Claude resumed A's returned chat and knew B's additions.
+  NOT tested: friends over real Google Drive (two accounts).
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 

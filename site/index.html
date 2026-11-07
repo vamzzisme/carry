@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=9">
+  <link rel="stylesheet" href="/style.css?v=10">
   <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
   <!-- Umami: fill in the website id from cloud.umami.is, then uncomment -->
   <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
@@ -61,13 +61,15 @@
 <pre><span class="p">$</span> carry list
 auth-bug-in-login        claude_code   2h ago
 stacked-reveal-effect    codex         3d ago
-<span class="p">$</span> carry share auth-bug-in-login --with riya@gmail.com
-<span class="ok">Shared "auth-bug-in-login"</span> → drive.google.com/file/d/1ke3…
-<span class="c">  2 secrets redacted · Google emailed Riya the link</span></pre>
+<span class="p">$</span> carry share auth-bug-in-login --to riya
+<span class="ok">Sent "auth-bug-in-login" to riya's inbox.</span>
+<span class="c">  2 secrets redacted · encrypted for riya</span></pre>
           </div>
           <div class="term b">
             <div class="term-head"><i></i><i></i><i></i><span>riya's laptop</span></div>
-<pre><span class="p">$</span> carry open drive.google.com/file/d/1ke3… --to codex
+<pre><span class="p">$</span> carry inbox
+  1. auth-bug-in-login   chat from vamshi   NEW
+<span class="p">$</span> carry open 1 --to codex
 <span class="c">  continuing on Riya's Codex account…</span></pre>
           </div>
         </div>
@@ -85,8 +87,8 @@ stacked-reveal-effect    codex         3d ago
         </div>
         <div class="steps">
           <div class="card"><span class="n">1</span><h3>Pick a chat</h3><p><code>carry list</code> shows your chats by name, not by long IDs. Rename any of them. Nothing is shared until you pick it.</p></div>
-          <div class="card"><span class="n">2</span><h3>Share it</h3><p><code>carry share</code> strips API keys and tokens, uploads one small file to your Drive and Google emails the link to your friends.</p></div>
-          <div class="card"><span class="n">3</span><h3>Keep going anywhere</h3><p><code>carry open &lt;link&gt;</code> on any laptop loads the full chat into Claude Code or Codex, on whichever account is signed in there.</p></div>
+          <div class="card"><span class="n">2</span><h3>Send it</h3><p>Pair with a friend once. <code>carry share --to riya</code> strips API keys and tokens, encrypts the chat for her and drops it in her carry inbox, through your own Drive.</p></div>
+          <div class="card"><span class="n">3</span><h3>Keep going, then hand it back</h3><p><code>carry inbox</code> and <code>carry open 1</code> load the full chat into Claude Code or Codex on her account. <code>carry return</code> brings her work back to you, updated.</p></div>
         </div>
       </div>
     </section>
@@ -230,7 +232,7 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
             <div data-app="codex"><h3>Where it goes</h3><p class="note" style="margin-top:0">Add it to <code>~/.codex/config.toml</code> (on Windows <code>%USERPROFILE%\.codex\config.toml</code>) and restart Codex.</p></div>
             <div data-app="cursor"><h3>Where it goes</h3><p class="note" style="margin-top:0">Cursor Settings, MCP, Add new global MCP server. Paste this into the file it opens (<code>~/.cursor/mcp.json</code>) and save.</p></div>
             <h3 style="margin-top:24px">Then just ask</h3>
-            <p class="note" style="margin-top:0">"Connect carry to my Google Drive" · "Share this chat with riya@gmail.com" · "Open the carry link Riya sent me and continue". In chat apps carry shares a written summary, since their history lives on their servers.</p>
+            <p class="note" style="margin-top:0">"Connect carry to my Google Drive" · "Share this chat with Riya" · "What's in my carry inbox?" · "Send it back to Riya". In chat apps carry shares a written summary, since their history lives on their servers.</p>
           </div>
         </div>
       </div>
@@ -244,6 +246,8 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
         </div>
         <div class="faq">
           <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
+          <details><summary>Do I have to send links every time?</summary><p>No. Pair with a friend once (<code>carry friend add</code>, you swap two short codes). After that, everything you send lands in their <code>carry inbox</code> and they pick it by number. Only the paired friend can read it: each pack is encrypted with a key that lives in your pairing codes.</p></details>
+          <details><summary>Can my friend send the work back to me?</summary><p>Yes. <code>carry return</code> sends it back and it shows up in your inbox as UPDATED, with everything they did. If you also kept working on your copy, carry opens theirs next to yours and overwrites nothing. With <code>--auto-return</code> their carry does it on its own after each session.</p></details>
           <details><summary>Can I share a whole project?</summary><p>Yes. Run <code>carry share --project</code> in the repo. Pick it from <code>carry projects</code>, which also finds related chats you started in another folder that worked on the repo. carry bundles the chats you choose, Claude Code's memory notes and CLAUDE.md / AGENTS.md with a handoff. Your friend clones the code, runs <code>carry open &lt;link&gt; --dir &lt;their clone&gt;</code>, and Claude or Codex picks up with your context. Nothing of theirs gets overwritten.</p></details>
           <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
           <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
@@ -285,10 +289,10 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
         <a href="#faq">FAQ</a><a href="#feedback">Feedback</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a>
         <a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a>
       </div>
-      <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.3.1</span><span>·</span><span>© 2026</span></div>
+      <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.0</span><span>·</span><span>© 2026</span></div>
       <div class="product">A <strong>VXMZ</strong> Product</div>
     </div>
   </footer>
-  <script src="/main.js?v=9"></script>
+  <script src="/main.js?v=10"></script>
 </body>
 </html>

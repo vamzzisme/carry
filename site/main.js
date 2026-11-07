@@ -23,14 +23,15 @@ if (stack && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
       ['cmd', 'carry list'],
       ['out', 'auth-bug-in-login        claude_code   2h ago'],
       ['out', 'stacked-reveal-effect    codex         3d ago'],
-      ['cmd', 'carry share auth-bug-in-login --with riya@gmail.com'],
-      ['ok', 'Shared "auth-bug-in-login" → drive.google.com/file/d/1ke3…'],
-      ['c', '  2 secrets redacted · Google emailed Riya the link']] },
+      ['cmd', 'carry share auth-bug-in-login --to riya'],
+      ['ok', 'Sent "auth-bug-in-login" to riya\'s inbox.'],
+      ['c', '  2 secrets redacted · encrypted for riya']] },
     { card: b, other: a, lines: [
-      ['cmd', 'carry open drive.google.com/file/d/1ke3… --to codex'],
-      ['c', '  downloading the chat from Drive…'],
+      ['cmd', 'carry inbox'],
+      ['out', '  1. auth-bug-in-login   chat from vamshi   NEW'],
+      ['cmd', 'carry open 1 --to codex'],
       ['ok', '  Chat loaded into Codex on Riya\'s account'],
-      ['c', '  resume with: codex resume 01a1b1ba']] },
+      ['c', '  done here? carry return auth-bug-in-login']] },
   ];
   const wait = ms => new Promise(r => setTimeout(r, ms));
   const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
