@@ -258,6 +258,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
        ~/.codex/config.toml, unverified whether ChatGPT chat mode loads it.
 1d. [x] 0.4.3 released 2026-11-07 (npm, release + mcpb, registry, site): short pairing codes (carry2), setup turns on zsh completion, open --to claude_app / codex_app
        (app links), ChatGPT's bundled codex + npx fallback. Two-account friend test done by Vamshi with 0.4.2.
+1e. [ ] 0.4.4 (2026-11-07): Tab completion for bash + PowerShell (completions/), setup picks the shell; CI checks all 3 OS.
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
 2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
 3. [ ] `carry install`: copy skill into each detected tool, check txcript CLI, `npm link`
