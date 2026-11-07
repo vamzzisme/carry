@@ -28,6 +28,13 @@
 - Cause: npm 12 blocks dependency/global install scripts by default
 - Rule: never depend on install scripts; fetch on first use (`txcriptPath()`), and run pkgtest with both bundled npm and npm@latest
 
+## Unix command in a cross-platform test
+- When: `pairtest.js` `continueSession()` located session files with `execSync('find ...')`
+- Did: shelled out to `find`
+- Symptom: GitHub Actions windows-latest failed at "Run node pairtest.js"; Linux/macOS passed
+- Cause: on Windows `find` is a different program (text search), not Unix find
+- Rule: tests and carry code use Node `fs` for file lookups; no shell utilities except `tar`/`git`, which exist on all three runners
+
 ## `carry name` took only one word
 - When: `node carry.js name so-i-have-a-project carry project`
 - Did: read only `args[1]`
