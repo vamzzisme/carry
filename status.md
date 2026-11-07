@@ -250,6 +250,9 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 1. [x] Analytics: self-hosted Umami at vxmz-analytics.vercel.app (Vercel + Neon org thevxmzstudio, project old-waterfall-99493096);
        carry site tracked (website id 20a506c5-...), verified 1 visit 2026-11-07. Google sign-in published (by Vamshi).
        Clay red accent (#c2674b) live.
+1b. [x] 0.4.1 (2026-11-07): Claude Code plugin (repo is its own marketplace), carry.mcpb on every GitHub release
+       (built by mcpb/build.js in publish.yml), MCP Registry io.github.vamzzisme/carry, tool titles + read-only/write hints.
+       Next: submit plugin at claude.ai/directory/manage (Plugin bundle); double-click .mcpb in Claude Desktop (untested).
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
 2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
 3. [ ] `carry install`: copy skill into each detected tool, check txcript CLI, `npm link`
