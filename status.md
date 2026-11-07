@@ -197,7 +197,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 ### Shipped (2026-11-06)
 - Repo: https://github.com/vamzzisme/carry (public, `main`). GitHub push protection flagged the Google client secret and client ID
   in `drive.js:12`; user allowed both ("I'll fix it later"), so the repo has 2 secret-scanning alerts to close as won't-fix.
-- Site: https://carry-site-beta.vercel.app (Vercel project imported from the repo, root `site/`; `/privacy`, `/terms` OK).
+- Site: https://carry-si.vercel.app (Vercel project imported from the repo, root `site/`; `/privacy`, `/terms` OK).
   Pushes to `main` redeploy it.
 
 ### Cross-platform (2026-11-06)
@@ -241,7 +241,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 
 ## Next steps (in order)
 1. [ ] Umami website id → uncomment script in `site/index.html`; Google Branding page: add homepage + privacy URL
-       (carry-site-beta.vercel.app, /privacy); optional nicer Vercel domain
+       (carry-si.vercel.app, /privacy); optional nicer Vercel domain
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
 2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
 3. [ ] `carry install`: copy skill into each detected tool, check txcript CLI, `npm link`

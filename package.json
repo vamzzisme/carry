@@ -3,7 +3,7 @@
   "version": "0.3.1",
   "description": "Out of tokens? Keep coding. Move a Claude Code or Codex session, or a whole project, to another account, tool or laptop through your own Google Drive.",
   "keywords": ["claude-code", "codex", "ai", "chat", "handoff", "mcp", "google-drive", "txcript"],
-  "homepage": "https://carry-site-beta.vercel.app",
+  "homepage": "https://carry-si.vercel.app",
   "repository": { "type": "git", "url": "git+https://github.com/vamzzisme/carry.git" },
   "bugs": { "url": "https://github.com/vamzzisme/carry/issues" },
   "author": "heyvamz, The VXMZ Studio (https://thevxmzstudio.vercel.app)",
