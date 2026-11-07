@@ -50,17 +50,27 @@ const TOOLS = [
       return a.handoff ? withTempFile(a.handoff, f => carry(['share', a.chat, '--handoff', f, ...rest], 3 * 60e3))
         : carry(['share', a.chat, ...rest], 3 * 60e3);
     } },
-  { name: 'carry_share_project', description: 'Share a whole project: its recent Claude Code/Codex chats, Claude Code memory notes, CLAUDE.md/AGENTS.md and a handoff. Write a project-level handoff (goal, architecture, decisions, status, next steps) and pass it. The code itself travels via git.',
+  { name: 'carry_list_projects', description: 'List the user\'s projects (repos their Claude Code/Codex chats were started in), or with name, the chats in one project plus related chats started elsewhere that worked on its files. Use this to let the user pick what to share.',
+    inputSchema: { type: 'object', properties: { name: { type: 'string', description: 'Project name from the list, for details' } } },
+    run: a => carry(['projects', ...(a.name ? [a.name] : [])], 3 * 60e3) },
+  { name: 'carry_share_project', description: 'Share a whole project: chosen chats, Claude Code memory notes, CLAUDE.md/AGENTS.md and a handoff. First call carry_list_projects with the name and confirm with the user which chats to include (related chats are not included unless added). Write a project-level handoff (goal, architecture, decisions, status, next steps) and pass it. The code itself travels via git.',
     inputSchema: { type: 'object', properties: {
-      dir: { type: 'string', description: 'Project folder (absolute path)' },
+      project: { type: 'string', description: 'Project name from carry_list_projects, or an absolute folder path' },
+      dir: { type: 'string', description: 'Deprecated: same as project' },
       handoff: { type: 'string' },
-      chats: { type: 'number', description: 'How many recent chats to include (default 5)' },
+      chats: { type: 'number', description: 'How many of the newest chats started in the project to include (default 5)' },
+      add: { type: 'array', items: { type: 'string' }, description: 'Extra chat names to include, e.g. related chats' },
+      skip: { type: 'array', items: { type: 'string' }, description: 'Chat names to leave out' },
+      related: { type: 'boolean', description: 'Include all related chats' },
       emails: { type: 'array', items: { type: 'string' } },
-      link: { type: 'boolean' } }, required: ['dir'] },
+      link: { type: 'boolean' } } },
     run: a => {
-      const rest = ['--chats', String(a.chats || 5), ...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
-      return a.handoff ? withTempFile(a.handoff, f => carry(['share', '--project', a.dir, '--handoff', f, ...rest], 5 * 60e3))
-        : carry(['share', '--project', a.dir, ...rest], 5 * 60e3);
+      const ref = a.project || a.dir;
+      if (!ref) return { text: 'Say which project: call carry_list_projects first.', isError: true };
+      const rest = ['--chats', String(a.chats || 5), ...(a.add?.length ? ['--add', a.add.join(',')] : []), ...(a.skip?.length ? ['--skip', a.skip.join(',')] : []),
+        ...(a.related ? ['--related'] : []), ...emailArgs(a.emails), ...(a.link ? ['--link'] : [])];
+      return a.handoff ? withTempFile(a.handoff, f => carry(['share', '--project', ref, '--handoff', f, ...rest], 5 * 60e3))
+        : carry(['share', '--project', ref, ...rest], 5 * 60e3);
     } },
   { name: 'carry_share_summary', description: 'Share THIS conversation from a chat app (Claude app, ChatGPT), whose history carry cannot read. Write a thorough handoff of the conversation so far and pass it as summary.',
     inputSchema: { type: 'object', properties: {

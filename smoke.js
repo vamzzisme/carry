@@ -84,7 +84,7 @@ const res = Object.fromEntries(mcpRun.stdout.trim().split('\n').map(l => JSON.pa
 const txt = id => res[id].result.content[0].text;
 console.log(`$ carry mcp (6 requests)\n  tools: ${res[2].result.tools.map(t => t.name).join(', ')}`);
 assert.strictEqual(res[1].result.serverInfo.name, 'carry');
-assert.strictEqual(res[2].result.tools.length, 8);
+assert.strictEqual(res[2].result.tools.length, 9);
 assert.match(txt(3), /fix-the-login-bug-please/);
 assert.match(txt(4), /Shared summary "mcp-note"/);
 assert.match(txt(5), /Continue the onboarding flow/);
@@ -102,7 +102,22 @@ const projChat = { meta: { id: '22222222-3333-4444-5555-666666666666', timestamp
 fs.writeFileSync(path.join(ccProj, '22222222-3333-4444-5555-666666666666.jsonl'), tx.fromCommon(JSON.stringify(projChat), 'claude_code'));
 fs.writeFileSync(path.join(ccProj, 'memory', 'MEMORY.md'), '- [Stripe decision](stripe.md) — we use Stripe Checkout, not Elements\n');
 fs.writeFileSync(path.join(ccProj, 'memory', 'stripe.md'), '---\nname: stripe\n---\nWe chose Stripe Checkout because it handles tax.');
-assert.match(carry('share', '--project', proj), /Shared project "billing-app" \(1 chats, 2 memory notes, 1 instruction files\)/);
+// A chat started outside the repo (e.g. its parent folder) that edited the repo's files: shows up as "related".
+const realProj = fs.realpathSync(proj), ws = path.join(home, 'workspace'); fs.mkdirSync(ws);
+const relChat = { meta: { id: '44444444-5555-6666-7777-888888888888', timestamp: ts, cwd: fs.realpathSync(ws) }, messages: [
+  { role: 'user', timestamp: ts, content: [{ type: 'text', text: 'Add tax rounding to billing' }] },
+  { role: 'assistant', timestamp: ts, content: [{ type: 'text', text: `Edited ${realProj}/invoices.js and ${realProj}/tax.js, then ran the tests in ${realProj}.` }] }] };
+const wsDir = path.join(home, '.claude', 'projects', fs.realpathSync(ws).replace(/[^A-Za-z0-9]/g, '-'));
+fs.mkdirSync(wsDir, { recursive: true });
+fs.writeFileSync(path.join(wsDir, '44444444-5555-6666-7777-888888888888.jsonl'), tx.fromCommon(JSON.stringify(relChat), 'claude_code'));
+assert.match(carry('projects'), /billing-app\s+1 chat\(s\) \+1 related\s+1 note\(s\)/);
+assert.match(carry('projects', 'billing-app'), /Related chats[\s\S]*add-tax-rounding-to-billing/);
+// By name, default: only chats started in the repo, with a hint about the related one.
+assert.match(carry('share', '--project', 'billing-app'), /Shared project "billing-app" \(1 chat\(s\): refactor-the-billing-module; 1 memory note\(s\), 1 instruction file\(s\)\)[\s\S]*1 related chat\(s\)[\s\S]*add-tax-rounding-to-billing/);
+// --add pulls the related chat in (newest first in the pack).
+assert.match(carry('share', '--project', 'billing-app', '--add', 'add-tax-rounding-to-billing'), /\(2 chat\(s\): .*add-tax-rounding-to-billing.*refactor-the-billing-module|\(2 chat\(s\): .*refactor-the-billing-module.*add-tax-rounding-to-billing/);
+assert.match(carry('share', '--project', proj, '--related', '--skip', 'refactor-the-billing-module'), /\(1 chat\(s\): add-tax-rounding-to-billing;/);
+carry('share', '--project', proj); // leave the pack as the default one for the open checks below
 const here = carry('open', 'billing-app', '--to', 'here');
 assert.match(here, /Stripe Checkout because it handles tax/);
 assert.match(here, /Never touch prod/);

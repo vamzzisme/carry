@@ -32,11 +32,16 @@ Shared chats can be refreshed later with `carry sync`.
 
 ## Share the whole project: `/carry share project`
 Use when someone will keep working on this repo, not just this one chat.
-1. Write a project handoff to a temp file: what the project is, how it's structured, key decisions and why, what's done,
+1. Pick the project: `carry projects` lists them (name, chats, related chats, memory notes). If the user didn't say which,
+   suggest the one for the current folder and confirm.
+2. `carry projects <name>` shows its chats. Show the user: the chats started there (the newest 5 go by default) and the
+   **related** chats (started elsewhere, e.g. the parent folder, that worked on this project's files). Ask which related
+   ones to include; often this very conversation is one of them.
+3. Write a project handoff to a temp file: what the project is, how it's structured, key decisions and why, what's done,
    what's in progress, gotchas, next steps. Concrete file paths; no secrets.
-2. `carry share --project <repo folder> --handoff <file>` (add `--chats N` for more than the 5 newest chats, `--with`/`--link` as above).
-   It bundles those chats, Claude Code's memory notes for the repo, and CLAUDE.md / AGENTS.md. The code itself goes via git:
-   remind the user to push.
+4. `carry share --project <name> --handoff <file>` plus `--add a,b` / `--skip c` / `--related` / `--chats N` as chosen,
+   and `--with`/`--link` as above. It also bundles Claude Code's memory notes and CLAUDE.md / AGENTS.md. The code itself
+   goes via git: remind the user to push.
 To open one: `carry open <name or link> --to claude_code|codex --dir <their clone of the repo>`. Claude Code gets the memory notes
 and a handoff note in its memory; Codex gets `.carry/` plus a pointer in AGENTS.md. Existing files are never overwritten.
 

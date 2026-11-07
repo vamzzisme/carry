@@ -3,6 +3,9 @@
 ## 0.3.1 (2026-11-07)
 - Fix: with npm 12 (which blocks install scripts by default) txcript wasn't downloaded, so opening into Claude Code or Codex
   failed. carry now fetches txcript on first use into `~/.carry/bin`.
+- `carry projects`: your repos with their chats, Claude memory notes and **related** chats (started elsewhere, e.g. the
+  parent folder, that worked on the repo's files). `carry projects <name>` lists them to pick from.
+- `carry share --project <name>` by name, with `--add`, `--skip` and `--related` to choose chats. MCP: `carry_list_projects`.
 - `carry doctor`: shows carry, Node and txcript versions and how sharing is set up (fetches txcript if missing).
 
 ## 0.3.0 (2026-11-07)

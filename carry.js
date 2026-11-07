@@ -254,14 +254,65 @@ function projectBrief(p) {
     `\n\n## Chats in this pack\n${p.chats.map(ch => `- ${ch.name} (${ch.from})`).join('\n')}\n`;
 }
 
-function buildProject(c, root, { handoffFile, max = 5 } = {}) {
-  const chats = named(c, Infinity).filter(s => { const w = sessionCwd(c, s); return w && within(w, root); }).slice(0, max);
+// Which repo a folder belongs to: its git root, else the folder itself. Cached, since it runs git.
+function rootOf(c, dir) {
+  c.roots ||= {};
+  if (!(dir in c.roots)) {
+    const r = fs.existsSync(dir) ? spawnSync('git', ['rev-parse', '--show-toplevel'], { cwd: dir, encoding: 'utf8' }) : null;
+    c.roots[dir] = r && r.status === 0 ? fs.realpathSync(r.stdout.trim()) : dir;
+  }
+  return c.roots[dir];
+}
+
+// Projects are the repos chats were started in. "Related" chats started somewhere else (often the parent folder)
+// but mention a project's path at least RELATED_MIN times, i.e. they worked on its files.
+const RELATED_MIN = 3;
+function projectIndex(c) {
+  const chats = named(c, Infinity), projects = new Map();
+  for (const s of chats) {
+    const cwd = sessionCwd(c, s);
+    if (!cwd || path.resolve(cwd) === path.resolve(HOME)) continue; // a chat in your home folder isn't a project
+    s.root = rootOf(c, cwd);
+    if (!projects.has(s.root)) projects.set(s.root, { root: s.root, chats: [], related: [] });
+    projects.get(s.root).chats.push(s);
+  }
   save(c);
-  if (!chats.length) die(`No Claude Code or Codex chats found for ${root}. Run this inside the project folder.`);
+  // Paths appear JSON-escaped in session files (Windows backslashes doubled). Longest root first, so a mention of
+  // ".../Vibe Coding/carry" counts for carry, not for "Vibe Coding".
+  const roots = [...projects.keys()].sort((a, b) => b.length - a.length);
+  const esc = r => JSON.stringify(r).slice(1, -1), byEsc = new Map(roots.map(r => [esc(r), r]));
+  const re = roots.length && new RegExp(roots.map(r => esc(r).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|'), 'g');
+  if (re) for (const s of chats) {
+    const counts = {};
+    for (const m of readSession(s, false).matchAll(re)) { const r = byEsc.get(m[0]); counts[r] = (counts[r] || 0) + 1; }
+    for (const [r, n] of Object.entries(counts)) if (r !== s.root && n >= RELATED_MIN) projects.get(r).related.push({ ...s, mentions: n });
+  }
+  const list = [...projects.values()].map(p => ({ ...p,
+    last: Math.max(...p.chats.map(s => s.mtime)),
+    notes: Object.keys(readMd(memoryDir(p.root))).filter(f => f !== 'MEMORY.md').length }));
+  // Name = folder name; if two repos share it, prefix the parent folder.
+  const base = p => slug(path.basename(p.root).replace(/[-_]/g, ' '));
+  for (const p of list) p.name = list.filter(q => base(q) === base(p)).length > 1
+    ? slug(`${path.basename(path.dirname(p.root))} ${path.basename(p.root)}`.replace(/[-_]/g, ' ')) : base(p);
+  return list.sort((a, b) => b.last - a.last);
+}
+// A project by name (from `carry projects`) or by folder; defaults to the folder you're in.
+function findProject(c, ref) {
+  const list = projectIndex(c);
+  if (ref && !fs.existsSync(ref)) return list.find(p => p.name === ref) || die(`No project named "${ref}". Try: carry projects`);
+  const root = projectRoot(ref ? path.resolve(ref) : process.cwd());
+  return list.find(p => p.root === root) || { root, name: slug(path.basename(root).replace(/[-_]/g, ' ')), chats: [], related: [] };
+}
+
+function buildProject(c, proj, { handoffFile, max = 5, add = [], skip = [], related = false } = {}) {
+  const root = proj.root, name = proj.name;
+  let chats = [...proj.chats.slice(0, max), ...(related ? proj.related : [])];
+  for (const ref of add) { const s = find(c, ref); if (!chats.some(x => x.id === s.id)) chats.push(s); }
+  chats = chats.filter(s => !skip.includes(s.name)).sort((a, b) => b.mtime - a.mtime); // newest first
+  if (!chats.length) die(`No chats to share for ${root}. See them with: carry projects ${name}`);
   const packs = chats.map(s => buildPack(c, s));
   const instructions = {};
   for (const f of INSTRUCTION_FILES) { const p = path.join(root, f); if (fs.existsSync(p)) instructions[f.split(path.sep).join('/')] = fs.readFileSync(p, 'utf8'); }
-  const name = slug(path.basename(root).replace(/[-_]/g, ' '));
   const handoff = handoffFile ? fs.readFileSync(handoffFile, 'utf8') : [`# Handoff: project ${name}`, '',
     '_Auto stub. For a real summary run `/carry` in the project and ask it to share the project._', '',
     `Latest chat started with: ${firstPrompt(packs[0].pack).slice(0, 600)}`].join('\n');
@@ -371,6 +422,28 @@ const cmds = {
     }
     if (!n) console.log('No AI tools found (looked for ~/.claude, ~/.codex, ~/.agents). Install one, then run: carry install-skill');
   },
+  // `carry projects` lists them; `carry projects <name>` shows the chats in one, to pick from.
+  projects(args) {
+    const c = load(), list = projectIndex(c), ref = args.find(a => !a.startsWith('-'));
+    const homes = [HOME, fs.realpathSync(HOME)]; // macOS: /var/... vs /private/var/...
+    const home = p => { const h = homes.find(x => p === x || p.startsWith(x + path.sep)); return h ? '~' + p.slice(h.length) : p; };
+    if (!ref) {
+      if (!list.length) return console.log('No projects yet. Start a Claude Code or Codex chat inside a project folder.');
+      for (const p of list.slice(0, Number(flag(args, '-n')) || 15)) {
+        console.log(`${p.name.padEnd(30)} ${String(p.chats.length).padStart(2)} chat(s)${p.related.length ? ` +${p.related.length} related` : ''}` +
+          `  ${p.notes} note(s)  ${ago(p.last).padEnd(8)} ${home(p.root)}`);
+      }
+      return console.log('\nDetails: carry projects <name>   Share: carry share --project <name>');
+    }
+    const p = list.find(x => x.name === ref) || die(`No project named "${ref}". Try: carry projects`);
+    console.log(`${p.name}  ${home(p.root)}  ·  ${p.notes} Claude memory note(s)\n\nChats started here (newest first; the first 5 are shared by default):`);
+    p.chats.forEach((s, i) => console.log(`  ${String(i + 1).padStart(2)}. ${s.name.padEnd(36)} ${s.harness.padEnd(12)} ${ago(s.mtime)}`));
+    if (p.related.length) {
+      console.log('\nRelated chats (started elsewhere, worked on this project\'s files):');
+      p.related.forEach(s => console.log(`      ${s.name.padEnd(36)} ${s.harness.padEnd(12)} ${ago(s.mtime).padEnd(8)} ${s.mentions} mentions`));
+    }
+    console.log(`\nShare: carry share --project ${p.name} [--chats N] [--add <chat>,...] [--skip <chat>,...] [--related]`);
+  },
   list(args) {
     const c = load();
     const rows = named(c, Number(flag(args, '-n')) || 20);
@@ -388,14 +461,20 @@ const cmds = {
   async share(args) {
     const emails = (flag(args, '--with') || '').split(',').map(e => e.trim()).filter(Boolean);
     if (args.includes('--project')) {
-      const c = load(), arg = flag(args, '--project');
-      const root = projectRoot(arg && !arg.startsWith('--') ? path.resolve(arg) : process.cwd());
-      const p = buildProject(c, root, { handoffFile: flag(args, '--handoff'), max: Number(flag(args, '--chats')) || 5 });
+      const c = load(), arg = flag(args, '--project'), list = v => (flag(args, v) || '').split(',').map(x => x.trim()).filter(Boolean);
+      const proj = findProject(c, arg && !arg.startsWith('--') ? arg : null);
+      const p = buildProject(c, proj, { handoffFile: flag(args, '--handoff'), max: Number(flag(args, '--chats')) || 5,
+        add: list('--add'), skip: list('--skip'), related: args.includes('--related') });
       const { prev, where } = await publish(c, p.meta.name, p, { emails, link: args.includes('--link') });
-      c.shared[p.meta.name] = { ...prev, project: root, where };
+      c.shared[p.meta.name] = { ...prev, project: proj.root, where };
       save(c);
-      return console.log(`Shared project "${p.meta.name}" (${p.chats.length} chats, ${Object.keys(p.memory).length} memory notes, ` +
-        `${Object.keys(p.instructions).length} instruction files) → ${where}${p.meta.redacted ? `  (${p.meta.redacted} secret(s) redacted)` : ''}`);
+      const notes = Object.keys(p.memory).filter(f => f !== 'MEMORY.md').length;
+      console.log(`Shared project "${p.meta.name}" (${p.chats.length} chat(s): ${p.chats.map(ch => ch.name).join(', ')}; ` +
+        `${notes} memory note(s), ${Object.keys(p.instructions).length} instruction file(s)) → ${where}` +
+        `${p.meta.redacted ? `  (${p.meta.redacted} secret(s) redacted)` : ''}`);
+      const left = proj.related.filter(r => !p.chats.some(ch => ch.name === r.name));
+      if (left.length) console.log(`  ${left.length} related chat(s) also worked on it: ${left.map(r => r.name).join(', ')}\n  Include with --add <name> or --related`);
+      return;
     }
     const c = load(), s = find(c, args[0] || die('Usage: carry share <chat> | --project [dir] [--handoff file.md] [--with a@x.com,b@y.com] [--link]'));
     const { where, count } = await share(c, s, { handoffFile: flag(args, '--handoff'), emails, link: args.includes('--link') });
@@ -484,7 +563,8 @@ carry setup [folder] [--as name]                 or use a synced folder (Drive f
 carry install-skill                              add /carry to Claude Code, Codex and ~/.agents
 carry list | name <chat> <new name>              this laptop's chats, by name
 carry share <chat> [--handoff f] [--with emails] [--link]
-carry share --project [dir] [--chats 5] [--handoff f] [--with emails]   chats + Claude memory + CLAUDE.md/AGENTS.md
+carry projects [name]                            your projects (repos) and the chats in each
+carry share --project [name|dir] [--chats 5] [--add a,b] [--skip c] [--related] [--handoff f] [--with emails]
 carry note "<name>" --handoff f [--with emails] [--link]   share just a summary (from a chat app)
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here] [--dir project folder]

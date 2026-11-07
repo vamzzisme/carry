@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=8">
+  <link rel="stylesheet" href="/style.css?v=9">
   <script>try { if (sessionStorage.getItem('vxmz-curtain')) document.documentElement.classList.add('no-curtain'); } catch (e) {}</script>
   <!-- Umami: fill in the website id from cloud.umami.is, then uncomment -->
   <!-- <script defer src="https://cloud.umami.is/script.js" data-website-id="YOUR-UMAMI-ID"></script> -->
@@ -244,7 +244,7 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
         </div>
         <div class="faq">
           <details><summary>Why not just paste a summary?</summary><p>For a quick question, do. For a long coding session, a summary drops exactly what matters: the exact errors, the commands that ran, the approaches that failed. carry moves the real session, so the next agent resumes it as its own instead of guessing.</p></details>
-          <details><summary>Can I share a whole project?</summary><p>Yes. Run <code>carry share --project</code> in the repo. It bundles the newest chats, Claude Code's memory notes and CLAUDE.md / AGENTS.md with a handoff. Your friend clones the code, runs <code>carry open &lt;link&gt; --dir &lt;their clone&gt;</code>, and Claude or Codex picks up with your context. Nothing of theirs gets overwritten.</p></details>
+          <details><summary>Can I share a whole project?</summary><p>Yes. Run <code>carry share --project</code> in the repo. Pick it from <code>carry projects</code>, which also finds related chats you started in another folder that worked on the repo. carry bundles the chats you choose, Claude Code's memory notes and CLAUDE.md / AGENTS.md with a handoff. Your friend clones the code, runs <code>carry open &lt;link&gt; --dir &lt;their clone&gt;</code>, and Claude or Codex picks up with your context. Nothing of theirs gets overwritten.</p></details>
           <details><summary>Does my chat go to a VXMZ server?</summary><p>No. carry has no server. It reads chats from your laptop, uploads them to your own Google Drive, and downloads them on the other side. We never see them.</p></details>
           <details><summary>Can my friend continue on their own account?</summary><p>Yes, that is the point. The chat opens in whichever Claude Code or Codex account is signed in on their laptop, so their tokens are used, not yours.</p></details>
           <details><summary>Can I move a Claude Code chat into Codex?</summary><p>Yes. <code>carry open &lt;link&gt; --to codex</code> converts the full conversation into a Codex session. For chat apps like ChatGPT, carry gives you a short handoff file to attach instead.</p></details>
@@ -289,6 +289,6 @@ args = ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]</div></div>
       <div class="product">A <strong>VXMZ</strong> Product</div>
     </div>
   </footer>
-  <script src="/main.js?v=8"></script>
+  <script src="/main.js?v=9"></script>
 </body>
 </html>

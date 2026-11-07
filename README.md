@@ -48,13 +48,13 @@ The chat opens on whichever account is signed in there.
 
 ### Share a whole project
 
-Run inside the repo:
-
 ```bash
-carry share --project --with riya@gmail.com
+carry projects                      # your repos, with chats and Claude memory notes
+carry projects my-app               # the chats in one, plus "related" chats started elsewhere that worked on it
+carry share --project my-app --add <related chat> --with riya@gmail.com
 ```
 
-It bundles the newest chats, Claude Code's memory notes, CLAUDE.md / AGENTS.md and a handoff. The code itself goes
+It bundles the newest chats (and any you add), Claude Code's memory notes, CLAUDE.md / AGENTS.md and a handoff. The code itself goes
 through git. Your friend clones the repo, then:
 
 ```bash
@@ -101,7 +101,8 @@ On Windows, use `"command": "cmd"` and put `"/c", "npx"` at the start of the arg
 | `carry list` | Your Claude Code and Codex chats, by name |
 | `carry name <chat> <new name>` | Rename a chat |
 | `carry share <chat> [--with emails] [--link]` | Share a chat. `--link` lets anyone with the link open it |
-| `carry share --project [dir] [--chats 5]` | Share a whole repo |
+| `carry projects [name]` | Your projects, or the chats in one (including related chats started elsewhere) |
+| `carry share --project [name] [--add chats] [--skip chats] [--related]` | Share a whole repo |
 | `carry open <link, file or name> --to claude_code\|codex\|chat` | Continue it here |
 | `carry packs` | What you've shared |
 | `carry sync` | Re-upload shared chats that changed |
