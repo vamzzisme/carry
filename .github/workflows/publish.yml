@@ -1,0 +1,36 @@
+name: publish
+# Release: bump "version" in package.json, add a CHANGELOG entry, then
+#   git tag v0.3.1 && git push --tags
+# Needs the repo secret NPM_TOKEN (npmjs.com → Access Tokens → granular, publish rights on @thevxmzstudio).
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # GitHub Release
+      id-token: write   # npm provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm ci
+      - run: npm test
+      - run: node smoke.js
+      - run: node pkgtest.js
+      - name: Tag matches package.json
+        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+      - run: npm publish --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: GitHub Release with this version's changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(node -p 'require("./package.json").version')
+          awk -v v="## $v" '$0 ~ "^## " {p = index($0, v) == 1} p' CHANGELOG.md > notes.md
+          gh release create "$GITHUB_REF_NAME" --title "carry $v" --notes-file notes.md

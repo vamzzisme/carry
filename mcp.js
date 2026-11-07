@@ -7,7 +7,7 @@ const CARRY = path.join(__dirname, 'carry.js');
 const MAX_TEXT = 60000; // keep opened chats within a model's context
 
 function carry(args, timeout = 60e3) {
-  const r = spawnSync(process.execPath, [CARRY, ...args], { encoding: 'utf8', timeout, env: process.env });
+  const r = spawnSync(process.execPath, [CARRY, ...args], { encoding: 'utf8', timeout, env: { ...process.env, CARRY_NO_UPDATE_CHECK: '1' } });
   const text = `${r.stdout || ''}${r.stderr || ''}`.trim() || (r.error ? r.error.message : '(no output)');
   return { text, isError: r.status !== 0 };
 }
@@ -23,9 +23,13 @@ const TOOLS = [
     inputSchema: { type: 'object', properties: {} },
     run: () => {
       let c; try { c = JSON.parse(fs.readFileSync(path.join(os.homedir(), '.carry', 'config.json'), 'utf8')); } catch { c = {}; }
-      if (c.web) return { text: `Set up: Google Drive (web). You appear as "${c.user}".${c.friends ? ` Shares go to: ${c.friends.join(', ')}.` : ''}` };
-      if (c.folder) return { text: `Set up: synced folder ${c.folder}. You appear as "${c.user}".` };
-      return { text: 'Not set up yet. Call carry_connect_google_drive.' };
+      let u = {}; try { u = JSON.parse(fs.readFileSync(path.join(os.homedir(), '.carry', 'update.json'), 'utf8')); } catch {}
+      const { version } = require('./package.json');
+      const upd = u.latest && require('./carry').newer(u.latest, version)
+        ? ` carry ${u.latest} is available (running ${version}); tell the user to run "carry update" or restart this app.` : '';
+      if (c.web) return { text: `Set up: Google Drive (web). You appear as "${c.user}".${c.friends ? ` Shares go to: ${c.friends.join(', ')}.` : ''}${upd}` };
+      if (c.folder) return { text: `Set up: synced folder ${c.folder}. You appear as "${c.user}".${upd}` };
+      return { text: `Not set up yet. Call carry_connect_google_drive.${upd}` };
     } },
   { name: 'carry_connect_google_drive', description: 'Connect carry to the user\'s Google Drive. Opens Google sign-in in their browser; they sign in and click Allow. Takes up to 5 minutes.',
     inputSchema: { type: 'object', properties: {

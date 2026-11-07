@@ -35,6 +35,16 @@ assert.match(carry('install-skill'), /\/carry added to Claude Code[\s\S]*\/carry
 assert(fs.existsSync(path.join(home, '.claude', 'skills', 'carry', 'SKILL.md')));
 assert(fs.existsSync(path.join(home, '.codex', 'skills', 'carry', 'SKILL.md')));
 
+// Update notice: from the cached check, on stderr, never inside CI or MCP.
+assert.match(carry('--version'), new RegExp(require('./package.json').version.replace(/\./g, '\\.')));
+fs.mkdirSync(path.join(home, '.carry'), { recursive: true });
+fs.writeFileSync(path.join(home, '.carry', 'update.json'), JSON.stringify({ checked: Date.now(), latest: '99.0.0' }));
+const noticeEnv = { ...env }; delete noticeEnv.CI; delete noticeEnv.CARRY_NO_UPDATE_CHECK;
+const n = spawnSync(process.execPath, [path.join(__dirname, 'carry.js'), 'list'], { env: noticeEnv, encoding: 'utf8', cwd: home });
+assert.match(n.stderr, /carry 99\.0\.0 is out/);
+assert.doesNotMatch(n.stdout, /is out/);
+fs.rmSync(path.join(home, '.carry', 'update.json'));
+
 const share = path.join(home, 'share');
 carry('setup', share, '--as', 'ci');
 const list = carry('list');

@@ -52,4 +52,5 @@ and a handoff note in its memory; Codex gets `.carry/` plus a pointer in AGENTS.
 
 ## Other
 - `carry list` — this laptop's chats by name · `carry packs` — shared chats (web mode: your own shares with links) · `carry name <chat> <new>` — rename.
+- If carry prints that a new version is out, tell the user and offer to run `carry update`.
 - Never share a chat the user didn't pick.
