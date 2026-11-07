@@ -74,4 +74,4 @@ Test: `npm test`. Plan and decisions: [status.md](status.md).
 ## Releasing (maintainers)
 1. Bump `version` in package.json, add a `CHANGELOG.md` entry, bump `?v=` and the footer version in `site/`.
 2. `git tag v<version> && git push --tags` → GitHub Actions tests on 3 OSes, publishes to npm and creates a GitHub Release.
-   Needs the `NPM_TOKEN` repo secret. Working from a clone? Use `npm install && npm link` instead of the global install.
+   Publishing uses npm trusted publishing (set once on npmjs.com, see publish.yml), or run `npm publish` by hand. Working from a clone? Use `npm install && npm link` instead of the global install.
