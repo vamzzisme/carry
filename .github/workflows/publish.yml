@@ -1,7 +1,7 @@
 name: publish
 # Release: bump "version" in package.json, add a CHANGELOG entry, then
 #   git tag v0.3.1 && git push --tags
-# Needs the repo secret NPM_TOKEN (npmjs.com → Access Tokens → granular, publish rights on @thevxmzstudio).
+# Needs the repo secret NPM_TOKEN (npmjs.com → Access Tokens → granular, publish rights on @heyvamz/carry).
 on:
   push:
     tags: ['v*']

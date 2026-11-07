@@ -16,7 +16,7 @@ const tgz = path.join(tmp, JSON.parse(run('npm', ['pack', '--json', '--pack-dest
 const prefix = path.join(tmp, 'g');
 run('npm', ['install', '-g', '--prefix', prefix, tgz]);
 
-const pkg = path.join(prefix, win ? '' : 'lib', 'node_modules', '@thevxmzstudio', 'carry');
+const pkg = path.join(prefix, win ? '' : 'lib', 'node_modules', '@heyvamz', 'carry');
 const shipped = fs.readdirSync(pkg).sort();
 console.log('installed files:', shipped.join(', '));
 for (const f of ['carry.js', 'drive.js', 'mcp.js', 'system.js', 'install-txcript.js', 'skills', 'README.md', 'LICENSE', 'CHANGELOG.md']) assert(shipped.includes(f), `missing ${f}`);

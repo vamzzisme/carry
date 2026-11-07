@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.3.0 (2026-11-07)
-- Published on npm as `@thevxmzstudio/carry`: `npm install -g @thevxmzstudio/carry`.
+- Published on npm as `@heyvamz/carry`: `npm install -g @heyvamz/carry`.
 - `carry update` and a once-a-day "new version" notice (opt out with `CARRY_NO_UPDATE_CHECK=1`).
 - Project sharing: `carry share --project` bundles a repo's recent chats, Claude Code memory notes, CLAUDE.md / AGENTS.md
   and a handoff. `carry open <project> --to claude_code|codex --dir <clone>` puts the memory where the agent reads it.
