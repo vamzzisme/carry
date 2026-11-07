@@ -52,8 +52,7 @@ It is the template the other product sites (Lobe, DClutter, Drapr, Manga Reader)
   labels, the footer, names like `carry-si.vercel.app`, and anything marked `data-plain`.
 - Blog: post cards with tags, a search box and tag filters. No numbering on cards.
 - FAQ: `<details>`; the question text sits in one `<span>` so the flex row doesn't split it.
-- Footer: Inter, normal case. Three columns (Product, Open source, Studio), then "Built by @heyvxmz · carry vN · © year"
-  and "A VXMZ Product".
+- Footer: Inter, normal case. Three columns (Product, Open source, Studio), then the shared VXMZ Kit signature strip (`<vxmz-signature>`, see VXMZ_STUDIO_STANDARD.md section 1), full width at the page bottom.
 
 ## Rules learned the hard way
 - Version-tag CSS and JS (`style.css?v=N`, `main.js?v=N`) and bump N on every change, or browsers keep old files.
