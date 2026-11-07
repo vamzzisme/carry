@@ -1,11 +1,11 @@
 # Roadmap
 
 ## Before a public launch
-- [ ] Google sign-in out of testing: add homepage + privacy URL on the Branding page, publish, request verification
-      (`drive.file` is non-sensitive: brand review only, no security audit)
+- [x] Google sign-in: Branding page + publish (done by Vamshi, 2026-11-07)
 - [ ] Two-person test: share by email, friend opens the private link via browser download
 - [ ] Try the MCP connector inside Claude Desktop, Codex and Cursor themselves
-- [ ] Umami website id on the site; close the two GitHub secret-scanning alerts (client ID/secret, by design)
+- [x] Umami: self-hosted at vxmz-analytics.vercel.app (Neon Postgres), tracking carry-si.vercel.app
+- [ ] Close the two GitHub secret-scanning alerts (client ID/secret, by design)
 - [ ] npm trusted publisher for `@heyvamz/carry` (so `git tag vX` releases without a manual 2FA publish)
 
 ## Next

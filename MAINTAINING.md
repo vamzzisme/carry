@@ -22,6 +22,14 @@ CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, w
    - Until that's set, publish by hand: `npm publish` (asks for 2FA in the browser).
 4. Site deploys from `main` to https://carry-si.vercel.app (Vercel project `carry-site`, root `site/`).
 
+## Analytics (VXMZ-wide)
+Self-hosted Umami 3.4 at https://vxmz-analytics.vercel.app (Vercel project `vxmz-analytics`, fork `vamzzisme/vxmz-analytics`).
+Database: Neon project `vxmz-analytics` (`old-waterfall-99493096`, org thevxmzstudio, aws-us-east-1, Postgres 18).
+Vercel env: `DATABASE_URL` (pooled), `DIRECT_DATABASE_URL` (unpooled, for migrations), `APP_SECRET`. Local copy of the
+Neon links: `../vxmz-analytics/.env.local` (git-ignored). carry's website id: `20a506c5-aa9e-4f87-9519-91c67c25e6df`.
+Add another product: Umami → Websites → Add website, then the same `<script>` with its id and `data-domains`.
+Update Umami: GitHub → `vamzzisme/vxmz-analytics` → Sync fork; Vercel redeploys and migrates.
+
 ## Google sign-in app (one time)
 Web mode needs one Google Cloud OAuth client. Users' data stays in their own Drive; this is only the app they sign in to.
 Project `carry` (`carry-513915`).

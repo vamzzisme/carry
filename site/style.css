@@ -1,12 +1,12 @@
-/* carry: VXMZ studio system (ink, paper, signature) with carry's own accent, Marigold: warm, earthy, never neon. */
+/* carry: VXMZ studio system (ink, paper, signature) with carry's own accent, Clay: fired terracotta, earthy, never neon. */
 :root {
   --ink: #11120f;
   --paper: #f1efe8;
   --paper-deep: #e5e2d8;
-  --deep: #241c13;
-  --deep-2: #30261a;
-  --accent: #e9a23b;
-  --accent-ink: #9a5b12;
+  --deep: #2a1a14;
+  --deep-2: #37231b;
+  --accent: #c2674b;
+  --accent-ink: #8f3d27;
   --muted: #60635b;
   --line: rgba(17, 18, 15, .14);
   --card: #f8f6f0;
@@ -102,8 +102,8 @@ code, pre, kbd { font-family: var(--mono); }
   border: 1px solid transparent; transition: transform .15s ease, background .2s, border-color .2s;
 }
 .btn:active { transform: scale(.98); }
-.btn-primary { background: var(--accent); color: var(--ink); box-shadow: 0 0 24px rgba(233, 162, 59, .22); }
-.btn-primary:hover { background: #f0b558; }
+.btn-primary { background: var(--accent); color: var(--ink); box-shadow: 0 0 24px rgba(194, 103, 75, .24); }
+.btn-primary:hover { background: #cf7a5e; }
 .btn-secondary { background: transparent; color: var(--fg); border-color: var(--line); }
 .btn-secondary:hover { border-color: var(--fg); }
 .btn-sm { padding: 10px 18px; font-size: 14px; }
@@ -123,19 +123,19 @@ code, pre, kbd { font-family: var(--mono); }
 
 /* terminal */
 .term {
-  background: var(--deep); color: #f2e8d8; border-radius: 18px; overflow: hidden;
+  background: var(--deep); color: #f2e6de; border-radius: 18px; overflow: hidden;
   box-shadow: 0 30px 60px rgba(17, 18, 15, .25), 0 0 0 1px rgba(255, 255, 255, .04) inset;
   font: 400 13px/1.7 var(--mono);
 }
-.term-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--deep-2); font-size: 11px; color: #b3a18a; letter-spacing: .06em; }
+.term-head { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: var(--deep-2); font-size: 11px; color: #b39a8f; letter-spacing: .06em; }
 .term-head i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; box-shadow: inset 0 0 0 .5px rgba(0,0,0,.2); }
 .term-head i:nth-child(2) { background: #febc2e; }
 .term-head i:nth-child(3) { background: #28c840; }
 .term-head span { margin-left: auto; }
 .term pre { margin: 0; padding: 18px 20px 22px; white-space: pre-wrap; word-break: break-word; }
-.term .p { color: var(--accent); }
-.term .c { color: #a08d74; }
-.term .ok { color: #f3c56b; }
+.term .p { color: #cf7a5e; } /* lighter clay: 5.2:1 on the dark terminal */
+.term .c { color: #a3887c; }
+.term .ok { color: #e8a58c; }
 .term + .term { margin-top: 14px; }
 .term.b { margin-left: 32px; }
 
@@ -170,13 +170,13 @@ h3 { font: 600 19px/1.3 var(--body); margin: 0 0 8px; letter-spacing: -.01em; }
 .chip { font-size: 13.5px; font-weight: 500; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--line); }
 .chip.on { background: var(--accent); color: var(--ink); border-color: transparent; }
 
-/* deep earth band */
+/* deep clay band */
 .band { background: var(--deep); color: var(--paper); border-top: 0; }
-.band .sec-num { color: #b3a18a; }
+.band .sec-num { color: #b39a8f; }
 .band .sec-num b, .band h2 em { color: var(--accent); }
 .band .card { background: rgba(255, 255, 255, .04); border-color: rgba(241, 239, 232, .1); }
-.band .card p { color: #cbbba4; }
-.band .sub { color: #cbbba4; }
+.band .card p { color: #cdb8ae; }
+.band .sub { color: #cdb8ae; }
 .points { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
 
 /* install */
@@ -196,8 +196,8 @@ h3 { font: 600 19px/1.3 var(--body); margin: 0 0 8px; letter-spacing: -.01em; }
   position: relative; background: var(--deep); color: var(--paper); border-radius: 16px;
   padding: 18px 20px; font: 400 13.5px/1.75 var(--mono); overflow-x: auto; white-space: pre;
 }
-.code .p { color: var(--accent); user-select: none; }
-.code .c { color: #9a8a74; }
+.code .p { color: #cf7a5e; user-select: none; }
+.code .c { color: #9c8479; }
 .copy {
   position: absolute; top: 12px; right: 12px; font: 600 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase;
   background: rgba(241, 239, 232, .08); color: var(--paper); border: 1px solid rgba(241, 239, 232, .15);

@@ -8,12 +8,13 @@ carry's site follows the VXMZ Studio standard (`../VXMZ_STUDIO_STANDARD.md`) wit
   No studio eyebrow in the hero, no "by vxmz" in the navbar.
 - Voice: plain, concrete, no em dashes, no hype words (seamless, unlock, elevate). Lead with the problem: "Out of tokens? Keep coding."
 
-## Colour (warm, earthy, never neon)
+## Colour (clay: warm, earthy, never neon)
 | Token | Value | Use |
 |---|---|---|
-| `--accent` | `#e9a23b` Marigold | buttons, prompts, icon, dark-mode links and italic headings |
-| `--accent-ink` | `#9a5b12` burnt amber | links and italic headings on paper (light mode) |
-| `--deep` / `--deep-2` | `#241c13` / `#30261a` earth brown | privacy band, terminals, code blocks |
+| `--accent` | `#c2674b` Clay | buttons, icon, dark-mode links and italic headings (4.8:1 on ink) |
+| `--accent-ink` | `#8f3d27` deep clay | links and italic headings on paper (light mode, 6.4:1) |
+| `--deep` / `--deep-2` | `#2a1a14` / `#37231b` clay brown | privacy band, terminals, code blocks |
+| prompt clay | `#cf7a5e` | `$` prompts on the dark terminals (5.2:1) |
 | `--ink` / `--paper` | `#11120f` / `#f1efe8` | studio base, shared by all VXMZ products |
 | window dots | `#ff5f57` `#febc2e` `#28c840` | every terminal mockup |
 
