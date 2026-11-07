@@ -23,7 +23,8 @@ CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, w
 4. Site deploys from `main` to https://carry-si.vercel.app (Vercel project `carry-site`, root `site/`).
 5. The workflow also builds `carry.mcpb` (`node mcpb/build.js`) and attaches it to the release; the site and README link to
    `releases/latest/download/carry.mcpb`.
-6. MCP Registry (after npm has the version): `mcp-publisher login github` (once; device code in the browser), then
+6. MCP Registry (after npm has the version): `mcp-publisher login github` (every release: the token expires within
+   hours; device code in the browser), then
    `mcp-publisher publish` from the repo root. Name `io.github.vamzzisme/carry` must match `mcpName` in package.json.
 7. Claude Code plugin: nothing to do, `vamzzisme/carry` is its own marketplace (`.claude-plugin/`). Check with
    `claude plugin validate .`. Directory listing: claude.ai/directory/manage → Submit new → Plugin bundle.
