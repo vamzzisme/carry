@@ -45,20 +45,25 @@ if (toc) {
   }
 }
 
+// Umami custom events (install intent). No-op when Umami is blocked or Do Not Track is on.
+const track = (name, data) => { try { window.umami?.track(name, data); } catch (e) {} };
+
 // Copy setup prompt: one line any AI can act on, plus "open in" links.
 const PROMPT = 'Set up carry for me. Read https://carry-si.vercel.app/setup.md and follow it.';
 document.querySelectorAll('.prompt').forEach(box => {
   const copyBtn = box.querySelector('.copy-prompt'), label = copyBtn.querySelector('span');
   copyBtn.addEventListener('click', async () => {
+    track('copy-setup-prompt');
     try { await navigator.clipboard.writeText(PROMPT); label.textContent = 'Setup prompt copied'; }
     catch (e) { box.classList.add('open'); label.textContent = 'Copy it below'; }
     setTimeout(() => (label.textContent = 'Copy setup prompt'), 1800);
   });
   box.querySelector('.more').addEventListener('click', e => { e.stopPropagation(); box.classList.toggle('open'); });
   const q = encodeURIComponent(PROMPT);
-  box.querySelectorAll('[data-open]').forEach(a => (a.href = {
-    claude: `https://claude.ai/new?q=${q}`, chatgpt: `https://chatgpt.com/?q=${q}`, cursor: `cursor://anysphere.cursor-deeplink/prompt?text=${q}`,
-  }[a.dataset.open]));
+  box.querySelectorAll('[data-open]').forEach(a => {
+    a.href = { claude: `https://claude.ai/new?q=${q}`, chatgpt: `https://chatgpt.com/?q=${q}`, cursor: `cursor://anysphere.cursor-deeplink/prompt?text=${q}` }[a.dataset.open];
+    a.addEventListener('click', () => track('open-setup-prompt', { app: a.dataset.open }));
+  });
   const text = box.querySelector('.prompt-text'); if (text) text.textContent = PROMPT;
 });
 document.addEventListener('click', e => document.querySelectorAll('.prompt.open').forEach(b => !b.contains(e.target) && b.classList.remove('open')));
@@ -133,6 +138,7 @@ document.querySelectorAll('.tab').forEach(b => b.setAttribute('role', 'tab'));
 applyTabs();
 
 document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', async () => {
+  track('copy-command', { command: b.dataset.copy.split('\n')[0] }); // first line names it, e.g. "npm install -g @heyvamz/carry"
   try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied'; }
   catch (e) { b.textContent = 'Select and copy'; }
   setTimeout(() => (b.textContent = 'Copy'), 1600);
