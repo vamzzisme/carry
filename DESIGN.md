@@ -7,7 +7,7 @@ It is the template the other product sites (Lobe, DClutter, Drapr, Manga Reader)
 - Product name in lowercase: **carry**. Command: `carry`. npm: `@heyvamz/carry`.
 - Positioning: "AirDrop for AI chats and projects". Serverless in the plain sense: no carry server, no account, everything
   travels through the user's own Google Drive. Second hook: "Out of tokens? Keep coding."
-- VXMZ appears only in the footer ("Built by @heyvamz", "A VXMZ Product"). No opening curtain (that is for the studio site),
+- VXMZ appears only in the footer ("Built by @heyvxmz", "A VXMZ Product"). No opening curtain (that is for the studio site),
   no studio eyebrow in the hero, no VXMZ text in the sidebar.
 - Voice: plain, concrete, no em dashes, no hype words (seamless, unlock, elevate).
 
@@ -52,7 +52,7 @@ It is the template the other product sites (Lobe, DClutter, Drapr, Manga Reader)
   labels, the footer, names like `carry-si.vercel.app`, and anything marked `data-plain`.
 - Blog: post cards with tags, a search box and tag filters. No numbering on cards.
 - FAQ: `<details>`; the question text sits in one `<span>` so the flex row doesn't split it.
-- Footer: Inter, normal case. Three columns (Product, Open source, Studio), then "Built by @heyvamz · carry vN · © year"
+- Footer: Inter, normal case. Three columns (Product, Open source, Studio), then "Built by @heyvxmz · carry vN · © year"
   and "A VXMZ Product".
 
 ## Rules learned the hard way

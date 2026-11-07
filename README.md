@@ -8,7 +8,7 @@ laptop. Or hand over a whole project, memory and all, so the next agent knows wh
 
 Shared chats go into **your own** Google Drive. There is no carry server and no account with us.
 
-[Website](https://carry-si.vercel.app) · [GitHub](https://github.com/vamzzisme/carry) · built by [@heyvamz](https://x.com/heyvamz) · A VXMZ product
+[Website](https://carry-si.vercel.app) · [GitHub](https://github.com/vamzzisme/carry) · built by [@heyvxmz](https://x.com/heyvxmz) · A VXMZ product
 
 ## Why not just paste a summary?
 

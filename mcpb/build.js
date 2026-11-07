@@ -24,7 +24,7 @@ fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify({
   version: pkg.version,
   description: 'AirDrop for AI chats and projects: share Claude Code and Codex sessions through your own Google Drive.',
   long_description: 'Ask Claude to share a chat or project, check your carry inbox, open what a friend sent, or send it back with your work. Secrets are redacted before upload. carry has no server: files go only to your own Google Drive.',
-  author: { name: 'heyvamz', url: 'https://x.com/heyvamz' },
+  author: { name: 'heyvamz', url: 'https://x.com/heyvxmz' },
   repository: { type: 'git', url: 'https://github.com/vamzzisme/carry' },
   homepage: 'https://carry-si.vercel.app',
   documentation: 'https://github.com/vamzzisme/carry#readme',
