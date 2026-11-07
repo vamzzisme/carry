@@ -150,7 +150,7 @@ document.getElementById('fb')?.addEventListener('submit', e => {
   const name = document.getElementById('fb-name').value.trim();
   const msg = document.getElementById('fb-msg').value.trim();
   const body = `${msg}\n\n${name ? `From: ${name}\n` : ''}Sent from the carry site`;
-  location.href = `mailto:pvamshikrishna369@gmail.com?subject=${encodeURIComponent(`carry: ${type}`)}&body=${encodeURIComponent(body)}`;
+  location.href = `mailto:heyvamz11@gmail.com?subject=${encodeURIComponent(`carry: ${type}`)}&body=${encodeURIComponent(body)}`;
 });
 
 // Blog: search box + tag filter over the post list.

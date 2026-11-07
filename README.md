@@ -158,7 +158,7 @@ On Windows, use `"command": "cmd"` and put `"/c", "npx"` at the start of the arg
   npm (update check) and GitHub (downloading txcript once).
 - Shared files stay in your Drive until you delete them there. Local settings live in `~/.carry/` until you delete that folder.
 - Who sees a shared chat is up to you: paired friends, the emails you name, or anyone with the link if you choose `--link`.
-- Contact: pvamshikrishna369@gmail.com
+- Contact: heyvamz11@gmail.com
 
 Full policy: [carry-si.vercel.app/privacy](https://carry-si.vercel.app/privacy)
 

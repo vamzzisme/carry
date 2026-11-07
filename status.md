@@ -186,7 +186,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 ### Website (2026-11-06) — `site/` (static, no build)
 - `index.html` (hero, how it works, tools, privacy band, install, FAQ, feedback via mailto), `privacy.html`, `terms.html`,
   `style.css`, `main.js`, `favicon.svg`, `vercel.json` (`cleanUrls` → `/privacy`, `/terms`).
-- VXMZ standard: "A VXMZ PRODUCT" curtain (once per session, tap to skip), "built by @heyvxmz" → x.com/heyvxmz, version v0.2.0,
+- VXMZ standard: "A VXMZ PRODUCT" curtain (once per session, tap to skip), "built by @heyvamz" → x.com/heyvamz, version v0.2.0,
   Boska + Inter + IBM Plex Mono, studio ink/paper/lime + moss green band, pill navbar with 01–04 links + drawer < 768px,
   primary/secondary/text buttons with scale(.98), Buy me a coffee, studio link, light + dark. No em dashes.
 - Checked in browser: 1280 desktop and 390 mobile, dark and light, no horizontal scroll on all 3 pages.
