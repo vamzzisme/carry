@@ -4,7 +4,7 @@ carry's site follows the VXMZ Studio standard (`../VXMZ_STUDIO_STANDARD.md`) wit
 
 ## Brand
 - Product name in lowercase: **carry**. Command: `carry`. npm: `@heyvamz/carry`.
-- VXMZ appears only in the opening curtain ("A VXMZ PRODUCT") and the footer ("built by @heyvxmz", "A VXMZ PRODUCT").
+- VXMZ appears only in the opening curtain ("A VXMZ PRODUCT") and the footer ("built by @heyvamz", "A VXMZ PRODUCT").
   No studio eyebrow in the hero, no "by vxmz" in the navbar.
 - Voice: plain, concrete, no em dashes, no hype words (seamless, unlock, elevate). Lead with the problem: "Out of tokens? Keep coding."
 

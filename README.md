@@ -8,7 +8,7 @@ AGENTS.md and a handoff) so the next agent knows what was tried and why. Packs g
 Why not paste a summary? A summary keeps what the AI chose to remember. carry keeps every message, command, error and
 dead end, and the next agent resumes it as its own session.
 
-npm: [@heyvamz/carry](https://www.npmjs.com/package/@heyvamz/carry) · Site: https://carry-site-beta.vercel.app · v0.3.0 · built by [@heyvxmz](https://x.com/heyvxmz)
+npm: [@heyvamz/carry](https://www.npmjs.com/package/@heyvamz/carry) · Site: https://carry-site-beta.vercel.app · v0.3.0 · built by [@heyvamz](https://x.com/heyvamz)
 
 Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Codex `.zst` support, Drive sharing, secret redaction and a handoff summary.
 
