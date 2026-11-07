@@ -23,6 +23,8 @@ if (toc) {
       let i = 0;
       heads.forEach((h, n) => { if (h.getBoundingClientRect().top < innerHeight * .3) i = n; });
       links.forEach((a, n) => a.classList.toggle('on', n === i));
+      const a = links[i], top = a.offsetTop - toc.offsetTop; // keep the active entry visible when the list scrolls
+      if (top < toc.scrollTop + 30 || top > toc.scrollTop + toc.clientHeight - 30) toc.scrollTop = top - toc.clientHeight / 2;
     };
     addEventListener('scroll', spy, { passive: true }); spy();
   }
