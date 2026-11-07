@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Open a chat straight in the Claude or Codex app · carry</title>
+  <meta name="description" content="carry 0.4.4 opens a shared session in the Claude app or the Codex app, shortens pairing codes and completes names on Tab on every platform.">
+  <link rel="icon" href="/favicon.svg?v=17" type="image/svg+xml">
+  <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css?v=17">
+  <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
+</head>
+<body>
+  <div class="shell">
+    <aside class="side">
+      <a class="brand" href="/" aria-label="carry home"><img src="/mark.svg?v=17" width="26" height="24" alt=""><b>carry</b></a>
+      <button class="menu-btn" id="menu" aria-label="Menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <nav aria-label="Main">
+        <a href="/">Home</a>
+        <a href="/docs">Docs</a>
+        <a href="/blog" aria-current="page">Blog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a>
+        <a class="ext" href="https://github.com/vamzzisme/carry">GitHub</a>
+      </nav>
+      <div class="toc"></div>
+    </aside>
+
+    <main class="page">
+      <div class="col prose">
+        <span class="label"><a href="/blog" style="color:inherit;text-decoration:none">Blog</a></span>
+        <h1 style="margin-top:12px">Open a chat straight in the Claude or Codex app</h1>
+        <div class="post-meta">7 Nov 2026 · by @heyvamz</div>
+        <p>Three releases today (0.4.2 to 0.4.4), all from testing carry with a friend on two laptops. The theme: fewer steps between "my friend sent me a chat" and "I'm working in it".</p>
+        <h2 id="apps">Open in the desktop apps</h2>
+        <p>Until now, a shared session opened in Claude Code or Codex through their terminal commands. If you only had the apps, the session was written but the app never showed it. Now:</p>
+        <div class="codebox"><div class="code"><span class="p">$ </span>carry open 1 --to claude_app     <span class="c"># the Claude app's Code tab</span>
+<span class="p">$ </span>carry open 1 --to codex_app      <span class="c"># the Codex app</span></div></div>
+        <p>It is the same full session, every message and dead end, opened through each app's own link. With the connector installed you don't need the terminal at all: ask Claude "open item 1 from my carry inbox in the Code tab".</p>
+        <p>The terminal targets got easier too. No <code>codex</code> command? carry uses the one inside ChatGPT for Mac, or runs it with npx. Same for <code>claude</code>.</p>
+        <h2 id="codes">Pairing codes, four times shorter</h2>
+        <p>A pairing code used to be about 270 characters. It is now about 63, like <code>carry2.1WVG…dTOdo.z0Kl…PNMw</code>. Your name and the rest moved inside the encrypted inbox, so the code only says where that inbox is plus a secret. Old codes still work.</p>
+        <h2 id="tab">Tab completes your chats and friends</h2>
+        <p><code>carry setup</code> now turns on Tab completion for zsh, bash and PowerShell, so macOS, Linux and Windows. Open a new terminal, type <code>carry open </code> and press Tab to see your shares, or <code>--to </code> and Tab for friends and apps. Skip the name entirely and carry lists the newest few to pick by number.</p>
+        <h2 id="fixes">Smaller fixes</h2>
+        <p>Deleted the carry folder in Drive? Sharing used to fail with "File not found"; carry now makes a new one. Your own shares open by name, no Drive link needed. And a mistyped command no longer prints the help text into a file you redirect to.</p>
+        <p>Update with <code>carry update</code>, then run <code>carry setup</code> once to turn on Tab completion. Full list in the <a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">changelog</a>.</p>
+        <footer>
+          <div class="foot-cols">
+            <div><span class="label">Product</span><a href="/docs">Docs</a><a href="/blog">Blog</a><a href="https://github.com/vamzzisme/carry/blob/main/CHANGELOG.md">Changelog</a><a href="/setup.md">Setup page for AI</a></div>
+            <div><span class="label">Open source</span><a href="https://github.com/vamzzisme/carry">GitHub</a><a href="https://www.npmjs.com/package/@heyvamz/carry">npm</a><a href="https://github.com/skillsynchq/txcript">txcript</a></div>
+            <div><span class="label">Studio</span><a href="https://thevxmzstudio.vercel.app">The VXMZ Studio</a><a href="https://buymeacoffee.com/thevxmzstudio">Buy me a coffee</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></div>
+          </div>
+          <div class="sig"><a href="https://x.com/heyvamz">Built by <strong>@heyvamz</strong></a><span>·</span><span>carry v0.4.4</span><span>·</span><span>© 2026</span></div>
+          <div class="product">A <strong>VXMZ</strong> Product</div>
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script src="/main.js?v=17"></script>
+</body>
+</html>
