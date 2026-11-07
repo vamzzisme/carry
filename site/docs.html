@@ -8,7 +8,7 @@
   <link rel="icon" href="/favicon.svg?v=17" type="image/svg+xml">
   <link href="https://api.fontshare.com/v2/css?f[]=boska@400,500,600,700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/style.css?v=21">
+  <link rel="stylesheet" href="/style.css?v=23">
   <script defer src="https://vxmz-analytics.vercel.app/script.js" data-website-id="20a506c5-aa9e-4f87-9519-91c67c25e6df" data-domains="carry-si.vercel.app" data-do-not-track="true"></script>
 </head>
 <body>
@@ -49,6 +49,24 @@
 <span class="p">$ </span>carry install-skill                 <span class="c"># adds /carry to Claude Code and Codex</span>
 <span class="p">$ </span>carry setup --web --as yourname     <span class="c"># sign in to Google Drive in your browser</span></div></div>
         <p class="note">Then open a new terminal: setup also turns on Tab completion, so <code>carry open </code> + Tab fills in your chats and friends.</p>
+
+        <h2 id="how-to-use" data-toc="How to use">How to use</h2>
+        <p>carry moves a chat or a project two ways: between tools and accounts on your own laptop, or to a friend's laptop.</p>
+        <h3 id="same-laptop" data-toc="On your laptop">On your laptop: another tool or account</h3>
+        <p>Out of tokens in Claude Code? Keep going in Codex, the Codex app, the Claude app, or Claude Code signed in to another account. No pairing and no friend needed.</p>
+        <div class="codebox"><button class="copy" data-copy="carry list&#10;carry share fix-the-login-bug&#10;carry open fix-the-login-bug --to codex">Copy</button><div class="code"><span class="p">$ </span>carry list                                <span class="c"># find the chat</span>
+<span class="p">$ </span>carry share fix-the-login-bug             <span class="c"># pack it into your Drive</span>
+<span class="p">$ </span>carry open fix-the-login-bug --to codex   <span class="c"># or claude_app</span></div></div>
+        <p>The chat opens with its full history, as that tool's own session. To use another account, sign in to it in the tool first, then open. See <a href="#open">Open and continue</a> for every <code>--to</code>.</p>
+        <h3 id="other-laptop" data-toc="To a friend">To a friend: another laptop</h3>
+        <p>Borrow a friend's tokens, or hand the work over. Pair once, then send by name.</p>
+        <div class="codebox"><button class="copy" data-copy="carry share fix-the-login-bug --to riya">Copy</button><div class="code"><span class="c"># You (after pairing once with Riya)</span>
+<span class="p">$ </span>carry share fix-the-login-bug --to riya
+<span class="c"># Riya</span>
+<span class="p">$ </span>carry inbox
+<span class="p">$ </span>carry open 1 --to claude_app
+<span class="p">$ </span>carry return fix-the-login-bug    <span class="c"># sends her progress back to you</span></div></div>
+        <p>It travels encrypted through your own Google Drive and runs on Riya's account. Pairing, links without pairing and whole projects are below in <a href="#friends">Share with friends</a>.</p>
 
         <h2 id="install" data-toc="Install">Install</h2>
         <p>Works on macOS, Windows and Linux. You need Node 22.15 or newer, and git if you share whole projects.</p>

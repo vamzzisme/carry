@@ -201,7 +201,13 @@ form .btn { justify-self: start; }
 table { width: 100%; border-collapse: collapse; font-size: 14px; margin: 12px 0 20px; }
 th, td { text-align: left; vertical-align: top; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); }
 th { font: 500 11px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
-td code { white-space: nowrap; }
+td code { overflow-wrap: anywhere; } /* long commands wrap inside the column instead of widening the table */
+td:first-child { width: 55%; }
+@media (max-width: 640px) { /* phones: command on its own line, description under it */
+  tr:first-child { display: none; }
+  td { display: block; width: auto !important; border: 0; padding: 0 0 4px; }
+  tr { display: block; padding: 10px 0; border-bottom: 1px solid var(--line); }
+}
 .table-wrap { overflow-x: auto; }
 .callout { border-left: 2px solid var(--accent); background: var(--soft); padding: 14px 16px; margin: 16px 0; font-size: 15px; }
 .callout p:last-child { margin: 0; }
