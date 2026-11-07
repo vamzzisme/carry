@@ -1,0 +1,39 @@
+name: publish
+# Release: bump "version" in package.json, add a CHANGELOG entry, then
+#   git tag v0.3.1 && git push --tags
+# Publishing uses npm trusted publishing (no token): on npmjs.com, @heyvamz/carry → Settings → Trusted Publisher →
+# GitHub Actions, repo vamzzisme/carry, workflow publish.yml. Until that's set, publish by hand with `npm publish`.
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # GitHub Release
+      id-token: write   # npm trusted publishing + provenance
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+      - run: npm install -g npm@latest   # trusted publishing needs a recent npm
+      - run: npm ci
+      - run: npm test
+      - run: node smoke.js
+      - run: node pkgtest.js
+      - name: Tag matches package.json
+        run: test "v$(node -p 'require("./package.json").version')" = "$GITHUB_REF_NAME"
+      - name: Publish (skipped if this version is already on npm)
+        run: |
+          v=$(node -p 'require("./package.json").version')
+          if npm view "@heyvamz/carry@$v" version >/dev/null 2>&1; then echo "v$v already on npm"; else npm publish --provenance; fi
+      - name: GitHub Release with this version's changelog
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v=$(node -p 'require("./package.json").version')
+          awk -v v="## $v" '$0 ~ "^## " {p = index($0, v) == 1} p' CHANGELOG.md > notes.md
+          gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1 || gh release create "$GITHUB_REF_NAME" --title "carry $v" --notes-file notes.md

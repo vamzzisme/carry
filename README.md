@@ -8,7 +8,7 @@ AGENTS.md and a handoff) so the next agent knows what was tried and why. Packs g
 Why not paste a summary? A summary keeps what the AI chose to remember. carry keeps every message, command, error and
 dead end, and the next agent resumes it as its own session.
 
-Site: https://carry-site-beta.vercel.app · v0.2.0 · built by [@heyvxmz](https://x.com/heyvxmz)
+npm: [@heyvamz/carry](https://www.npmjs.com/package/@heyvamz/carry) · Site: https://carry-site-beta.vercel.app · v0.3.0 · built by [@heyvxmz](https://x.com/heyvxmz)
 
 Built on [txcript](https://github.com/skillsynchq/txcript). carry adds names, Codex `.zst` support, Drive sharing, secret redaction and a handoff summary.
 
@@ -17,11 +17,9 @@ Works on macOS, Windows and Linux: every push runs an end-to-end smoke test on a
 
 Needs Node 22.15+. Then:
 ```
-git clone https://github.com/vamzzisme/carry
-cd carry
-npm install        # also downloads txcript for your OS into ./bin (checksum-verified)
-npm link           # → `carry` command
-carry install-skill   # → /carry in Claude Code, Codex and ~/.agents
+npm install -g @heyvamz/carry   # also downloads txcript for your OS (checksum-verified); Linux may need sudo
+carry install-skill                   # → /carry in Claude Code, Codex and ~/.agents
+carry update                          # later: get the newest version (carry tells you when one is out)
 ```
 Then pick a mode:
    - **Web Drive (default, nothing to install):** `carry setup --web --as <name> --with friend1@gmail.com,friend2@gmail.com`
@@ -34,11 +32,11 @@ Needs Node; nothing else to install.
 
 | App | Where | Add |
 |---|---|---|
-| Claude Desktop | Settings, Developer, Edit Config | `"mcpServers": { "carry": { "command": "npx", "args": ["-y", "github:vamzzisme/carry", "mcp"] } }` |
-| Codex | `~/.codex/config.toml` | `[mcp_servers.carry]` `command = "npx"` `args = ["-y", "github:vamzzisme/carry", "mcp"]` |
+| Claude Desktop | Settings, Developer, Edit Config | `"mcpServers": { "carry": { "command": "npx", "args": ["-y", "@heyvamz/carry@latest", "mcp"] } }` |
+| Codex | `~/.codex/config.toml` | `[mcp_servers.carry]` `command = "npx"` `args = ["-y", "@heyvamz/carry@latest", "mcp"]` |
 | Cursor | `~/.cursor/mcp.json` | same JSON as Claude Desktop |
 
-On Windows use `"command": "cmd", "args": ["/c", "npx", "-y", "github:vamzzisme/carry", "mcp"]`.
+On Windows use `"command": "cmd", "args": ["/c", "npx", "-y", "@heyvamz/carry@latest", "mcp"]`.
 Tools: `carry_status`, `carry_connect_google_drive`, `carry_list_chats`, `carry_share_chat`, `carry_share_summary` (for chat apps,
 whose history carry can't read), `carry_list_shared`, `carry_open` (returns the handoff and history, or loads it into a coding tool).
 
@@ -72,3 +70,8 @@ Web mode needs one Google Cloud OAuth client. Users' data stays in their own Dri
 Console wording above is from memory of Google's UI and may differ slightly.
 
 Test: `npm test`. Plan and decisions: [status.md](status.md).
+
+## Releasing (maintainers)
+1. Bump `version` in package.json, add a `CHANGELOG.md` entry, bump `?v=` and the footer version in `site/`.
+2. `git tag v<version> && git push --tags` → GitHub Actions tests on 3 OSes, publishes to npm and creates a GitHub Release.
+   Publishing uses npm trusted publishing (set once on npmjs.com, see publish.yml), or run `npm publish` by hand. Working from a clone? Use `npm install && npm link` instead of the global install.

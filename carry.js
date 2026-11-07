@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // carry: share AI chats by name through a folder you own. Wraps txcript (https://github.com/skillsynchq/txcript).
 const fs = require('fs'), path = require('path'), os = require('os'), zlib = require('zlib'), crypto = require('crypto');
-const { spawnSync } = require('child_process');
+const { spawnSync, spawn } = require('child_process');
 const tx = require('txcript');
 const drive = require('./drive');
 const { openTarget, reveal, copyText, driveFolder } = require('./system');
@@ -328,6 +328,15 @@ const cmds = {
     console.log(`Share folder: ${c.folder}\nYou appear as: ${c.user}`);
   },
   mcp() { require('./mcp').serve(); },
+  update() {
+    if (fs.existsSync(path.join(__dirname, '.git'))) return console.log(`This copy of carry is a git checkout. Update it with:\n  git -C "${__dirname}" pull\n  npm install`);
+    const r = spawnSync('npm', ['install', '-g', `${PKG.name}@latest`], { stdio: 'inherit', shell: process.platform === 'win32' });
+    if (r.status !== 0) die(`Update failed.${process.platform === 'linux' ? ` If npm needs root here: sudo npm install -g ${PKG.name}@latest` : ''}`);
+    try { fs.rmSync(UPDATE_FILE); } catch {}
+  },
+  version() { console.log(PKG.version); },
+  '--version'() { console.log(PKG.version); },
+  async '__check-update'() { await checkUpdate(); },
   // Copies the /carry skill into every AI tool found on this computer.
   'install-skill'() {
     const src = path.join(__dirname, 'skills', 'carry');
@@ -459,10 +468,41 @@ carry share --project [dir] [--chats 5] [--handoff f] [--with emails]   chats + 
 carry note "<name>" --handoff f [--with emails] [--link]   share just a summary (from a chat app)
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|codex|opencode|cursor|pi|chat|here] [--dir project folder]
-carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)`;
+carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
+carry update | --version`;
 
 module.exports = { redact, slug, cleanPrompt, readPack, TXCRIPT };
+// ---------- updates ----------
+// Shows a cached "new version" line on stderr; refreshes the cache at most once a day in a detached child, so commands never wait.
+const PKG = require('./package.json');
+const UPDATE_FILE = path.join(HOME, '.carry', 'update.json');
+function newer(a, b) { // is version a newer than b
+  const x = a.split('.').map(Number), y = b.split('.').map(Number);
+  for (let i = 0; i < 3; i++) if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0);
+  return false;
+}
+async function checkUpdate() {
+  try {
+    const r = await fetch(`https://registry.npmjs.org/${PKG.name.replace('/', '%2f')}`, { headers: { Accept: 'application/vnd.npm.install-v1+json' } });
+    const latest = r.ok ? (await r.json())['dist-tags']?.latest : null;
+    fs.mkdirSync(path.dirname(UPDATE_FILE), { recursive: true });
+    fs.writeFileSync(UPDATE_FILE, JSON.stringify({ checked: Date.now(), latest }));
+  } catch {}
+}
+function updateNotice() {
+  let u = {}; try { u = JSON.parse(fs.readFileSync(UPDATE_FILE, 'utf8')); } catch {}
+  if (u.latest && newer(u.latest, PKG.version)) console.error(`\ncarry ${u.latest} is out (you have ${PKG.version}). Update: carry update`);
+  if (!u.checked || Date.now() - u.checked > 864e5) {
+    try { spawn(process.execPath, [__filename, '__check-update'], { detached: true, stdio: 'ignore', windowsHide: true }).unref(); } catch {}
+  }
+}
+
+module.exports.newer = newer;
 if (require.main === module) {
   const [cmd, ...args] = process.argv.slice(2);
-  Promise.resolve((cmds[cmd] || (() => console.log(USAGE)))(args)).catch(e => die(e.message));
+  // No notice inside MCP (stdout is the protocol), CI, or when opted out with CARRY_NO_UPDATE_CHECK=1.
+  const quiet = ['mcp', 'update', '__check-update', 'version', '--version'].includes(cmd) || process.env.CI || process.env.CARRY_NO_UPDATE_CHECK;
+  Promise.resolve((cmds[cmd] || (() => console.log(USAGE)))(args))
+    .then(() => { if (!quiet) updateNotice(); })
+    .catch(e => die(e.message));
 }

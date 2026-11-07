@@ -45,4 +45,7 @@ assert.deepStrictEqual(openCmd(url, 'win32'), ['rundll32', ['url.dll,FileProtoco
 assert.deepStrictEqual(openCmd(url, 'linux'), ['xdg-open', [url]]);
 assert.deepStrictEqual(revealCmd('C:\\u\\handoff.md', 'win32'), ['explorer', ['/select,C:\\u\\handoff.md']]);
 assert.strictEqual(copyCmds('linux').length, 3);
+const { newer } = require('./carry');
+assert(newer('0.3.1', '0.3.0') && newer('1.0.0', '0.9.9') && newer('0.10.0', '0.9.0'));
+assert(!newer('0.3.0', '0.3.0') && !newer('0.2.9', '0.3.0'));
 console.log('ok');

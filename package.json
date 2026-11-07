@@ -1,16 +1,24 @@
 {
-  "name": "carry",
-  "version": "0.2.0",
-  "description": "Share AI chats by name through a folder you own, and continue them on another laptop, account or AI tool.",
+  "name": "@heyvamz/carry",
+  "version": "0.3.0",
+  "description": "Out of tokens? Keep coding. Move a Claude Code or Codex session, or a whole project, to another account, tool or laptop through your own Google Drive.",
+  "keywords": ["claude-code", "codex", "ai", "chat", "handoff", "mcp", "google-drive", "txcript"],
+  "homepage": "https://carry-site-beta.vercel.app",
+  "repository": { "type": "git", "url": "git+https://github.com/vamzzisme/carry.git" },
+  "bugs": { "url": "https://github.com/vamzzisme/carry/issues" },
+  "author": "heyvamz, The VXMZ Studio (https://thevxmzstudio.vercel.app)",
+  "license": "Apache-2.0",
   "main": "carry.js",
   "bin": { "carry": "carry.js" },
+  "files": ["carry.js", "drive.js", "mcp.js", "system.js", "install-txcript.js", "skills/", "CHANGELOG.md"],
   "scripts": {
     "test": "node test.js",
+    "smoke": "node smoke.js",
     "postinstall": "node install-txcript.js"
   },
-  "license": "Apache-2.0",
   "type": "commonjs",
   "engines": { "node": ">=22.15" },
+  "publishConfig": { "access": "public" },
   "dependencies": {
     "txcript": "^0.14.4"
   }

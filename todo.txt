@@ -1,0 +1,14 @@
+1. rename option
+2. updates mechanism
+3. check out both methods instead of just sharing trhu this link. we had some other way check that
+4. "carry project list" may be? for user to see what projects are available
+5.  npm package
+6. position it for projects and serverless alterernative as aidrop for ai chats as well
+7. 
+
+
+
+in posts ->
+1. have comparison for paid alternatives, pros and cons 
+2. demo vid of how to use 
+3. 

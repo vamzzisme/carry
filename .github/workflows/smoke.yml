@@ -16,3 +16,4 @@ jobs:
       - run: npm ci   # postinstall fetches txcript for this OS into ./bin, same as for users
       - run: npm test
       - run: node smoke.js
+      - run: node pkgtest.js   # install the packed npm package like a user would
