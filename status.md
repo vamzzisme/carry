@@ -247,8 +247,9 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
 ## Next steps (in order)
-1. [ ] Umami website id → uncomment script in `site/index.html`; Google Branding page: add homepage + privacy URL
-       (carry-si.vercel.app, /privacy); optional nicer Vercel domain
+1. [x] Analytics: self-hosted Umami at vxmz-analytics.vercel.app (Vercel + Neon org thevxmzstudio, project old-waterfall-99493096);
+       carry site tracked (website id 20a506c5-...), verified 1 visit 2026-11-07. Google sign-in published (by Vamshi).
+       Clay red accent (#c2674b) live.
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
 2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
 3. [ ] `carry install`: copy skill into each detected tool, check txcript CLI, `npm link`
