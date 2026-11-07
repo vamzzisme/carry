@@ -16,15 +16,15 @@ const toc = document.querySelector('.toc');
 if (toc) {
   const heads = [...document.querySelectorAll('main h2[id], main h3[id][data-toc]')];
   if (heads.length > 1) {
-    toc.innerHTML = '<div class="label">On this page</div>' + heads.map(h =>
-      `<a href="#${h.id}"${h.tagName === 'H3' ? ' class="sub"' : ''}>${h.dataset.toc || h.textContent}</a>`).join('');
-    const links = [...toc.querySelectorAll('a')];
+    toc.innerHTML = '<div class="label">On this page</div><div class="toc-list">' + heads.map(h =>
+      `<a href="#${h.id}"${h.tagName === 'H3' ? ' class="sub"' : ''}>${h.dataset.toc || h.textContent}</a>`).join('') + '</div>';
+    const list = toc.querySelector('.toc-list'), links = [...list.querySelectorAll('a')];
     const spy = () => {
       let i = 0;
       heads.forEach((h, n) => { if (h.getBoundingClientRect().top < innerHeight * .3) i = n; });
       links.forEach((a, n) => a.classList.toggle('on', n === i));
-      const a = links[i], top = a.offsetTop - toc.offsetTop; // keep the active entry visible when the list scrolls
-      if (top < toc.scrollTop + 30 || top > toc.scrollTop + toc.clientHeight - 30) toc.scrollTop = top - toc.clientHeight / 2;
+      const top = links[i].offsetTop - list.offsetTop; // keep the active entry visible when the list scrolls
+      if (top < list.scrollTop + 30 || top > list.scrollTop + list.clientHeight - 30) list.scrollTop = top - list.clientHeight / 2;
     };
     addEventListener('scroll', spy, { passive: true }); spy();
   }

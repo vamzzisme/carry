@@ -51,15 +51,16 @@ code, pre, kbd { font-family: var(--mono); }
 .brand { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; }
 .brand img { width: 26px; height: auto; }
 .brand b { font: 600 24px/1 var(--display); letter-spacing: -.02em; }
-.side nav { display: grid; gap: 2px; margin-top: auto; flex-shrink: 0; }
+.side nav { display: grid; gap: 2px; margin-top: 40px; flex-shrink: 0; }
 .side nav a { color: var(--muted); text-decoration: none; font-size: 14.5px; padding: 5px 0 5px 14px; position: relative; }
 .side nav a:hover, .side nav a[aria-current="page"] { color: var(--ink); }
 .side nav a[aria-current="page"]::before { content: ''; position: absolute; left: 0; top: 50%; width: 5px; height: 5px; margin-top: -2.5px; border-radius: 50%; background: var(--accent); }
 .side nav .ext::after { content: ' ↗'; font-size: 12px; }
 /* brand + nav stay put; only "on this page" scrolls when it is too long */
-.toc { margin: 28px 0 auto; padding-top: 22px; border-top: 1px solid var(--line); min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.toc { flex: 0 1 auto; margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--line); min-height: 0; display: flex; flex-direction: column; }
+.toc-list { min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
 .toc:empty { display: none; }
-.toc .label { margin-bottom: 10px; position: sticky; top: 0; background: var(--bg); padding-bottom: 4px; }
+.toc .label { margin-bottom: 10px; flex-shrink: 0; }
 .toc a { display: flex; align-items: center; gap: 10px; color: var(--muted); text-decoration: none; font-size: 13.5px; padding: 4px 0; }
 .toc a::before { content: ''; width: 12px; height: 1px; background: var(--line); transition: width .25s var(--ease), background .25s; }
 .toc a.on { color: var(--ink); }
