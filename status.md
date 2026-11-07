@@ -256,7 +256,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 1c. [x] 0.4.2 released 2026-11-07 (npm, GitHub release + carry.mcpb, MCP Registry, site): Drive file/folder recreate, own links via API,
        open by name in web mode, numbered picker, `carry completion zsh` (tested with stubbed compadd, not a real Tab press). ChatGPT app: carry added to
        ~/.codex/config.toml, unverified whether ChatGPT chat mode loads it.
-1d. [ ] 0.4.3 (2026-11-07): short pairing codes (carry2), setup turns on zsh completion, open --to claude_app / codex_app
+1d. [x] 0.4.3 released 2026-11-07 (npm, release + mcpb, registry, site): short pairing codes (carry2), setup turns on zsh completion, open --to claude_app / codex_app
        (app links), ChatGPT's bundled codex + npx fallback. Two-account friend test done by Vamshi with 0.4.2.
 2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
 2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
