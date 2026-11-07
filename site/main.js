@@ -2,7 +2,11 @@
 // Logo intro (the C draws, the arrow slides in): once per visit, right after the curtain lifts.
 const playMark = () => {
   try { if (sessionStorage.getItem('carry-mark')) return; sessionStorage.setItem('carry-mark', '1'); } catch (e) {}
-  document.querySelector('.brand .mark')?.classList.add('intro');
+  const mark = document.querySelector('.brand .mark');
+  if (!mark) return;
+  mark.classList.add('intro');
+  // Drop the intro once the arrow has slid in, or ending a hover would restart it (the arrow would fade in again).
+  mark.querySelector('.arrow').addEventListener('animationend', () => mark.classList.remove('intro'), { once: true });
 };
 const curtain = document.getElementById('curtain');
 if (curtain) {
