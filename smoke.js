@@ -46,7 +46,25 @@ assert.doesNotMatch(n.stdout, /is out/);
 fs.rmSync(path.join(home, '.carry', 'update.json'));
 
 const share = path.join(home, 'share');
-carry('setup', share, '--as', 'ci');
+// Setup turns on Tab completion for this OS's usual shell: bash here on Linux/macOS, PowerShell on Windows.
+const win = process.platform === 'win32';
+env.SHELL = win ? '' : '/bin/bash';
+assert.match(carry('setup', share, '--as', 'ci'), win ? /Tab completion/ : /Turned on Tab completion/); // Windows: on, or how to allow scripts
+if (!win) {
+  const rc = path.join(home, process.platform === 'darwin' ? '.bash_profile' : '.bashrc');
+  assert.match(fs.readFileSync(rc, 'utf8'), /source ~\/\.carry\/completion\.bash/);
+  carry('setup', share); // twice: no second line
+  assert.strictEqual(fs.readFileSync(rc, 'utf8').match(/carry Tab completion/g).length, 1);
+  const r = spawnSync('bash', ['-c', `source "${path.join(home, '.carry', 'completion.bash')}"; COMP_WORDS=(carry sh); COMP_CWORD=1; _carry; echo "\${COMPREPLY[@]}"; ` +
+    'COMP_WORDS=(carry open x --to codex_); COMP_CWORD=4; _carry; echo "${COMPREPLY[@]}"'], { encoding: 'utf8' });
+  assert.match(r.stdout, /^share\ncodex_app\n$/, r.stdout + r.stderr);
+} else {
+  const ps1 = path.join(__dirname, 'completions', 'carry.ps1');
+  const r = spawnSync('powershell', ['-NoProfile', '-Command', `. '${ps1}'; (TabExpansion2 'carry sh' 8).CompletionMatches.CompletionText; ` +
+    `(TabExpansion2 'carry open x --to codex_' 24).CompletionMatches.CompletionText`], { encoding: 'utf8' });
+  assert.match(r.stdout, /^share\r?\ncodex_app\r?\n$/, r.stdout + r.stderr);
+  assert(fs.existsSync(path.join(home, '.carry', 'completion.ps1')));
+}
 const list = carry('list');
 assert.match(list, /fix-the-login-bug-please\s+claude_code/);
 assert.match(list, /add-dark-mode-to-settings\s+codex/); // .zst Codex chat found and named

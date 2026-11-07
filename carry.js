@@ -708,9 +708,10 @@ const cmds = {
     console.log(`Added a SessionEnd hook to ${file}: carry sync runs when a Claude Code session ends.`);
   },
   // Tab completion for zsh: carry completion zsh >> ~/.zshrc
+  // Tab completion script for a shell. `carry setup` installs it for you; this prints it for doing it by hand.
   completion([shell]) {
-    if (shell !== 'zsh') die('Usage: carry completion zsh >> ~/.zshrc   (then open a new terminal)');
-    console.log(ZSH_COMPLETION);
+    if (!SHELLS[shell]) die('Usage: carry completion zsh|bash|powershell   (carry setup turns it on for you)');
+    process.stdout.write(completionScript(shell));
   },
   __names([kind]) { // used by the completion script
     const c = load();
@@ -910,46 +911,44 @@ function ago(ms) {
   return s < 3600 ? `${Math.round(s / 60)}m ago` : s < 86400 ? `${Math.round(s / 3600)}h ago` : `${Math.round(s / 86400)}d ago`;
 }
 
-const ZSH_COMPLETION = `# carry tab completion (zsh)
-(( $+functions[compdef] )) || { autoload -Uz compinit && compinit }
-_carry() {
-  if (( CURRENT == 2 )); then
-    compadd setup install-skill list name share projects note friend friends inbox return install-hook sync packs open mcp update doctor completion
-    return
-  fi
-  case $words[CURRENT-1] in
-    --to) if [[ $words[2] == open ]]; then compadd claude_code claude_app codex codex_app opencode cursor pi chat here
-          else compadd -- \${(f)"$(carry __names friends 2>/dev/null)"}; fi; return ;;
-    --project) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"}; return ;;
-    --handoff|--dir) _files; return ;;
-  esac
-  if [[ $words[CURRENT] == -* ]]; then
-    compadd -- --to --with --link --handoff --project --chats --add --skip --related --dir --auto-return --no-resume --web --as
-    return
-  fi
-  case $words[2] in
-    share|name|return) (( CURRENT == 3 )) && compadd -- \${(f)"$(carry __names chats 2>/dev/null)"} ;;
-    open) (( CURRENT == 3 )) && { compadd -- \${(f)"$(carry __names packs 2>/dev/null)"}; _files -g '*.carry' } ;;
-    projects) compadd -- \${(f)"$(carry __names projects 2>/dev/null)"} ;;
-    friend) (( CURRENT == 3 )) && compadd add remove ;;
-    completion) compadd zsh ;;
-    setup) _files -/ ;;
-  esac
+// Tab completion, turned on by `carry setup`: the script lives in ~/.carry, the shell's startup file gets one line.
+const completionScript = sh => fs.readFileSync(path.join(__dirname, 'completions', `carry.${sh === 'powershell' ? 'ps1' : sh}`), 'utf8');
+const SHELLS = {
+  zsh: { rc: () => [path.join(HOME, '.zshrc')], line: '[ -f ~/.carry/completion.zsh ] && source ~/.carry/completion.zsh' },
+  // macOS bash reads .bash_profile (or .profile) at login, not .bashrc; don't create .bash_profile if .profile is in use
+  bash: { rc: () => [path.join(HOME, process.platform !== 'darwin' ? '.bashrc'
+    : !fs.existsSync(path.join(HOME, '.bash_profile')) && fs.existsSync(path.join(HOME, '.profile')) ? '.profile' : '.bash_profile')],
+    line: '[ -f ~/.carry/completion.bash ] && source ~/.carry/completion.bash' },
+  powershell: { rc: psProfiles, line: 'if (Test-Path "$HOME\\.carry\\completion.ps1") { . "$HOME\\.carry\\completion.ps1" }' },
+};
+// Windows PowerShell 5.1 and PowerShell 7 profiles, only where scripts may run; otherwise every new window would show an error.
+function psProfiles() {
+  const out = [];
+  for (const exe of ['powershell', 'pwsh']) {
+    const r = spawnSync(exe, ['-NoProfile', '-NonInteractive', '-Command',
+      'if ((Get-ExecutionPolicy) -in "Restricted","AllSigned") { "blocked" } else { $PROFILE.CurrentUserAllHosts }'], { encoding: 'utf8', windowsHide: true });
+    const p = (r.stdout || '').trim();
+    if (p === 'blocked') console.log(`Tab completion needs ${exe} to allow scripts: Set-ExecutionPolicy -Scope CurrentUser RemoteSigned, then carry setup again.`);
+    else if (p) out.push(p);
+  }
+  return out;
 }
-compdef _carry carry
-`;
-
-// zsh users get Tab completion from setup: the script lives in ~/.carry, ~/.zshrc gets one line that sources it.
 function enableCompletion() {
-  if (!/zsh$/.test(process.env.SHELL || '')) return;
+  const env = process.env.SHELL || '';
+  const sh = /zsh$/.test(env) ? 'zsh' : /bash(\.exe)?$/.test(env) ? 'bash' : process.platform === 'win32' ? 'powershell' : null;
+  if (!sh) return;
   try {
-    const file = path.join(HOME, '.carry', 'completion.zsh'), rc = path.join(HOME, '.zshrc');
-    fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, ZSH_COMPLETION);
-    const now = fs.existsSync(rc) ? fs.readFileSync(rc, 'utf8') : '';
-    if (now.includes('compdef _carry carry') || now.includes('.carry/completion.zsh')) return;
-    fs.appendFileSync(rc, `${now && !now.endsWith('\n') ? '\n' : ''}[ -f ~/.carry/completion.zsh ] && source ~/.carry/completion.zsh  # carry Tab completion\n`);
-    console.log('Turned on Tab completion for carry (chat and friend names). Open a new terminal to use it.');
+    fs.mkdirSync(path.join(HOME, '.carry'), { recursive: true });
+    fs.writeFileSync(path.join(HOME, '.carry', `completion.${sh === 'powershell' ? 'ps1' : sh}`), completionScript(sh));
+    let added = false;
+    for (const rc of SHELLS[sh].rc()) {
+      const now = fs.existsSync(rc) ? fs.readFileSync(rc, 'utf8') : '';
+      if (/\.carry[\\/]completion\.|compdef _carry carry/.test(now)) continue;
+      fs.mkdirSync(path.dirname(rc), { recursive: true });
+      fs.appendFileSync(rc, `${now && !now.endsWith('\n') ? '\n' : ''}${SHELLS[sh].line}  # carry Tab completion\n`);
+      added = true;
+    }
+    if (added) console.log('Turned on Tab completion for carry (chat and friend names). Open a new terminal to use it.');
   } catch {}
 }
 
@@ -969,7 +968,7 @@ carry install-hook                               run carry sync after each Claud
 carry sync | packs
 carry open <name | file.carry | Drive link> [--to claude_code|claude_app|codex|codex_app|opencode|cursor|pi|chat|here] [--dir project folder]
 carry mcp                                        run as an MCP server (Claude Desktop, Codex, ChatGPT, Cursor)
-carry completion zsh >> ~/.zshrc                 Tab-complete commands and chat names (new terminal after)
+carry completion zsh|bash|powershell             print the Tab completion script (carry setup turns it on for you)
 carry update | doctor | --version`;
 
 module.exports = { redact, slug, cleanPrompt, readPack, findTxcript };

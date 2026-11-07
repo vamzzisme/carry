@@ -28,7 +28,7 @@ carry runs on the person's own computer. There is no carry account and no carry 
 4. Add the `/carry` command to Claude Code and Codex: `carry install-skill`.
 5. Ask the person for the name friends should see, then connect Google Drive:
    `carry setup --web --as <name>`. A browser window opens; they sign in to Google and click Allow.
-   Setup also turns on Tab completion for chat and friend names in zsh; tell them to open a new terminal afterwards.
+   Setup also turns on Tab completion for chat and friend names (zsh, bash or PowerShell); tell them to open a new terminal afterwards.
    - If they already use Google Drive for desktop, Dropbox or iCloud and prefer a synced folder: `carry setup`
      (or `carry setup <folder>`) instead. No Google sign-in needed.
 6. Show their chats: `carry list`. Explain they can now say "share this chat with <friend>" or run `/carry`.

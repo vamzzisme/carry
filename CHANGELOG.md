@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+- Tab completion on every platform: `carry setup` turns it on for zsh, bash (Linux, Git Bash, macOS) and PowerShell
+  (Windows). On PowerShell it skips profiles where scripts are blocked and says how to allow them.
+
 ## 0.4.3 (2026-11-07)
 - Pairing codes are about 4x shorter (`carry2.<inbox>.<secret>`, about 63 characters). Your name and the pair id now
   travel inside the encrypted inbox. Old `carry1.` codes still work.

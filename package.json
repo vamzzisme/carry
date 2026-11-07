@@ -11,7 +11,7 @@
   "license": "Apache-2.0",
   "main": "carry.js",
   "bin": { "carry": "carry.js" },
-  "files": ["carry.js", "drive.js", "mcp.js", "system.js", "install-txcript.js", "skills/", "CHANGELOG.md"],
+  "files": ["carry.js", "drive.js", "mcp.js", "system.js", "install-txcript.js", "skills/", "completions/", "CHANGELOG.md"],
   "scripts": {
     "test": "node test.js",
     "smoke": "node smoke.js",
