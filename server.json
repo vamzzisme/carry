@@ -5,12 +5,12 @@
   "description": "Share Claude Code and Codex chats or projects with friends through your own Google Drive.",
   "websiteUrl": "https://carry-si.vercel.app",
   "repository": { "url": "https://github.com/vamzzisme/carry", "source": "github" },
-  "version": "0.4.2",
+  "version": "0.4.3",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@heyvamz/carry",
-      "version": "0.4.2",
+      "version": "0.4.3",
       "transport": { "type": "stdio" },
       "packageArguments": [{ "type": "positional", "value": "mcp" }]
     }
