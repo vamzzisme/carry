@@ -1,5 +1,8 @@
 # Changelog
 
+## Unreleased
+- New tagline in the npm, MCP Registry, plugin and Claude Desktop extension descriptions: "AirDrop for AI chats and projects".
+
 ## 0.4.4 (2026-11-07)
 - Tab completion on every platform: `carry setup` turns it on for zsh, bash (Linux, Git Bash, macOS) and PowerShell
   (Windows). On PowerShell it skips profiles where scripts are blocked and says how to allow them.
