@@ -21,7 +21,7 @@ const pkg = path.join(prefix, win ? '' : 'lib', 'node_modules', '@heyvamz', 'car
 const shipped = fs.readdirSync(pkg).sort();
 console.log('installed files:', shipped.join(', '));
 for (const f of ['carry.js', 'drive.js', 'mcp.js', 'system.js', 'install-txcript.js', 'skills', 'README.md', 'LICENSE', 'CHANGELOG.md']) assert(shipped.includes(f), `missing ${f}`);
-for (const f of ['site', 'smoke.js', 'test.js', 'status.md', 'MISTAKES.md', '.github']) assert(!shipped.includes(f), `should not ship ${f}`);
+for (const f of ['site', 'smoke.js', 'test.js', 'docs', 'MISTAKES.md', '.github']) assert(!shipped.includes(f), `should not ship ${f}`);
 // npm <= 11 runs the postinstall (./bin/txcript); npm 12 blocks it, and carry fetches txcript on first use instead.
 const home = path.join(tmp, 'home'); fs.mkdirSync(home);
 // Hide any txcript already on PATH, so this checks what a new user gets.

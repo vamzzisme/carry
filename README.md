@@ -166,7 +166,7 @@ Full policy: [carry-si.vercel.app/privacy](https://carry-si.vercel.app/privacy)
 
 - Google may show "Google hasn't verified this app" while carry is in Google's testing stage. Click Advanced, then continue.
 - Stop the daily update check with `CARRY_NO_UPDATE_CHECK=1`.
-- Something not working? See [Troubleshooting](https://github.com/vamzzisme/carry/blob/main/TROUBLESHOOTING.md).
+- Something not working? See [Troubleshooting](https://github.com/vamzzisme/carry/blob/main/docs/TROUBLESHOOTING.md).
 
 Built on [txcript](https://github.com/skillsynchq/txcript) by SkillSync, which converts chats between tools.
 Apache-2.0 license.

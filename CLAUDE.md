@@ -1,7 +1,7 @@
 # Shared Project Brain
 
-Read status.md first: current progress, decisions and next step.
+Read docs/STATUS.md first: current progress, decisions and next step.
 
-@status.md
+@docs/STATUS.md
 
-After each work session, update status.md (keep it short; rewrite, don't append).
+After each work session, update docs/STATUS.md (keep it short; rewrite, don't append).

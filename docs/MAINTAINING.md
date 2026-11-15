@@ -1,6 +1,6 @@
 # Maintaining carry
 
-Internal notes. Not shipped to npm (`files` in package.json). Dev log and decisions: [status.md](status.md).
+Internal notes. Not shipped to npm (`files` in package.json). Dev log and decisions: [STATUS.md](STATUS.md).
 
 ## Develop
 ```bash
