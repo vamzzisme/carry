@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- carry link preview. Render to site/og.png (1200x630) with headless Chrome:
+     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu --hide-scrollbars \
+       --window-size=1200,630 --virtual-time-budget=10000 --screenshot="<abs>/site/og.png" "file://<abs>/marketing/brand/og.html" -->
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://api.fontshare.com/v2/css?f[]=boska@500,700,500i&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; }
+  body { background: #fbfaf7; color: #1a120e; font-family: 'Inter', sans-serif; display: grid; grid-template-columns: 1fr 400px; }
+  .text { padding: 84px 0 72px 88px; display: flex; flex-direction: column; }
+  .brand { display: flex; align-items: center; gap: 22px; }
+  .brand span { font: 700 104px/1 'Boska', Georgia, serif; letter-spacing: -.01em; margin-top: -10px; }
+  h1 { margin: auto 0 0; font-weight: 500; font-size: 72px; line-height: 1.06; letter-spacing: -.025em; max-width: 680px; }
+  h1 em { font: italic 500 1.08em 'Boska', Georgia, serif; color: #8f3d27; letter-spacing: -.01em; }
+  .url { margin-top: 34px; font: 500 24px 'IBM Plex Mono', monospace; color: #8f3d27; letter-spacing: .02em; }
+  .panel { background: #f3ece4; border-left: 1px solid #e6dbd0; display: grid; place-items: center; }
+  .panel svg { width: 250px; height: auto; overflow: visible; margin-left: 12px; }
+</style>
+</head>
+<body>
+  <div class="text">
+    <div class="brand">
+      <span>carry</span>
+    </div>
+    <h1><em>AirDrop</em> for AI chats and projects</h1>
+    <div class="url">carry-si.vercel.app</div>
+  </div>
+  <div class="panel">
+    <svg viewBox="18 14 40 36" aria-hidden="true"><path d="M40 21a13 13 0 1 0 0 22" fill="none" stroke="#c2674b" stroke-width="6" stroke-linecap="round"/><path d="M36 32h16m-6-6 6 6-6 6" fill="none" stroke="#c2674b" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+</body>
+</html>

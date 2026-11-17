@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://carry-si.vercel.app/sitemap.xml
