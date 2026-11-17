@@ -4,3 +4,4 @@ bin/
 .vercel
 *.carry
 *.mcpb
+.env*
