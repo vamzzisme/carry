@@ -17,9 +17,11 @@ CI (`.github/workflows/smoke.yml`) runs all three on Linux, Windows and macOS, w
 2. Site: bump the footer version and the `?v=` on CSS/JS/icon links in `site/*.html`.
 3. `git tag v<version> && git push origin main --tags`. `.github/workflows/publish.yml` tests, publishes to npm (skips if
    that version exists) and creates a GitHub Release from the changelog.
-   - npm trusted publishing (no token): npmjs.com → `@heyvamz/carry` → Settings → Trusted Publisher → GitHub Actions,
-     repo `vamzzisme/carry`, workflow `publish.yml`.
-   - Until that's set, publish by hand: `npm publish` (asks for 2FA in the browser).
+   - npm trusted publishing is on since 2026-11-17 (no token): `@heyvamz/carry` trusts GitHub Actions, repo
+     `vamzzisme/carry`, workflow `publish.yml`, so the tag push publishes with provenance. No hand `npm publish`.
+     Not yet exercised by a release; the first is the next tag.
+   - If the workflow publish fails, fix it and re-run the workflow; only as a last resort run `npm publish` by hand
+     (asks for 2FA in the browser).
 4. Site deploys from `main` to https://carry-si.vercel.app (Vercel project `carry-site`, root `site/`).
 5. The workflow also builds `carry.mcpb` (`node mcpb/build.js`) and attaches it to the release; the site and README link to
    `releases/latest/download/carry.mcpb`.

@@ -1,6 +1,6 @@
 # Status — Shared Project Brain
 
-Last updated: 2026-11-17 · Stage: **carry 0.4.4 released** (npm, Claude Code plugin, carry.mcpb, MCP Registry, site). **0.4.5 in progress** on branch `vxmz/carry-0.4.5`: link-preview and search tags on every page, `robots.txt` and `sitemap.xml`, `site/og.png`, security headers in `site/vercel.json` (all on the branch, not yet released or deployed; security headers not yet seen on a deploy), and the tagline "AirDrop for AI chats and projects" (in CHANGELOG Unreleased; `package.json` still says 0.4.4).
+Last updated: 2026-11-17 · Stage: **carry 0.4.5 released** (npm, GitHub Release v0.4.5 with carry.mcpb, MCP Registry, site with link-preview and search tags, `robots.txt`, `sitemap.xml`, security headers). Nothing in progress. npm trusted publishing is on (2026-11-17): a pushed `v*` tag publishes via `.github/workflows/publish.yml`; not yet exercised by a release.
 Positioning (7 Nov): "AirDrop for AI chats and projects", serverless (no carry server, own Google Drive). Build log at the bottom.
 Notion page: https://app.notion.com/p/40e08c931db68187a8f8e7d3a41971ce (older than this file; this file wins)
 
@@ -249,11 +249,11 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 
 ## Next steps (open items; `docs/ROADMAP.md` is the source of truth)
 Done: Umami + Google sign-in published (7 Nov), plugin, .mcpb, registry, 0.4.0 to 0.4.4 releases, `carry mcp`, `carry install-skill`, npm publish as `@heyvamz/carry`.
-1. [ ] Finish and release 0.4.5 (site SEO and security headers, tagline)
+1. [x] Release 0.4.5 (site SEO and security headers, tagline), done 2026-11-17
 2. [ ] Two-person test: share by email, friend opens the private link via browser download
 3. [ ] Test friends over real Google Drive with two accounts
 4. [ ] Try the MCP connector inside Claude Desktop, Codex and Cursor; submit the plugin at claude.ai/directory/manage
-5. [ ] Close the two GitHub secret-scanning alerts; set up the npm trusted publisher for `@heyvamz/carry`
+5. [ ] Close the two GitHub secret-scanning alerts; npm trusted publisher for `@heyvamz/carry` is set up (2026-11-17)
 6. [ ] `carry sync` refreshes project packs; automatic sync (SessionEnd hook, scheduled `carry sync`)
 7. [ ] `carry open --temp`; optional code snapshot in packs; received copies in own Drive (`received/`)
 8. [ ] Test `--to codex` with the Codex CLI (unverified in ROADMAP; carry for Codex is covered by CI smoke test only)

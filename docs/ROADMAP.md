@@ -6,7 +6,7 @@
 - [ ] Try the MCP connector inside Claude Desktop, Codex and Cursor themselves
 - [x] Umami: self-hosted at vxmz-analytics.vercel.app (Neon Postgres), tracking carry-si.vercel.app
 - [ ] Close the two GitHub secret-scanning alerts (client ID/secret, by design)
-- [ ] npm trusted publisher for `@heyvamz/carry` (so `git tag vX` releases without a manual 2FA publish)
+- [x] npm trusted publisher for `@heyvamz/carry` (so `git tag vX` releases without a manual 2FA publish)
 
 ## Next
 - [x] Projects list, related chats, choose chats (0.4.0)
