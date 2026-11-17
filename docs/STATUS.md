@@ -1,6 +1,6 @@
 # Status — Shared Project Brain
 
-Last updated: 2026-11-07 · Stage: **carry 0.4.4 released** (npm, Claude Code plugin, carry.mcpb, MCP Registry, site).
+Last updated: 2026-11-17 · Stage: **carry 0.4.4 released** (npm, Claude Code plugin, carry.mcpb, MCP Registry, site). **0.4.5 in progress** on branch `vxmz/carry-0.4.5`: link-preview and search tags on every page, `robots.txt` and `sitemap.xml`, `site/og.png`, security headers in `site/vercel.json` (all on the branch, not yet released or deployed; security headers not yet seen on a deploy), and the tagline "AirDrop for AI chats and projects" (in CHANGELOG Unreleased; `package.json` still says 0.4.4).
 Positioning (7 Nov): "AirDrop for AI chats and projects", serverless (no carry server, own Google Drive). Build log at the bottom.
 Notion page: https://app.notion.com/p/40e08c931db68187a8f8e7d3a41971ce (older than this file; this file wins)
 
@@ -222,7 +222,7 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Site: OS tabs (auto-detect, remembered, synced across sections) for install; new 05 "No terminal" section with app tabs
   (Claude Desktop / Codex / Cursor) × OS (Windows uses `cmd /c npx`).
 - Product styling (2026-11-06): no hero eyebrow, no "by vxmz" in navbar (VXMZ only in curtain + footer); carry accent
-  Marigold `#e9a23b` (band `#241c13`, light-mode text `#9a5b12`; was Harbor Teal briefly), macOS window dots on terminals; rule + per-product colour table added to
+  was Marigold `#e9a23b` (band `#241c13`, light-mode text `#9a5b12`; before that Harbor Teal briefly), **now replaced by Clay `#c2674b`** (current: `--accent` in `site/style.css`, band `#2a1a14`, text-on-paper `#8f3d27`, per `../VXMZ_STUDIO_STANDARD.md` 1b), macOS window dots on terminals; rule + per-product colour table added to
   `../VXMZ_STUDIO_STANDARD.md` section 1b. Hero terminals animate (type → swap → type → loop); CSS/JS links carry `?v=3`, bump on changes.
 - Name check (2026-11-06): renaming touches 316 mentions in 18 files + repo name + Vercel project + Google OAuth app name.
   npm name doesn't matter (we install from GitHub). Free everywhere checked: `batonai`. Short words (baton, relay, ferry, handoff…) taken on npm.
@@ -247,23 +247,14 @@ Without Drive for desktop, carry must call the Google Drive API itself → needs
 - Smoke test caught a real bug: `KEY=sk-...` counted as 2 redactions. Fixed (KEY=value skips `[REDACTED]`).
 - Not covered on Windows/Linux: Google web sign-in (needs a browser + human), resuming inside the real AI tools.
 
-## Next steps (in order)
-1. [x] Analytics: self-hosted Umami at vxmz-analytics.vercel.app (Vercel + Neon org thevxmzstudio, project old-waterfall-99493096);
-       carry site tracked (website id 20a506c5-...), verified 1 visit 2026-11-07. Google sign-in published (by Vamshi).
-       Clay red accent (#c2674b) live.
-1b. [x] 0.4.1 (2026-11-07): Claude Code plugin (repo is its own marketplace), carry.mcpb on every GitHub release
-       (built by mcpb/build.js in publish.yml), MCP Registry io.github.vamzzisme/carry, tool titles + read-only/write hints.
-       Next: submit plugin at claude.ai/directory/manage (Plugin bundle); double-click .mcpb in Claude Desktop (untested).
-1c. [x] 0.4.2 released 2026-11-07 (npm, GitHub release + carry.mcpb, MCP Registry, site): Drive file/folder recreate, own links via API,
-       open by name in web mode, numbered picker, `carry completion zsh` (tested with stubbed compadd, not a real Tab press). ChatGPT app: carry added to
-       ~/.codex/config.toml, unverified whether ChatGPT chat mode loads it.
-1d. [x] 0.4.3 released 2026-11-07 (npm, release + mcpb, registry, site): short pairing codes (carry2), setup turns on zsh completion, open --to claude_app / codex_app
-       (app links), ChatGPT's bundled codex + npx fallback. Two-account friend test done by Vamshi with 0.4.2.
-1e. [x] 0.4.4 released 2026-11-07: Tab completion for bash + PowerShell (completions/), setup picks the shell; CI checks all 3 OS.
-2. [ ] Test with a friend: `share --with <their gmail>` → they `carry open <emailed link>` (private, browser download path)
-2. [ ] Auto-sync: Claude Code SessionEnd hook + launchd job for `carry sync`
-3. [ ] `carry install`: copy skill into each detected tool, check txcript CLI, `npm link`
-4. [ ] Test `--to codex` with the Codex CLI; Antigravity app adapter (DB → JSON) or handoff-only
-5. [ ] `carry mcp` for Claude desktop / ChatGPT desktop apps
-6. [ ] Optional code snapshot in pack; `open --temp` cleanup
-7. [ ] Publish (npm name `carry` availability unchecked), VXMZ Product Standard docs
+## Next steps (open items; `docs/ROADMAP.md` is the source of truth)
+Done: Umami + Google sign-in published (7 Nov), plugin, .mcpb, registry, 0.4.0 to 0.4.4 releases, `carry mcp`, `carry install-skill`, npm publish as `@heyvamz/carry`.
+1. [ ] Finish and release 0.4.5 (site SEO and security headers, tagline)
+2. [ ] Two-person test: share by email, friend opens the private link via browser download
+3. [ ] Test friends over real Google Drive with two accounts
+4. [ ] Try the MCP connector inside Claude Desktop, Codex and Cursor; submit the plugin at claude.ai/directory/manage
+5. [ ] Close the two GitHub secret-scanning alerts; set up the npm trusted publisher for `@heyvamz/carry`
+6. [ ] `carry sync` refreshes project packs; automatic sync (SessionEnd hook, scheduled `carry sync`)
+7. [ ] `carry open --temp`; optional code snapshot in packs; received copies in own Drive (`received/`)
+8. [ ] Test `--to codex` with the Codex CLI (unverified in ROADMAP; carry for Codex is covered by CI smoke test only)
+9. [ ] Later: Antigravity app adapter, browser extension, studio npm org
