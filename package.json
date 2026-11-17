@@ -1,6 +1,6 @@
 {
   "name": "@heyvamz/carry",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "mcpName": "io.github.vamzzisme/carry",
   "description": "AirDrop for AI chats and projects. Send a Claude Code or Codex session, or a whole project, to a friend, another account or another laptop through your own Google Drive. Serverless: nothing hosted by us.",
   "keywords": ["claude-code", "codex", "ai", "chat", "handoff", "mcp", "google-drive", "txcript"],

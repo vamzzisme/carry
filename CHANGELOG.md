@@ -1,7 +1,10 @@
 # Changelog
 
-## Unreleased
+## 0.4.5 (2026-11-17)
 - New tagline in the npm, MCP Registry, plugin and Claude Desktop extension descriptions: "AirDrop for AI chats and projects".
+- Website: link-preview and search tags on every page, with a 1200x630 preview image.
+- Website: `robots.txt` and `sitemap.xml`.
+- Website: security headers (nosniff, referrer policy, frame blocking, permissions policy).
 
 ## 0.4.4 (2026-11-07)
 - Tab completion on every platform: `carry setup` turns it on for zsh, bash (Linux, Git Bash, macOS) and PowerShell

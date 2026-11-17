@@ -5,12 +5,12 @@
   "description": "AirDrop for AI chats and projects: send Claude Code or Codex sessions through your own Google Drive.",
   "websiteUrl": "https://carry-si.vercel.app",
   "repository": { "url": "https://github.com/vamzzisme/carry", "source": "github" },
-  "version": "0.4.4",
+  "version": "0.4.5",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@heyvamz/carry",
-      "version": "0.4.4",
+      "version": "0.4.5",
       "transport": { "type": "stdio" },
       "packageArguments": [{ "type": "positional", "value": "mcp" }]
     }

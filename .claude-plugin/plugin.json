@@ -1,7 +1,7 @@
 {
   "name": "carry",
   "displayName": "carry",
-  "version": "0.4.4",
+  "version": "0.4.5",
   "description": "AirDrop for AI chats and projects. Send a Claude Code or Codex chat, or a whole project, to a friend, another account or another AI tool through your own Google Drive. Serverless: nothing hosted by us.",
   "author": { "name": "heyvamz", "url": "https://x.com/heyvxmz" },
   "homepage": "https://carry-si.vercel.app",
